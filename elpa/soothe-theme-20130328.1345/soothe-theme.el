@@ -126,7 +126,7 @@
        (foreground       "#F4EAD5")
        (hl-line          "#11252a")
        (selection        "#11253a")
-       (background       "#110F13")
+       (background       "#0e0e12")
        (background-dark  "#0F0D11")
        (alt-background   "#111013"))
 
@@ -425,7 +425,7 @@
    `(main-line-color2 ,gray-2bg)
 
    `(main-line-separator-style
-     'chamfer
+     'slant-right
      )
    
    `(powerline-color1 ,gray-6bg)
