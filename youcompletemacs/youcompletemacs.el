@@ -60,6 +60,7 @@
   ;(setq yce-python-results (list "sarbatka" "wernsman" "aaabc" "aaacc"))
   (setq yce-python-results results)
   (ac-start :force-init t)
+  (setq yce-status 'idle)
   (ac-update))
 
 (defun yce-prefix ()
@@ -104,18 +105,38 @@
 
 (defun yce-objc-prefix ()
   (message "Req prefix")
-  ;We complete, if *either* the current character is a '.'
-  ;or, if any previous character is a '['"
+
+  ;; ObjC Completion is done for three different use cases:
+  ;; 1. If the user typed at least 3 chars right after ^
+  ;; 2.1 If the user typed a '.' after at least a [a-zA-Z]
+  ;; 2.2 If the user continues typing after . (i.e. a.numberOf..)
+  ;; 3.1 If the user typed a '[' with at least 3 chars
+  ;; 3.2 If the user types a ' ' after a '[' with [a-zA-Z0-9] (i.e. [nr9 ...)
+
+  
+   ; (if (< pos (line-beginning-position))
+   ;     nil
+   ;   (if (eq (char-after pos) (string-to-char "["))
+   ;       (point)
+   ;     (is-objc-method (- pos 1))))
+  
   (defun is-objc-method (pos)
-    (if (< pos (line-beginning-position))
-        nil
-      (if (eq (char-after pos) (string-to-char "["))
-          (point)
-        (is-objc-method (- pos 1))))
+    ; (message "search pos: %S" (number-to-string pos))
+    ; (message "testing: '%S'" (char-before pos))
+    (cond ((< pos (line-beginning-position)) nil) ; end of line
+          ((eq (char-before pos) (string-to-char " ")) nil) ; found a ' '
+          ((eq (char-before pos) (string-to-char "[")) (point)) ; found a [
+          (t (is-objc-method (- pos 1))) ; continue searching
+     )
     )
+
+  ; (message "testing: '%S'" (char-before (point)))
   (if (eq (char-before) (string-to-char "."))
       (point)
-    (is-objc-method (point))))
+    (if (eq (char-before) (string-to-char " "))
+        (is-objc-method (- (point) 1))
+      nil)))
+
 
 (defun lalala ()
   (let ((px (yce-objc-prefix)))
@@ -123,14 +144,14 @@
     px
     )
   )
-; Debug code to test our functions
-; (defun testfind ()
-;   (interactive)
-;   (if (yce-objc-prefix)
-;       (message "has [")
-;     (message "not has [")))
-; 
-; (global-set-key (kbd "@") 'testfind)
+ ; Debug code to test our functions
+ (defun testfind ()
+   (interactive)
+   (if (yce-objc-prefix)
+       (message "has [")
+     (message "not has [")))
+ 
+ (global-set-key (kbd "@") 'testfind)
 
 ;(ac-define-source sctest1
 ;  '((candidates . yce-candidate) ;; ;; 
@@ -145,8 +166,8 @@
   )
 
 (ac-define-source fobjcm
-'((candidates . req-candidates)
-  (prefix . yce-objc-prefix) ;yce-objc-prefix
+'((candidates . yce-candidate) ;req-candidates
+  (prefix . yce-objc-prefix) ; yce-objc-prefix 
   (requires . 0)) ;
   )
 
@@ -161,7 +182,7 @@
   ;(message "yeah")
   (add-hook 'c-mode-common-hook 'yce-cc-mode-setup)
   (add-hook 'auto-complete-mode-hook 'ac-common-setup)
-  ;(global-set-key (kbd "@") 'yce-async-autocomplete-autotrigger)
+  ;(local-set-key (kbd "@") 'yce-async-autocomplete-autotrigger)
   ;(global-set-key (kbd "#") 'yce-async-autocomplete-autotrigger)
   (global-auto-complete-mode t))
 
