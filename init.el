@@ -232,9 +232,10 @@
 (setq-default indent-tabs-mode nil)
 (setq tab-width 4)
 
-;(set-default-font "SourceCodeProVim3-Regular-15")
-;(set-default-font "M+ 1mn light-13")
-(set-default-font "mplus-1mn-light-13")
+;;(set-default-font "SourceCodeProVim3-Regular-15")
+(set-default-font "M+ 1mn light-13")
+;;(set-default-font "mplus-1mn-light-13")
+;;(set-default-font (:family "M+ 1mn" :foundry "nil" :slant normal :weight light :height 141 :width normal . :height))
 
 ;; Kill the welcome buffer
 (setq inhibit-startup-message t)
@@ -382,6 +383,17 @@
 (add-hook 'python-mode-hook 'jedi:setup)
 (setq jedi:setup-keys t)                      ; optional
 (setq jedi:complete-on-dot t)                 ; optional
+
+;; Switching to relative number
+(defun relativenumber
+  ()
+  (interactive)
+  (require 'relative-number))
+
+(defun ycex
+  ()
+  (interactive)
+  (require 'youcompletemacs))
 
 ;; After startup, show the recent open files
 (recentf-open-files)
