@@ -96,10 +96,10 @@
 ;; Explicit mode inits
 (require 'init-dired)
 (require 'init-hideshowvis)
-(require 'init-multi-web-mode)
-(require 'init-nxml)
+;(require 'init-multi-web-mode)
+;(require 'init-nxml)
 (require 'init-flymake)
-(require 'init-markdown)
+;(require 'init-markdown)
 
 ;; conditional - add your own init-marmalade or just login manually
 (load-library "marmalade")
@@ -191,7 +191,8 @@
   (when (eq system-type 'darwin)
     ;;(set-face-font 'default "Monaco")
     ;;(set-face-font 'default "Source Code Pro")
-    (set-face-font 'default "Menlo"))
+    ;(set-face-font 'default "Menlo")
+    (set-face-font 'default "M+ 1mn light-13"))
   ;; Sample Text for font viewing 
   '("ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     "abcdefghijklmnopqrstuvwxyz"
@@ -233,7 +234,6 @@
 (setq tab-width 4)
 
 ;;(set-default-font "SourceCodeProVim3-Regular-15")
-(set-default-font "M+ 1mn light-13")
 ;;(set-default-font "mplus-1mn-light-13")
 ;;(set-default-font (:family "M+ 1mn" :foundry "nil" :slant normal :weight light :height 141 :width normal . :height))
 
@@ -390,10 +390,19 @@
   (interactive)
   (require 'relative-number))
 
-(defun ycex
-  ()
-  (interactive)
-  (require 'youcompletemacs))
+;(defun yce-setup ()
+;  (interactive)
+;  (auto-complete-mode 1)
+;  (require 'youcompletemacs))
+     
+;; You Complete mEmacs
+(require 'youcompletemacs)
+(add-to-list 'ac-modes 'objc-mode)
+(add-hook 'objc-mode-hook (lambda ()
+          (message "objc mode hook")
+          (auto-complete-mode 1)
+          (yce-config)))
+
 
 ;; After startup, show the recent open files
 (recentf-open-files)

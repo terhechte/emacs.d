@@ -82,6 +82,7 @@ class ClangCompleter( Completer ):
   def CandidatesForQueryAsync( self, query, start_column ):
     filename = vim.current.buffer.name
 
+    print "filename: ", filename
     open("/tmp/px/CandidatesForQueryAsync", "a").write(filename + "\n")
 
     if not filename:

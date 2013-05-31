@@ -228,6 +228,13 @@ def showDiagnostics():
 # testing until we get some working output..
 if __name__ == "__main__":
     # try a simple completion
+    vim.stored_emacs_values[0] = "BTMasterViewController.m"
+    vim.stored_emacs_values[1] = "/Users/terhechte/Desktop/testapp/testapp/"
+    vim.stored_emacs_values[2] = 18
+    vim.stored_emacs_values[3] = 32
+    print "set up"
+    print vim.current.filename
+    print "---"
     completion_start_column = vim.current.column
     cursor_moved = 1
     should_use_filetype_completion = 1

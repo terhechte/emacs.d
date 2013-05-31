@@ -1,4 +1,3 @@
-(provide 'youcompletemacs)
 (require 'cl)
 (require 'auto-complete)
 (require 'epc)
@@ -19,8 +18,22 @@
 (defvar yce-last-result-state nil
   "the file info for the last result")
 
+(defvar yce-buffer " *yce output*")
+
+(defun yce-logger (errString)
+  (with-current-buffer (get-buffer-create yce-buffer)
+    (normal-mode)
+    (setq-local buffer-read-only nil)
+    (buffer-disable-undo)
+    (goto-char (point-max))
+    (insert errString)
+    (setq-local buffer-read-only t)))
+
 (defun yce-file-info ()
-  (list "filename.m" "folder" (line-number-at-pos) (current-column)))
+  (let ((px (buffer-file-name)))
+    (list (file-name-nondirectory (if px px "")) (file-name-directory (if px px "")) (line-number-at-pos) (current-column))
+    ))
+;(print (yce-file-info))
 
 (defun yce-current-file-info ()
   (let ((keys (list 'file 'folder 'column 'row))
@@ -28,6 +41,7 @@
         (pairlis keys vals)))
 
 (defun yce-call-python ()
+  (message "call python")
   (setq yce-status 'working)
   (deferred:$
     (epc:call-deferred yce-epc 'getCompletionsForQuery
@@ -45,8 +59,12 @@
 
     ;; We're waiting for a request, go and request
     (idle
-     (print "call again")
+     (message "call again")
      (setq yce-python-results nil)
+
+     ; TEMPORARY! We save the buffer
+     ; This only until we can send the buffer over to YCM
+     (save-buffer)
 
      ; save the last result state
      (setq yce-last-result-state (yce-current-file-info))
@@ -59,28 +77,50 @@
 
 ; Create the Python process
 (defun yce-launch-completion-process ()
-    (setq yce-epc (epc:start-epc "python" '("/Users/terhechte/.emacs.d/youcompletemacs/yce-server.py"))))
+  ;(defvar clancs-epc-client (epc:start-epc "python" (list (concat clancs-path "clancs.py"))))
+    (setq yce-epc (epc:start-epc "python" '("/Users/terhechte/.emacs.d/youcompletemacs/yce-server.py")))
+
+  ;; Initialize the server
+  (defvar yce-epc-server (epcs:server-start
+			       (lambda (manager)
+				 (epc:define-method manager 'log 'yce-logger "args" "Log to the *yce* buffer")
+				 )))
+  ;; Communicate emacs server port to python server (and hence the client)
+  (epc:call-sync clancs-epc-client 'init_client
+		 (list (epcs:server-port (cdr (assoc clancs-epc-server epcs:server-processes)))))
+
+  (message "Clancs initialized."))
+
+(defun yce-kill ()
+  (epc:stop-epc yce-epc)
+  (epcs:server-stop yce-epc-server)
+  (makunbound 'yce-epc)
+  (makunbound 'yce-epc-server))
+
+; Create our server that receives data from the python process
 
 ;(require 'epc)
 ;(defvar yce-epc (epc:start-epc "python" '("/Users/terhechte/.emacs.d/youcompletemacs/yce-server.py")))
 
 (defun yce-got-python-results (results)
-  ;(print "python result")
+  (message "python result")
   (setq yce-python-results results)
+  (message (car results))
+  (print results)
   (ac-start :force-init t)
   (ac-update)
   (setq yce-status 'done)
   )
 
 (defun yce-async-autocomplete-autotrigger ()
-  (print "autotrigger")
+  (message "autotrigger")
   (interactive)
   (if yce-async-do-autocompletion-automatically
     (yce-async-preemptive)
     (self-insert-command 1)))
 
 (defun yce-async-preemptive ()
-  (print "preemptive")
+  (message "preemptive")
   (interactive)
   (self-insert-command 1)
   (if (eq yce-status 'idle)
@@ -145,3 +185,4 @@
   (global-auto-complete-mode t))
 
 (yce-config)
+(provide 'youcompletemacs)
