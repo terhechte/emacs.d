@@ -58,10 +58,24 @@ def completionsForQuery(query):
     return {'words': results, 'refresh': 'always'}
 
 @server.register_function
+def setModifiedBuffers(*buffers):
+    # a simple list of lists
+    # ( (buffer-name, modified?, contents), (...
+
+    # first, remove all old values
+    for l in (vim.stored_emacs_buffers_name, vim.stored_emacs_buffers_modified, vim.stored_emacs_buffers_content):
+        [l.pop() for x in xrange(len(vim.stored_emacs_buffers_name))]
+    
+    for buffer in buffers:
+        vim.stored_emacs_buffers_name.append(buffer[0])
+        vim.stored_emacs_buffers_modified.append(int(buffer[1]))
+        vim.stored_emacs_buffers_content.append(buffer[2])
+
+
+
+@server.register_function
 def getCompletionsForQuery (*params):
     tfile, tfolder, tcol, trow = params
-
-    open("/tmp/px/bam", "w").write(tfile)
 
     vim.stored_emacs_values[0] = str(tfile)
     vim.stored_emacs_values[1] = str(tfolder)

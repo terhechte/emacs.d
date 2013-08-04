@@ -29,6 +29,14 @@
     (insert errString)
     (setq-local buffer-read-only t)))
 
+; get a list of all buffers, including their content, and modified flag
+(defun yce-list-of-buffers ()
+  ; we store the current buffer, so we can later make it current again
+  (setq actual-current-buffer (current-buffer))
+  (setq result (mapcar (lambda (x) (set-buffer x) (list (buffer-name x) (buffer-modified-p x) (buffer-string))) (buffer-list)))
+  (set-buffer actual-current-buffer)
+  result)
+
 (defun yce-file-info ()
   (let ((px (buffer-file-name)))
     (list (file-name-nondirectory (if px px "")) (file-name-directory (if px px "")) (line-number-at-pos) (current-column))
@@ -43,6 +51,7 @@
 (defun yce-call-python ()
   (message "call python")
   (setq yce-status 'working)
+  ; submit the list of buffers, async, 
   (deferred:$
     (epc:call-deferred yce-epc 'getCompletionsForQuery
     (yce-file-info)) 

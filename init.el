@@ -99,7 +99,7 @@
 ;(require 'init-multi-web-mode)
 ;(require 'init-nxml)
 (require 'init-flymake)
-;(require 'init-markdown)
+(require 'init-markdown)
 
 ;; conditional - add your own init-marmalade or just login manually
 (load-library "marmalade")
