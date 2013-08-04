@@ -34,7 +34,7 @@
 (defcustom squeeze-view-linum t
   "Specifies if line numbers are shown in a squeeze view")
 
-(defcustom squeeze-view-fringe 550
+(defcustom squeeze-view-fringe 350
   "Specifies the fringe width for squeeze-view")
 
 (defcustom squeeze-view-margin 0

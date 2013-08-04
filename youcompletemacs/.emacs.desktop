@@ -1,0 +1,238 @@
+;; -*- mode: emacs-lisp; coding: emacs-mule; -*-
+;; --------------------------------------------------------------------------
+;; Desktop File for Emacs
+;; --------------------------------------------------------------------------
+;; Created Fri May 24 20:12:04 2013
+;; Desktop file format version 206
+;; Emacs version 24.3.1
+
+;; Global section:
+(setq desktop-missing-file-warning nil)
+(setq tags-file-name nil)
+(setq tags-table-list nil)
+(setq search-ring nil)
+(setq regexp-search-ring '("yeah2" "yce-python-results" "\\_<yce-launch-completion-process\\_>" "Got" "cursor_mo" "completion_start_col" "complete_check" "use_file" "searched" "\\_<completionsForQuery\\_>" "you" "python" "Got" "working with" "yce-status" "Got"))
+(setq register-alist nil)
+(setq file-name-history '("~/.emacs.d/youcompletemacs/" "/tmp/test.c" "~/.emacs.d/youcompletemacs/youcompletemacs.el" "~/.emacs.d/youcompletemacs/yce-server.py" "~/_emacs.d/auto-complete-clang-async.el" "~/.emacs.d/init.el" "~/.emacs.d/youcompletemacs/auto-complete-clang-async.el" "~/.emacs.d/plugins/relative-number.el" "~/.emacs.d/plugins/frame-adjust.el" "~/_emacs.d/emacs" "~/Downloads/YouCompleteMe-master/python/example.c" "~/Downloads/YouCompleteMe-master/python/test.py" "~/Dropbox/emacs_notes.txt" "/usr/local/Cellar/emacs/24.3/share/emacs/24.3/etc/HELLO" "~/.emacs.d/elpa/jedi-20130520.2006/jedi-autoloads.el" "~/.emacs.d/elpa/epc-20130312.2201/epc-autoloads.el" "~/.emacs.d/elpa/concurrent-20120306.1807/concurrent-autoloads.el" "~/.emacs.d/elpa/ctable-20130313.1743/ctable-autoloads.el" "/usr/local/Cellar/emacs/24.3/share/emacs/24.3/etc/ORDERS" "~/Development/scala/99problems/problems.sc" "~/.emacs.d/elpa/soothe-theme-20130328.1345/soothe-theme.el"))
+
+;; Buffer section -- buffers listed in same order as in buffer list:
+(desktop-create-buffer 206
+  "/Users/terhechte/.emacs.d/youcompletemacs/youcompletemacs.el"
+  "youcompletemacs.el"
+  'emacs-lisp-mode
+  '(visual-line-mode global-visual-line-mode auto-complete-mode yas-minor-mode flex-autopair-mode linum-mode undo-tree-mode hs-minor-mode git-gutter-mode rainbow-delimiters-mode)
+  3174
+  '(3174 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "/Users/terhechte/Desktop/testapp/testapp/BTDetailViewController.m"
+  "BTDetailViewController.m"
+  'objc-mode
+  '(abbrev-mode visual-line-mode global-visual-line-mode yas-minor-mode flex-autopair-mode linum-mode undo-tree-mode rainbow-delimiters-mode)
+  2248
+  '(1 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "/Users/terhechte/.emacs.d/youcompletemacs/python/test.py"
+  "test.py"
+  'python-mode
+  '(visual-line-mode global-visual-line-mode auto-complete-mode yas-minor-mode flex-autopair-mode linum-mode undo-tree-mode hs-minor-mode git-gutter-mode rainbow-delimiters-mode)
+  7240
+  '(4290 nil)
+  nil
+  nil
+  '((tab-width . 8) (indent-tabs-mode) (buffer-file-coding-system . undecided-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "/Users/terhechte/.emacs.d/youcompletemacs/yce-server.py"
+  "yce-server.py"
+  'python-mode
+  '(visual-line-mode global-visual-line-mode auto-complete-mode yas-minor-mode flex-autopair-mode linum-mode undo-tree-mode hs-minor-mode git-gutter-mode rainbow-delimiters-mode)
+  1740
+  '(2411 nil)
+  nil
+  nil
+  '((tab-width . 8) (indent-tabs-mode) (buffer-file-coding-system . undecided-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "/Users/terhechte/.emacs.d/youcompletemacs/python/vim/__init__.py"
+  "__init__.py"
+  'python-mode
+  '(visual-line-mode global-visual-line-mode auto-complete-mode yas-minor-mode flex-autopair-mode linum-mode undo-tree-mode hs-minor-mode git-gutter-mode rainbow-delimiters-mode)
+  2492
+  '(300 nil)
+  nil
+  nil
+  '((tab-width . 8) (indent-tabs-mode) (buffer-file-coding-system . undecided-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  nil
+  "vim"
+  'dired-mode
+  '(global-visual-line-mode yas-minor-mode flex-autopair-mode auto-revert-mode)
+  268
+  '(nil nil)
+  t
+  '("/Users/terhechte/.emacs.d/youcompletemacs/python/vim/")
+  nil)
+
+(desktop-create-buffer 206
+  "/Users/terhechte/.emacs.d/youcompletemacs/python/vim/vim.py"
+  "vim.py"
+  'fundamental-mode
+  '(global-visual-line-mode)
+  1
+  '(nil nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix)))
+
+(desktop-create-buffer 206
+  nil
+  "python"
+  'dired-mode
+  '(global-visual-line-mode yas-minor-mode flex-autopair-mode auto-revert-mode)
+  915
+  '(nil nil)
+  t
+  '("/Users/terhechte/.emacs.d/youcompletemacs/python/")
+  nil)
+
+(desktop-create-buffer 206
+  nil
+  "ycm"
+  'dired-mode
+  '(global-visual-line-mode yas-minor-mode flex-autopair-mode auto-revert-mode)
+  162
+  '(nil nil)
+  t
+  '("/Users/terhechte/.emacs.d/youcompletemacs/python/ycm/")
+  nil)
+
+(desktop-create-buffer 206
+  nil
+  "testapp"
+  'dired-mode
+  '(global-visual-line-mode yas-minor-mode flex-autopair-mode auto-revert-mode)
+  770
+  '(nil nil)
+  t
+  '("/Users/terhechte/Desktop/testapp/testapp/")
+  nil)
+
+(desktop-create-buffer 206
+  "/Users/terhechte/.emacs.d/youcompletemacs/python/example.m"
+  "example.m"
+  'objc-mode
+  '(abbrev-mode visual-line-mode global-visual-line-mode yas-minor-mode flex-autopair-mode linum-mode undo-tree-mode git-gutter-mode rainbow-delimiters-mode)
+  246
+  '(354 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  nil
+  "youcompletemacs"
+  'dired-mode
+  '(global-visual-line-mode yas-minor-mode flex-autopair-mode auto-revert-mode)
+  486
+  '(nil nil)
+  t
+  '("/Users/terhechte/.emacs.d/youcompletemacs/")
+  nil)
+
+(desktop-create-buffer 206
+  nil
+  ".emacs.d"
+  'dired-mode
+  '(global-visual-line-mode yas-minor-mode flex-autopair-mode auto-revert-mode)
+  3032
+  '(2838 nil)
+  t
+  '("/Users/terhechte/.emacs.d/")
+  nil)
+
+(desktop-create-buffer 206
+  "/tmp/test.c"
+  "test.c"
+  'c-mode
+  '(abbrev-mode visual-line-mode global-visual-line-mode auto-complete-mode yas-minor-mode flex-autopair-mode linum-mode undo-tree-mode hs-minor-mode rainbow-delimiters-mode)
+  181
+  '(194 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "/Users/terhechte/.emacs.d/youcompletemacs/python/ax"
+  "ax"
+  'fundamental-mode
+  '(global-visual-line-mode)
+  1
+  '(nil nil)
+  nil
+  nil
+  '((buffer-file-coding-system . no-conversion)))
+
+(desktop-create-buffer 206
+  "/Users/terhechte/Desktop/emacs/clancs/clancs.el"
+  "clancs.el"
+  'emacs-lisp-mode
+  '(visual-line-mode global-visual-line-mode auto-complete-mode yas-minor-mode flex-autopair-mode linum-mode undo-tree-mode hs-minor-mode git-gutter-mode rainbow-delimiters-mode)
+  5416
+  '(5056 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "/Users/terhechte/_emacs.d/auto-complete-clang-async.el"
+  "auto-complete-clang-async.el"
+  'emacs-lisp-mode
+  '(visual-line-mode global-visual-line-mode auto-complete-mode yas-minor-mode flex-autopair-mode linum-mode undo-tree-mode hs-minor-mode git-gutter-mode rainbow-delimiters-mode)
+  18860
+  '(23131 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . undecided-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  nil
+  "clancs"
+  'dired-mode
+  '(global-visual-line-mode yas-minor-mode flex-autopair-mode auto-revert-mode)
+  452
+  '(nil nil)
+  t
+  '("/Users/terhechte/Desktop/emacs/clancs/")
+  nil)
+
+(desktop-create-buffer 206
+  nil
+  "emacs"
+  'dired-mode
+  '(global-visual-line-mode yas-minor-mode flex-autopair-mode auto-revert-mode)
+  328
+  '(nil nil)
+  t
+  '("/Users/terhechte/Desktop/emacs/")
+  nil)
+
+(desktop-create-buffer 206
+  nil
+  "_emacs.d"
+  'dired-mode
+  '(global-visual-line-mode yas-minor-mode flex-autopair-mode auto-revert-mode)
+  515
+  '(nil nil)
+  t
+  '("/Users/terhechte/_emacs.d/")
+  nil)
+
