@@ -252,9 +252,13 @@
 (evil-mode 1)
 
 ;; Load the KeyChord library, to be able to use jj in evil
-(add-to-list 'load-path "~/.emacs.d/elpa/key-chord-0.5.20080915/")
-(require 'key-chord)
-(key-chord-mode 1)
+;;(add-to-list 'load-path "~/.emacs.d/elpa/key-chord-0.5.20080915/")
+;;(require 'key-chord)
+;;(key-chord-mode 1)
+;;(key-chord-define evil-insert-state-map "jj" 'evil-normal-state)
+
+;; New is C-g
+(define-key evil-insert-state-map "\C-g" 'evil-normal-state)
 
 ;; http://dnquark.com/blog/2012/02/emacs-evil-ecumenicalism/
 ;; I want c-n / c-p to work like in emacs
@@ -266,7 +270,6 @@
 (define-key evil-insert-state-map "\C-n" 'evil-undefine)
 (define-key evil-insert-state-map "\C-p" 'evil-undefine)
 
-(key-chord-define evil-insert-state-map "jj" 'evil-normal-state)
 
 ;;; esc quits
 ;;;
@@ -306,7 +309,22 @@
         (lambda () (highlight-lines-matching-regexp "\\@non-happen" "hi-gray-b")))
   "A mode for task files")
   
+;; Support for expand region
+(require 'expand-region)
+(global-set-key (kbd "C-=") 'er/expand-region)
 
+;; paredit docs
+; C-j => break and continue
+; C-d => forward-delete
+; M-d => forward-delete word
+; M-DEL => backwards delete word
+; M-<Up> => splice sexp killing backward (remove sexp before cursor)
+; M-<Down> => splice sexp killing forward (remove sexp before cursor)
+; M-r => raise sexp, some weird stuff that moves the current sexp up
+; C-) => (use caps lock + shift + 0) move the next sexp into the current one. cursor is *in* the current expression
+; C-} => move the next sexp away from the current one
+; C-( => (use caps lock + shift + 9) move the previous sexp into the current one. cursor is *in* the current expression
+; C-{ => move the previous sexp away from the current one
 
 ;; http://stackoverflow.com/questions/6344474/how-can-i-make-emacs-highlight-lines-that-go-over-80-chars
 ;; free of trailing whitespace and to use 80-column width, standard indentation

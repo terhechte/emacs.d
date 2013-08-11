@@ -4,7 +4,7 @@
 
 
 ;;;### (autoloads (er/expand-region) "expand-region" "expand-region.el"
-;;;;;;  (20960 49603 0 0))
+;;;;;;  (20999 62297 0 0))
 ;;; Generated autoloads from expand-region.el
 
 (autoload 'er/expand-region "expand-region" "\
@@ -24,7 +24,7 @@ before calling `er/expand-region' for the first time.
 ;;;;;;  expand-region-skip-whitespace expand-region-autocopy-register
 ;;;;;;  expand-region-guess-python-mode expand-region-preferred-python-mode
 ;;;;;;  expand-region) "expand-region-custom" "expand-region-custom.el"
-;;;;;;  (20960 49603 0 0))
+;;;;;;  (20999 62296 0 0))
 ;;; Generated autoloads from expand-region-custom.el
 
 (let ((loads (get 'expand-region 'custom-loads))) (if (member '"expand-region-custom" loads) nil (put 'expand-region 'custom-loads (cons '"expand-region-custom" loads))))
@@ -81,8 +81,8 @@ List of modes which derive from `text-mode' for which text mode expansions are n
 ;;;;;;  "nxml-mode-expansions.el" "octave-expansions.el" "python-el-expansions.el"
 ;;;;;;  "python-el-fgallina-expansions.el" "python-mode-expansions.el"
 ;;;;;;  "ruby-mode-expansions.el" "sml-mode-expansions.el" "text-mode-expansions.el"
-;;;;;;  "the-org-mode-expansions.el" "web-mode-expansions.el") (20960
-;;;;;;  49603 466708 0))
+;;;;;;  "the-org-mode-expansions.el" "web-mode-expansions.el") (20999
+;;;;;;  62297 630429 0))
 
 ;;;***
 

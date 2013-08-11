@@ -26,3 +26,12 @@
   (create-column name "Double")
   )
 (global-set-key (kbd "C-c C-3") 'create-dcolumn)
+
+(defun another-command ()
+  (let ((v (calculate-v))
+        (x (calculate-x)))
+    (when (and (some-predicate)
+               (some other predicate))
+      (do-thing-1)
+      (do-thing-2)
+      (do-thing-3))))
