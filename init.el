@@ -43,8 +43,8 @@
   (menu-bar-mode -1)
 )
 
-(setq custom-file "~/.emacs.d/custom/custom.el") ;; Customize stuff goes in custom.el
-(load custom-file)
+;(setq custom-file "~/.emacs.d/custom/custom.el") ;; Customize stuff goes in custom.el
+;(load custom-file)
 (require 'custom-keys)
 
 (setq frame-title-format '("%b %I %+%@%t%Z %m %n %e"))
@@ -60,6 +60,7 @@
 (require 'ag)
 (require 'multiple-cursors)
 (require 'js2-refactor)
+(require 'helm)
           
 ;; Modes init (things that need more than just a require.) 
 (when (string-match "Emacs 24" (version))
@@ -99,11 +100,21 @@
 ;; Explicit mode inits
 (require 'init-dired)
 (require 'init-hideshowvis)
-;(require 'init-multi-web-mode)
+(require 'init-multi-web-mode)
 ;(require 'init-nxml)
 (require 'init-flymake)
-(require 'init-markdown)
-(require 'init-ruby)
+;(require 'init-markdown)
+;(require 'init-ruby)
+;
+;; no scrolblars
+(scroll-bar-mode -1)
+
+(setq mweb-default-major-mode 'html-mode)
+(setq mweb-tags '((php-mode "<\\?php\\|<\\? \\|<\\?=" "\\?>")
+                  (js-mode "<script +\\(type=\"text/javascript\"\\|language=\"javascript\"\\)[^>]*>" "</script>")
+                                    (css-mode "<style +type=\"text/css\"[^>]*>" "</style>")))
+                                    (setq mweb-filename-extensions '("php" "htm" "html" "ctp" "phtml" "php4" "php5"))
+                                    (multi-web-global-mode 1)
 
 ;; conditional - add your own init-marmalade or just login manually
 (load-library "marmalade")
@@ -194,8 +205,10 @@
   (when (eq system-type 'darwin)
     ;;(set-face-font 'default "Monaco")
     ;;(set-face-font 'default "Source Code Pro")
-    ;(set-face-font 'default "Menlo")
-    (set-face-font 'default "M+ 1mn light-13"))
+    ;(set-face-font 'default "Menlo"))
+    ;(set-face-font 'default "M+ 1mn light-13"))
+    ;(set-face-font 'default "M+ 1mn light-13"))
+    (add-to-list 'default-frame-alist '(font . "M+ 1mn-13")))
   ;; Sample Text for font viewing 
   '("ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     "abcdefghijklmnopqrstuvwxyz"
@@ -213,7 +226,7 @@
     )
 )
 
-(load-theme 'clues)
+(load-theme 'soothe t)
 
 (set-face-attribute 'default nil :height 140)
 
@@ -270,6 +283,7 @@
 (define-key evil-insert-state-map "\C-n" 'evil-undefine)
 (define-key evil-insert-state-map "\C-p" 'evil-undefine)
 
+(define-key evil-normal-state-map "helm" 'helm-mini)
 
 ;;; esc quits
 ;;;
@@ -413,6 +427,33 @@
           (auto-complete-mode 1)
           (yce-config)))
 
+;; old-school fullscreen-mode
+(defun toggle-fullscreen ()
+  "Toggle full screen"
+  (interactive)
+  (set-frame-parameter
+    nil 'fullscreen
+    (when (not (frame-parameter nil 'fullscreen)) 'fullboth)))
 
 ;; After startup, show the recent open files
 (recentf-open-files)
+
+(helm-mode 1)
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes (quote ("c377a5f3548df908d58364ec7a0ee401ee7235e5e475c86952dc8ed7c4345d8e" default))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+
+ ; set different linum color
+ (set-face-attribute 'linum nil :foreground "#999")
+; and cua mode for copy / paste
+(cua-mode)
