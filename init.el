@@ -50,7 +50,7 @@
 (setq frame-title-format '("%b %I %+%@%t%Z %m %n %e"))
 
 ;; Explicitly require libs that autoload borks
-;; Include common lisp
+;; Include common lisp:
 (require 'cl) ;; one day can remove this...
 (require 'cl-lib)
 (require 'dash)
@@ -198,6 +198,10 @@
 (setq server-use-tcp t)
 (server-start)
 
+; paredit-mode
+
+;; -------------------------------------------------------------------------------------------------
+
 ;; Default Font for different window systems
 (when (window-system)
  (global-linum-mode 1)
@@ -226,7 +230,7 @@
     )
 )
 
-(load-theme 'soothe t)
+;(load-theme 'soothe t)
 
 (set-face-attribute 'default nil :height 140)
 
@@ -283,7 +287,7 @@
 (define-key evil-insert-state-map "\C-n" 'evil-undefine)
 (define-key evil-insert-state-map "\C-p" 'evil-undefine)
 
-(define-key evil-normal-state-map "helm" 'helm-mini)
+;(define-key evil-normal-state-map "helm" 'helm-mini)
 
 ;;; esc quits
 ;;;
@@ -297,7 +301,6 @@
 
 ;; Run emacs in server mode, so that we can connect from commandline
 (server-start)
-
 ;; Cycle between the last open buffers
 (defun switch-to-previous-buffer ()
       (interactive)
@@ -454,6 +457,39 @@
  )
 
  ; set different linum color
- (set-face-attribute 'linum nil :foreground "#999")
 ; and cua mode for copy / paste
 (cua-mode)
+(set-face-attribute 'linum nil :foreground "#999")
+(set-face-attribute 'region nil :foreground "#233a51" :background "#99b8d7")
+(setq evil-default-cursor t)
+(set-cursor-color "#ffffff")
+
+;zencoding:
+;<C-j>
+;lisp:
+;C-x C-e
+
+(require 'face-remap)
+(defvar highlight-focus:last-buffer nil)
+(defvar highlight-focus:cookie nil)
+(defvar highlight-focus:background "#0f0f0f")
+
+(defun highlight-focus:check ()
+  "Check if focus has changed, and if so, update remapping."
+  (unless (eq highlight-focus:last-buffer (current-buffer))
+    (when (and highlight-focus:last-buffer highlight-focus:cookie)
+      (with-current-buffer highlight-focus:last-buffer
+        (face-remap-remove-relative highlight-focus:cookie)))
+    (setq highlight-focus:last-buffer (current-buffer)
+          highlight-focus:cookie
+          (face-remap-add-relative 'default :background highlight-focus:background))))
+    
+(defadvice other-window (after highlight-focus activate)
+  (highlight-focus:check))
+(defadvice select-window (after highlight-focus activate)
+  (highlight-focus:check))
+(defadvice select-frame (after highlight-focus activate)
+  (highlight-focus:check))
+(add-hook 'window-configuration-change-hook 'highlight-focus:check)
+
+(provide 'highlight-focus)

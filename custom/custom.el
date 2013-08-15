@@ -13,7 +13,7 @@
  '(cua-enable-cua-keys nil)
  '(cua-mode t nil (cua-base))
  '(current-language-environment "UTF-8")
- '(custom-safe-themes t)
+; '(custom-safe-themes t)
  '(display-time-mode nil)
  '(display-time-world-time-format "%A %d %B %R %Z (%z)")
  '(ediff-custom-diff-program "diff")
