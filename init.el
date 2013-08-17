@@ -469,27 +469,76 @@
 ;lisp:
 ;C-x C-e
 
-(require 'face-remap)
-(defvar highlight-focus:last-buffer nil)
-(defvar highlight-focus:cookie nil)
-(defvar highlight-focus:background "#0f0f0f")
+;(require 'face-remap)
+;(require 'color-theme-buffer-local)
+;(defvar highlight-focus:last-buffer nil)
+;(defvar highlight-focus:cookie nil)
+;(defvar highlight-focus:focus-theme 'soothe)
+;(defvar highlight-focus:unfocus-theme 'subatomic256)
 
-(defun highlight-focus:check ()
-  "Check if focus has changed, and if so, update remapping."
-  (unless (eq highlight-focus:last-buffer (current-buffer))
-    (when (and highlight-focus:last-buffer highlight-focus:cookie)
-      (with-current-buffer highlight-focus:last-buffer
-        (face-remap-remove-relative highlight-focus:cookie)))
-    (setq highlight-focus:last-buffer (current-buffer)
-          highlight-focus:cookie
-          (face-remap-add-relative 'default :background highlight-focus:background))))
-    
-(defadvice other-window (after highlight-focus activate)
-  (highlight-focus:check))
-(defadvice select-window (after highlight-focus activate)
-  (highlight-focus:check))
-(defadvice select-frame (after highlight-focus activate)
-  (highlight-focus:check))
-(add-hook 'window-configuration-change-hook 'highlight-focus:check)
+;(defun highlight-focus:check ()
+;  "Check if focus has changed, and if so, update remapping."
+;  (unless (eq highlight-focus:last-buffer (current-buffer))
+;    (when (and highlight-focus:last-buffer highlight-focus:cookie)
+;      (with-current-buffer highlight-focus:last-buffer
+;        (load-theme-buffer-local highlight-focus:unfocus-theme highlight-focus:last-buffer)))
+;    (setq highlight-focus:last-buffer (current-buffer)
+;          highlight-focus:cookie t)
+;    (load-theme-buffer-local highlight-focus:focus-theme (current-buffer))))
+;    
+;(defadvice other-window (after highlight-focus activate)
+;  (highlight-focus:check))
+;(defadvice select-window (after highlight-focus activate)
+;  (highlight-focus:check))
+;(defadvice select-frame (after highlight-focus activate)
+;  (highlight-focus:check))
+;(add-hook 'window-configuration-change-hook 'highlight-focus:check)
+;
+;(provide 'highlight-focus)
 
-(provide 'highlight-focus)
+; Setting up Multi-Cursor Mode
+; New-line in multi-cursor-mode = C-j
+
+; https://github.com/magnars/multiple-cursors.el/issues/19
+; Now multiple-cursor-mode (entering it) will go into emacs mode
+; so that all the emacs bindings work
+(defvar my-mc-evil-previous-state nil)
+
+(defun my-mc-evil-switch-to-insert-state ()
+  (when (and (bound-and-true-p evil-mode)
+             (not (memq evil-state '(insert emacs))))
+    (setq my-mc-evil-previous-state evil-state)
+    (evil-emacs-state 1)))
+
+(defun my-mc-evil-back-to-previous-state ()
+  (when my-mc-evil-previous-state
+    (unwind-protect
+        (case my-mc-evil-previous-state
+          ((normal visual) (evil-force-normal-state))
+          (t (message "Don't know how to handle previous state: %S"
+                      my-mc-evil-previous-state)))
+      (setq my-mc-evil-previous-state nil))))
+
+(add-hook 'multiple-cursors-mode-enabled-hook
+          'my-mc-evil-switch-to-insert-state)
+(add-hook 'multiple-cursors-mode-disabled-hook
+          'my-mc-evil-back-to-previous-state)
+
+(defun my-rrm-evil-switch-state ()
+  (if rectangular-region-mode
+      (my-mc-evil-switch-to-insert-state)
+    ;; (my-mc-evil-back-to-previous-state)  ; does not work...
+    (setq my-mc-evil-previous-state nil)))
+
+(add-hook 'rectangular-region-mode-hook 'my-rrm-evil-switch-state)
+
+(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines) ; edit multicursors on all selected lines
+(global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click) ; edit multicursors on mouse positions
+(global-set-key (kbd "C->") 'mc/mark-next-like-this) ; multiple cursors on next word like this
+(global-set-key (kbd "C-<") 'mc/mark-previous-like-this) ; on previous
+(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+
+(global-set-key (kbd "C-x v") 'eval-region)
+
+; Docs:
+; helm-do-grep for fast grep in current diredtory and what not !

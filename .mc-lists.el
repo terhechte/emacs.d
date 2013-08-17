@@ -6,6 +6,7 @@
         autopair-insert-opening
         autopair-insert-or-skip-quote
         autopair-skip-close-maybe
+        backward-sexp
         beginning-of-visual-line
         cua-cut-region
         cua-delete-region
@@ -24,5 +25,6 @@
         beginning-of-buffer
         cua-scroll-down
         end-of-buffer
+        kill-region
         mac-mwheel-scroll
         ))
