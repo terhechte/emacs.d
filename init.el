@@ -592,7 +592,7 @@
         (setq default-directory (if (string= term-ansi-at-host (system-name))
                                     (concatenate 'string term-ansi-at-dir "/")
                                   (format "/%s@%s:%s/" term-ansi-at-user term-ansi-at-host term-ansi-at-dir))))
-    message)
+    message))
 
 (when (require 'multi-term nil t)
   (global-set-key (kbd "<f5>") 'multi-term)
