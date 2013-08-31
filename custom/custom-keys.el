@@ -130,6 +130,8 @@
 
   (global-set-key (kbd "C-0") 'switch-window)
   
+  ; fast eval with <C-'>
+  (global-set-key (kbd "C-'") 'eval-region-or-left-sexp)
     
   )
 

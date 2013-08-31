@@ -155,3 +155,26 @@
 (scroll-script)
 
 (evil-ex-define-cmd "Rx" 'scroll-script)
+
+;; Kill all buffers except for the current one
+(defun kill-other-buffers ()
+    "Kill all other buffers."
+    (interactive)
+    (mapc 'kill-buffer 
+          (delq (current-buffer) 
+                (remove-if-not 'buffer-file-name (buffer-list)))))
+(evil-ex-define-cmd "killb" 'kill-other-buffers)
+
+;; Emacs check if we have a region, then eval that, otherwise the left sexp
+(defun eval-region-or-left-sexp ()
+  (interactive)
+  (if (and transient-mark-mode mark-active)
+      (progn ; there is a text selection
+        (eval-region (region-beginning) (region-end))
+        )
+    (progn ; user did not have text selection feature on
+      (eval-last-sexp-1 nil) ; (point) nil
+      )
+    )
+  )
+
