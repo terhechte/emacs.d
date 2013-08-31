@@ -45,7 +45,6 @@
 
 ;(setq custom-file "~/.emacs.d/custom/custom.el") ;; Customize stuff goes in custom.el
 ;(load custom-file)
-(require 'custom-keys)
 
 (setq frame-title-format '("%b %I %+%@%t%Z %m %n %e"))
 
@@ -167,6 +166,7 @@
 (put 'narrow-to-page            'disabled nil)
 (put 'dired-find-alternate-file 'disabled nil)
 
+
 ;; Ruby mode filetype hooks ------------------------------------------------------------------------
 ;; -- this will need migrating to init-ruby-mode.el or sumthin'
 
@@ -235,8 +235,10 @@
 ;; -----------------------------------------------------------------------------------------------
 ;; Custom stuff from me.
 ;; -----------------------------------------------------------------------------------------------
-(require 'my-functions)
+(require 'powerline)
+(powerline-default-theme)
 (require 'visual-progress-mode)
+(load-theme 'soothe t)
 
 ;; No tabs, only 4 spaces, as default
 (setq-default indent-tabs-mode nil)
@@ -298,6 +300,9 @@
 (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
 (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
 (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
+
+(require 'my-functions)
+(require 'custom-keys)
 
 ;; Run emacs in server mode, so that we can connect from commandline
 (server-start)
@@ -416,6 +421,7 @@
   ()
   (interactive)
   (require 'relative-number))
+(relativenumber)
 
 ;(defun yce-setup ()
 ;  (interactive)

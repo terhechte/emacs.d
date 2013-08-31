@@ -23,3 +23,5 @@
              (let ((my-linum-current-line-number (line-number-at-pos)))
                    ad-do-it))
 (ad-activate 'linum-update)
+
+(provide 'relative-number)
