@@ -235,6 +235,8 @@
 ;; -----------------------------------------------------------------------------------------------
 ;; Custom stuff from me.
 ;; -----------------------------------------------------------------------------------------------
+(require 'my-functions)
+(require 'visual-progress-mode)
 
 ;; No tabs, only 4 spaces, as default
 (setq-default indent-tabs-mode nil)
