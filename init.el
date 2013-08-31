@@ -56,7 +56,7 @@
 (require 'dash)
 (require 's)
 (require 'f)
-(require 'iedit)
+;(require 'iedit)
 (require 'ag)
 (require 'multiple-cursors)
 (require 'js2-refactor)
@@ -73,7 +73,7 @@
 ;; Additional requires
 ;; -------------------------------------------------------------------------------------------------
 ;; Emacs Mac port specific frame adjust
-(require 'mac-frame-adjust)            ;; a few presets for sizing and moving frames (aka OS Windows)
+;(require 'mac-frame-adjust)            ;; a few presets for sizing and moving frames (aka OS Windows)
 
 ;;; Convenience and completion
 (require 'auto-complete-config)        ;; Very nice autocomplete.
@@ -87,34 +87,31 @@
 (require 'hexrgb)
 (require 'kill-buffer-without-confirm) ;; yes, I really meant to close it.
 (require 'scroll-bell-fix)             ;; a small hack to turn off the buffer scroll past top/end bell.
+(require 'dabbrev)
+(require 'ac-dabbrev)
+
 
 ;; auto-load hyde mode for Jekyll
-(require 'hyde-autoloads) ;; ./vendor/hyde
-
-;; --- Main-line only on window systems ----- (a fork of Powerline
-(when (window-system)
-  (load-library "main-line")
-  (setq main-line-separator-style 'wave))
+;(require 'hyde-autoloads) ;; ./vendor/hyde
 
 ;; -------------------------------------------------------------------------------------------------
 ;; Explicit mode inits
-(require 'init-dired)
-(require 'init-hideshowvis)
-(require 'init-multi-web-mode)
+;(require 'init-dired)
+;(require 'init-hideshowvis)
+;(require 'init-multi-web-mode)
 ;(require 'init-nxml)
-(require 'init-flymake)
+;(require 'init-flymake)
 ;(require 'init-markdown)
-;(require 'init-ruby)
 ;
 ;; no scrolblars
 (scroll-bar-mode -1)
 
-(setq mweb-default-major-mode 'html-mode)
-(setq mweb-tags '((php-mode "<\\?php\\|<\\? \\|<\\?=" "\\?>")
-                  (js-mode "<script +\\(type=\"text/javascript\"\\|language=\"javascript\"\\)[^>]*>" "</script>")
-                                    (css-mode "<style +type=\"text/css\"[^>]*>" "</style>")))
-                                    (setq mweb-filename-extensions '("php" "htm" "html" "ctp" "phtml" "php4" "php5"))
-                                    (multi-web-global-mode 1)
+;(setq mweb-default-major-mode 'html-mode)
+;(setq mweb-tags '((php-mode "<\\?php\\|<\\? \\|<\\?=" "\\?>")
+;                  (js-mode "<script +\\(type=\"text/javascript\"\\|language=\"javascript\"\\)[^>]*>" "</script>")
+;                                    (css-mode "<style +type=\"text/css\"[^>]*>" "</style>")))
+;                                    (setq mweb-filename-extensions '("php" "htm" "html" "ctp" "phtml" "php4" "php5"))
+;                                    (multi-web-global-mode 1)
 
 ;; conditional - add your own init-marmalade or just login manually
 (load-library "marmalade")
@@ -122,7 +119,8 @@
 (when (file-readable-p "modes-init/init-marmalade.el")
   (load-file "modes-init/init-marmalade.el"))
 
-(require 'handy-functions) ;; my lab area for little defuns...
+;(require 'handy-functions) ;; my lab area for little defuns...
+;(require 'my_functions)
 
 ;; Turn on things that auto-load isn't doing for us...
 (yas-global-mode t)

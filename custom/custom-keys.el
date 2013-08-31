@@ -127,6 +127,9 @@
   ;; narrow / widen region
   (global-set-key (kbd "s-§") 'narrow-to-region)
   (global-set-key (kbd "C-§") 'widen)
+
+  (global-set-key (kbd "C-0") 'switch-window)
+  
     
   )
 
