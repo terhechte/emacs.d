@@ -195,12 +195,16 @@
 ; javascript
 (autoload 'js2-mode "js2-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
-(require 'slime)
-;(slime-setup '(slime-fancy))
-(global-set-key [f5] 'slime-js-reload)
-(add-hook 'js2-mode-hook
-          (lambda ()
-            (slime-js-minor-mode 1)))
+;(require 'slime)
+;(slime-setup '(slime-js slime-repl slime-scratch))
+;(setq slime-js-swank-command "/usr/local/bin/swank-js")
+;(setq slime-js-swank-args '())
+;(global-set-key [f5] 'slime-js-reload)
+;(add-hook 'js2-mode-hook
+;          (lambda ()
+;            (slime-js-minor-mode 1)))
+
+(require 'simple-httpd)
 
 ;; Conditional start of Emacs Server
 (setq server-use-tcp t)
@@ -464,6 +468,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(httpd-port 8187)
  '(custom-safe-themes (quote ("c377a5f3548df908d58364ec7a0ee401ee7235e5e475c86952dc8ed7c4345d8e" default))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
