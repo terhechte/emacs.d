@@ -539,6 +539,7 @@
 (add-hook 'rectangular-region-mode-hook 'my-rrm-evil-switch-state)
 
 ; http://paralambda.org/2012/07/02/using-gnu-emacs-as-a-terminal-emulator/
+; https://github.com/jstautz/.emacs.d/blob/master/config/init-multi-term.el
 (when (require 'term nil t) ; only if term can be loaded..
   (setq term-bind-key-alist
         (list (cons "C-c C-c" 'term-interrupt-subjob)
@@ -552,6 +553,7 @@
               (cons "M-d" 'term-send-forward-kill-word)
               (cons "<C-left>" 'term-send-backward-word)
               (cons "<C-right>" 'term-send-forward-word)
+              (cons "<tab>" 'term-dynamic-complete)
               (cons "C-r" 'term-send-reverse-search-history)
               (cons "M-p" 'term-send-raw-meta)
               (cons "M-y" 'term-send-raw-meta)
