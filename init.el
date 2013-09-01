@@ -192,6 +192,16 @@
 (dolist (pattern '("\\.jshintrc$" "\\.jslint$"))
   (add-to-list 'auto-mode-alist (cons pattern 'json-mode)))
 
+; javascript
+(autoload 'js2-mode "js2-mode" nil t)
+(add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
+(require 'slime)
+;(slime-setup '(slime-fancy))
+(global-set-key [f5] 'slime-js-reload)
+(add-hook 'js2-mode-hook
+          (lambda ()
+            (slime-js-minor-mode 1)))
+
 ;; Conditional start of Emacs Server
 (setq server-use-tcp t)
 (server-start)
