@@ -6,6 +6,8 @@
 ;;                                          
 ;; --
 
+
+
 ;; First a dirty, but cheap way to get .emacs.d subfolders into the load path,
 ;; and then return us to the user home directory, for find-file etc.
 (progn (cd "~/.emacs.d/") (normal-top-level-add-subdirs-to-load-path) (cd "~"))
@@ -17,6 +19,7 @@
 ;                 '("marmalade" .
 ;                         "http://marmalade-repo.org/packages/"))
 ;(package-initialize)
+
 
 ;; -- Path -----------------------------------------------------------------------------------------------
 ;; find XCode and RVM command line tools on OSX (cover the legacy and current XCode directory structures.)
@@ -279,6 +282,7 @@
 
 ;; Load evil
 (setq evil-want-C-u-scroll t)
+(setq evil-want-fine-undo t)
 (add-to-list 'load-path "~/.emacs.d/elpa/evil-1.0.1")
 ;(add-to-list 'load-path "~/.emacs.d/evil")
 (require 'evil)
@@ -295,14 +299,35 @@
 
 ;; http://dnquark.com/blog/2012/02/emacs-evil-ecumenicalism/
 ;; I want c-n / c-p to work like in emacs
+(define-key evil-insert-state-map "\C-e" 'end-of-line)
+(define-key evil-visual-state-map "\C-e" 'evil-end-of-line)
+(define-key evil-normal-state-map "\C-f" 'evil-forward-char)
+(define-key evil-insert-state-map "\C-f" 'evil-forward-char)
+(define-key evil-insert-state-map "\C-f" 'evil-forward-char)
+(define-key evil-normal-state-map "\C-b" 'evil-backward-char)
+(define-key evil-insert-state-map "\C-b" 'evil-backward-char)
+(define-key evil-visual-state-map "\C-b" 'evil-backward-char)
+(define-key evil-normal-state-map "\C-n" 'evil-next-line)
+(define-key evil-insert-state-map "\C-n" 'evil-next-line)
+(define-key evil-visual-state-map "\C-n" 'evil-next-line)
+(define-key evil-normal-state-map "\C-p" 'evil-previous-line)
+(define-key evil-insert-state-map "\C-p" 'evil-previous-line)
+(define-key evil-visual-state-map "\C-p" 'evil-previous-line)
+(define-key evil-normal-state-map "\C-y" 'yank)
+(define-key evil-insert-state-map "\C-y" 'yank)
+(define-key evil-visual-state-map "\C-y" 'yank)
+(define-key evil-normal-state-map "\C-k" 'kill-line)
+(define-key evil-insert-state-map "\C-k" 'kill-line)
+(define-key evil-visual-state-map "\C-k" 'kill-line)
+(define-key evil-normal-state-map (kbd "TAB") 'evil-undefine)
+
+; http://stackoverflow.com/questions/8483182/emacs-evil-mode-best-practice
+
 (defun evil-undefine ()
  (interactive)
  (let (evil-mode-map-alist)
    (call-interactively (key-binding (this-command-keys)))))
-
-(define-key evil-insert-state-map "\C-n" 'evil-undefine)
-(define-key evil-insert-state-map "\C-p" 'evil-undefine)
-
+ 
 ;(define-key evil-normal-state-map "helm" 'helm-mini)
 
 ;;; esc quits
@@ -626,7 +651,37 @@
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
 
 ;(global-set-key (kbd "C-x v") 'eval-region)
+(define-key evil-normal-state-map (kbd "C-.") 'execute-extended-command)
+(define-key evil-visual-state-map (kbd "C-.") 'execute-extended-command)
+
+; http://stackoverflow.com/questions/683425/globally-override-key-binding-in-emacs
+(defvar my-keys-minor-mode-map (make-keymap) "my-keys-minor-mode keymap.")
+
+(define-key my-keys-minor-mode-map (kbd "C-.") 'execute-extended-command)
+
+(define-minor-mode my-keys-minor-mode
+  "A minor mode so that my key settings override annoying major modes."
+  t " my-keys" 'my-keys-minor-mode-map)
+
+(my-keys-minor-mode 1)
+
+; do not do this in minibuffer
+(defun my-minibuffer-setup-hook ()
+  (my-keys-minor-mode 0))
+
+(add-hook 'minibuffer-setup-hook 'my-minibuffer-setup-hook)
+
+; Simple clip makes it possible to not overwrite clipboard during yanking
+; https://github.com/rolandwalker/simpleclip
+(require 'simpleclip)
+(simpleclip-mode 1)
 
 ; Docs:
 ; helm-do-grep for fast grep in current diredtory and what not !
+; try to use Capslock as Control wherever possible
+; C-. is my new m-x
+; 
+
+
+
 
