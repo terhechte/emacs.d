@@ -340,6 +340,11 @@
 (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
 (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
 
+; load evil leader
+(require 'evil-leader)
+(global-evil-leader-mode)
+(evil-leader/set-leader ",")
+
 (require 'my-functions)
 (require 'custom-keys)
 
@@ -354,22 +359,6 @@
 (define-key ac-complete-mode-map "\C-n" 'ac-next)
 (define-key ac-complete-mode-map "\C-p" 'ac-previous)
 
-; http://www.emacswiki.org/emacs/GenericMode
-; Try adding my own minor mode for taskpaper, that really just offers syntax highlighting
-(require 'generic-x)
-(define-generic-mode
-    'task-mode ;name of the mode
-  '("---") ;how comments are defined in mode
-  '("@done" "@later" "@testing" "@important" "@non-happen") ;keywords
-  nil ;operators
-  '("\\.txt$", "\\.taskpaper$", "\\.todo$", "\\.tasks$") ;filenames to activate this mode for
-  (list (lambda () (highlight-lines-matching-regexp "\\@done" "hi-green-b")) ;my line colors
-        (lambda () (highlight-lines-matching-regexp "\\@later" "hi-blue-b"))
-        (lambda () (highlight-lines-matching-regexp "\\@testing" "hi-yellow-b"))
-        (lambda () (highlight-lines-matching-regexp "\\@important" "hi-red-b"))
-        (lambda () (highlight-lines-matching-regexp "\\@non-happen" "hi-gray-b")))
-  "A mode for task files")
-  
 ;; Support for expand region
 (require 'expand-region)
 (global-set-key (kbd "C-=") 'er/expand-region)
@@ -493,8 +482,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-safe-themes (quote ("c377a5f3548df908d58364ec7a0ee401ee7235e5e475c86952dc8ed7c4345d8e" default)))
  '(httpd-port 8187)
- '(custom-safe-themes (quote ("c377a5f3548df908d58364ec7a0ee401ee7235e5e475c86952dc8ed7c4345d8e" default))))
+ '(send-mail-function (quote mailclient-send-it)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -671,17 +661,69 @@
 
 (add-hook 'minibuffer-setup-hook 'my-minibuffer-setup-hook)
 
+(require 'ace-jump-mode)
+(define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
+
 ; Simple clip makes it possible to not overwrite clipboard during yanking
 ; https://github.com/rolandwalker/simpleclip
 (require 'simpleclip)
 (simpleclip-mode 1)
+
+; add s-n for opening a new window
+(global-set-key (kbd "s-n") 'new-frame)
+
+; Setup mail in emacs
+
+(setq user-full-name "Benedikt Terhechte")
+(setq user-mail-address "terhechte@gmail.com")
+(setq starttls-use-gnutls t)
+(setq message-send-mail-function 'smtpmail-send-it
+      smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
+      smtpmail-auth-credentials '(("smtp.gmail.com" 587
+                   "terhechte@gmail.com" nil))
+      smtpmail-default-smtp-server "smtp.gmail.com"
+      smtpmail-smtp-server "smtp.gmail.com"
+      smtpmail-smtp-service 587
+      gnus-ignored-newsgroups "^to\\.\\|^[0-9. ]+\\( \\|$\\)\\|^[\"]\"[#'()]")
+(require 'smtpmail)
+;;; Set some sane defaults for VM's replies and forwarding
+;;;
+(setq
+vm-forwarding-subject-format "[forwarded from %F] %s"
+vm-forwarding-digest-type "rfc934"
+vm-in-reply-to-format nil
+vm-included-text-attribution-format
+"On %w, %m %d, %y at %h (%z), %F wrote:n"
+vm-reply-subject-prefix "Re: "
+vm-mail-header-from "Benedikt Terhechte <terhechte@gmail.com>"
+)
+
+
+; my task mode
+(require 'task-mode)
+; and set up leaders for it
+(evil-leader/set-key-for-mode 'task-mode "d" 'task-mode-todo-task)
+
+
+; this should make always abbrev everything, not working though yet
+;(defun start-auto-complete ()
+;  (interactive)
+;  (require 'auto-complete)
+;  (global-auto-complete-mode t)
+;  (define-key ac-complete-mode-map "\C-n" 'ac-next)
+;  (define-key ac-complete-mode-map "\C-p" 'ac-previous)
+;  (setq ac-auto-start 3)
+;  (define-key ac-complete-mode-map "\M-/" 'ac-stop)
+;  )
+
 
 ; Docs:
 ; helm-do-grep for fast grep in current diredtory and what not !
 ; try to use Capslock as Control wherever possible
 ; C-. is my new m-x
 ; 
-
-
+; C-` is the mode where each buffer shows a number
+; C-c SPC -> ace jump mode
+; C-u C-u C-c SPC” ⇒ ace-jump-line-mode
 
 
