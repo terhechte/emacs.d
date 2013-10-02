@@ -170,6 +170,15 @@
     )
   )
 
+  ; store a file in a seperate buffer and save it (for pixate monitored css editing)
+(defun store-cache ()
+  (interactive)
+  (let ((content (buffer-string)))
+    (with-current-buffer (get-buffer "cachebuffer2")
+      (kill-region (point-min) (point-max))
+      (insert content)
+      (save-buffer))))
+;(evil-leader/set-key "b" 'store-cache)
 
 
 (provide 'my-functions)
