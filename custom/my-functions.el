@@ -180,5 +180,36 @@
       (save-buffer))))
 ;(evil-leader/set-key "b" 'store-cache)
 
+;; Cycle between the last open buffers
+(defun switch-to-previous-buffer ()
+      (interactive)
+      (switch-to-buffer (other-buffer (current-buffer) 1)))
+(evil-leader/set-key "t" 'switch-to-previous-buffer)
+
+(defun relativenumber
+  ()
+  (interactive)
+  (require 'relative-number))
+(relativenumber)
+
+;; old-school fullscreen-mode
+(defun toggle-fullscreen ()
+  "Toggle full screen"
+  (interactive)
+  (set-frame-parameter
+    nil 'fullscreen
+    (when (not (frame-parameter nil 'fullscreen)) 'fullboth)))
+
+
+; a simple function that generates a new random buffer,
+; so that I can easily create a scratch buffer
+(defvar new-buffer-counter 0 "the counter where the new new-buffer tracks the buf number")
+(defun new-buffer ()
+  (interactive)
+  (let ((new-buffer-name (format "new-buffer-%i" new-buffer-counter)))
+    (get-buffer-create new-buffer-name)
+    (setq new-buffer-counter (+ 1 new-buffer-counter))
+    (switch-to-buffer new-buffer-name)))
+(evil-leader/set-key "n" 'new-buffer)
 
 (provide 'my-functions)

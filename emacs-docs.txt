@@ -1,0 +1,107 @@
+Docs:
+
+,t      Toggle back and forth between last buffers
+,n      Open new empty buffer
+
+,re     Recent open files
+,rl     Revert current buffer (reload)
+
+,d      Task-mode 'done'
+,a      Task-mode 'archive all done'
+,a      Task-mode 'new todo'
+
+
+
+// This brings the same total omnicompletion auto as vim!
+(require 'dabbrev)
+(require 'ac-dabbrev)
+
+Fantastic javascript completion via
+(require 'js2)
+(require 'ac-js2)
+
+
+Search
+helm-do-grep for fast grep in current diredtory and what not !
+mx ack is a better and faster search then grep or helm-do-grep
+
+
+try to use Capslock as Control wherever possible
+C-. is my new m-x
+
+C-` is the mode where each buffer shows a number
+C-c SPC -> ace jump mode
+C-u C-u C-c SPC” ⇒ ace-jump-line-mode
+
+zencoding:
+<C-j>
+lisp:
+C-x C-e
+
+paredit docs
+C-j => break and continue
+C-d => forward-delete
+M-d => forward-delete word
+M-DEL => backwards delete word
+M-<Up> => splice sexp killing backward (remove sexp before cursor)
+M-<Down> => splice sexp killing forward (remove sexp before cursor)
+M-r => raise sexp, some weird stuff that moves the current sexp up
+C-) => (use caps lock + shift + 0) move the next sexp into the current one. cursor is *in* the current expression
+C-} => move the next sexp away from the current one
+C-( => (use caps lock + shift + 9) move the previous sexp into the current one. cursor is *in* the current expression
+C-{ => move the previous sexp away from the current one
+
+
+Org-mode:
+
+
+
+
+fiplr-20130713.2058
+fuzzy finder for files in dir
+
+flex-autopair-20120809.2118
+causes the wrong " ><
+
+furl:
+friendly url retrieval
+
+Google This
+Google Translate
+
+grizzl: fast fuzzy search index
+
+htmlize macht aus meinem syntax colored buffers html
+
+grizzl: fast fuzzy search index
+
+cx w o (oder so) macht das zahlen fuer buffer ding. found in plugins oder so
+
+http twiddle is a Fantastic package
+
+try indent-guide
+
+try litable: https://github.com/Fuco1/litable
+
+move-text
+
+pos-tip: show tooltip at point
+
+restclient: an interactive http clien
+
+simple-httpd: pure emacs webserver (wtf?)
+
+skewer-mode: live browser javascript interaction
+
+splitter: manage window splits
+
+EMACS SPEEDBAR!
+sr-speedbar
+
+svg-mode-line-themes looks like a great idea!
+
+wgrep: edit a grep buffer, and apply those changes to the files
+
+wrap-region, macht sowas wie ycsw" mit vim
+
+zlc provides zsh like completion etc for all parts of emcas

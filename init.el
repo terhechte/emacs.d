@@ -1,24 +1,6 @@
-;;                       _                                             _       _ 
-;;    ___   ___ ___   __| | ___     ___ _ __ ___   __ _  ___ ___    __| | ___ | |_ 
-;;   / _ \ / __/ _ \ / _` |/ _ \   / _ \ '_ ` _ \ / _` |/ __/ __|  / _` |/ _ \| __|
-;;  | (_) | (_| (_) | (_| | (_) | |  __/ | | | | | (_| | (__\__ \ | (_| | (_) | |_ 
-;;   \___/ \___\___/ \__,_|\___/   \___|_| |_| |_|\__,_|\___|___/  \__,_|\___/ \__|
-;;                                          
-;; --
-
-
-
 ;; First a dirty, but cheap way to get .emacs.d subfolders into the load path,
 ;; and then return us to the user home directory, for find-file etc.
 (progn (cd "~/.emacs.d/") (normal-top-level-add-subdirs-to-load-path) (cd "~"))
-
-;(require 'package)
-;(add-to-list 'package-archives
-;               '("melpa" . "http://melpa.milkbox.net/packages/") t)
-;(add-to-list 'package-archives 
-;                 '("marmalade" .
-;                         "http://marmalade-repo.org/packages/"))
-;(package-initialize)
 
 (add-to-list 'default-frame-alist '(font . "M+ 1mn-13"))
 
@@ -60,7 +42,7 @@
 (require 'multiple-cursors)
 (require 'js2-refactor)
 (require 'helm)
-          
+
 ;; Modes init (things that need more than just a require.) 
 (when (string-match "Emacs 24" (version))
   ;; Only run elpa on E24
@@ -193,71 +175,17 @@
 
 
 ;; Load evil
-(setq evil-want-C-u-scroll t)
-(setq evil-want-fine-undo t)
-(add-to-list 'load-path "~/.emacs.d/elpa/evil-1.0.1")
-;(add-to-list 'load-path "~/.emacs.d/evil")
-(require 'evil)
-(evil-mode 1)
+(require 'init-evil)
 
-;; New is C-g
-(define-key evil-insert-state-map "\C-g" 'evil-normal-state)
-
-;; http://dnquark.com/blog/2012/02/emacs-evil-ecumenicalism/
-;; I want c-n / c-p to work like in emacs
-(define-key evil-insert-state-map "\C-e" 'end-of-line)
-(define-key evil-visual-state-map "\C-e" 'evil-end-of-line)
-(define-key evil-normal-state-map "\C-f" 'evil-forward-char)
-(define-key evil-insert-state-map "\C-f" 'evil-forward-char)
-(define-key evil-insert-state-map "\C-f" 'evil-forward-char)
-(define-key evil-normal-state-map "\C-b" 'evil-backward-char)
-(define-key evil-insert-state-map "\C-b" 'evil-backward-char)
-(define-key evil-visual-state-map "\C-b" 'evil-backward-char)
-(define-key evil-normal-state-map "\C-n" 'evil-next-line)
-(define-key evil-insert-state-map "\C-n" 'evil-next-line)
-(define-key evil-visual-state-map "\C-n" 'evil-next-line)
-(define-key evil-normal-state-map "\C-p" 'evil-previous-line)
-(define-key evil-insert-state-map "\C-p" 'evil-previous-line)
-(define-key evil-visual-state-map "\C-p" 'evil-previous-line)
-(define-key evil-normal-state-map "\C-y" 'yank)
-(define-key evil-insert-state-map "\C-y" 'yank)
-(define-key evil-visual-state-map "\C-y" 'yank)
-(define-key evil-normal-state-map "\C-k" 'kill-line)
-(define-key evil-insert-state-map "\C-k" 'kill-line)
-(define-key evil-visual-state-map "\C-k" 'kill-line)
-(define-key evil-normal-state-map (kbd "TAB") 'evil-undefine)
-
-; http://stackoverflow.com/questions/8483182/emacs-evil-mode-best-practice
-
-(defun evil-undefine ()
- (interactive)
- (let (evil-mode-map-alist)
-   (call-interactively (key-binding (this-command-keys)))))
- 
-;;; esc quits
-(define-key evil-normal-state-map [escape] 'keyboard-quit)
-(define-key evil-visual-state-map [escape] 'keyboard-quit)
-(define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
-(define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
-(define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
-(define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
-(define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit)
-
-; load evil leader
-(require 'evil-leader)
-(global-evil-leader-mode)
-(evil-leader/set-leader ",")
+(evil-leader/set-key "re" 'recentf-open-files)
+(evil-leader/set-key "rl" 'revert-buffer)
 
 (require 'my-functions)
+
 (require 'custom-keys)
 
 ;; Run emacs in server mode, so that we can connect from commandline
 (server-start)
-;; Cycle between the last open buffers
-(defun switch-to-previous-buffer ()
-      (interactive)
-      (switch-to-buffer (other-buffer (current-buffer) 1)))
-(evil-leader/set-key "t" 'switch-to-previous-buffer)
 
 (define-key ac-complete-mode-map "\C-n" 'ac-next)
 (define-key ac-complete-mode-map "\C-p" 'ac-previous)
@@ -266,18 +194,6 @@
 (require 'expand-region)
 (global-set-key (kbd "C-=") 'er/expand-region)
 
-;; paredit docs
-; C-j => break and continue
-; C-d => forward-delete
-; M-d => forward-delete word
-; M-DEL => backwards delete word
-; M-<Up> => splice sexp killing backward (remove sexp before cursor)
-; M-<Down> => splice sexp killing forward (remove sexp before cursor)
-; M-r => raise sexp, some weird stuff that moves the current sexp up
-; C-) => (use caps lock + shift + 0) move the next sexp into the current one. cursor is *in* the current expression
-; C-} => move the next sexp away from the current one
-; C-( => (use caps lock + shift + 9) move the previous sexp into the current one. cursor is *in* the current expression
-; C-{ => move the previous sexp away from the current one
 
 ;; http://stackoverflow.com/questions/6344474/how-can-i-make-emacs-highlight-lines-that-go-over-80-chars
 ;; free of trailing whitespace and to use 80-column width, standard indentation
@@ -287,36 +203,7 @@
 
 
 ;; Scala mode
-(require 'package)
-(unless (package-installed-p 'scala-mode2)
-  (package-refresh-contents) (package-install 'scala-mode2))
-
-;; Ensime
-(add-to-list 'load-path "~/.emacs.d/ensime/elisp/")
-(require 'ensime)
-
-;; This step causes the ensime-mode to be started whenever
-;; scala-mode is started for a buffer. You may have to customize this step
-;; if you're not using the standard scala mode.
-(add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
-
-;; Show errors after saving
-(add-hook 'ensime-source-buffer-saved-hook 
-                    'ensime-show-all-errors-and-warnings)
-
-(push "/usr/local/bin/" exec-path)
-
-;; Run Scala
-(defun scala-run () 
-  (interactive)   
-  (ensime-sbt-action "run")
-  (ensime-sbt-action "~compile")
-  (let ((c (current-buffer)))
-    (switch-to-buffer-other-window
-      (get-buffer-create (ensime-sbt-build-buffer-name)))
-    (switch-to-buffer-other-window c))) 
-(setq exec-path
-      (append exec-path (list "/usr/local/bin/"))) 
+(require 'init-scala)
 
 (setq delete-old-versions t
       kept-new-versions 6
@@ -333,42 +220,9 @@
 
 ;; Switching to relative number
 (global-linum-mode 1)
-(defun relativenumber
-  ()
-  (interactive)
-  (require 'relative-number))
-(relativenumber)
-
-;(defun yce-setup ()
-;  (interactive)
-;  (auto-complete-mode 1)
-;  (require 'youcompletemacs))
-;     
-;;; You Complete mEmacs
-;(require 'youcompletemacs)
-;(add-to-list 'ac-modes 'objc-mode)
-;(add-hook 'objc-mode-hook (lambda ()
-;          (message "objc mode hook")
-;          (auto-complete-mode 1)
-;          (yce-config)))
+(require 'relative-number)
 
 
-; Irony Mode trying
-;(add-to-list 'load-path (expand-file-name "~/.emacs.d/irony-mode/elisp/"))
-;(require 'auto-complete)
-;(require 'irony)
-;(irony-enable 'ac)
-;(add-hook 'c++-mode-hook 'irony-mode)
-;(add-hook 'c-mode-hook 'irony-mode)
-;(add-hook 'objc-mode-hook 'irony-mode)
-
-;; old-school fullscreen-mode
-(defun toggle-fullscreen ()
-  "Toggle full screen"
-  (interactive)
-  (set-frame-parameter
-    nil 'fullscreen
-    (when (not (frame-parameter nil 'fullscreen)) 'fullboth)))
 
 ;; After startup, show the recent open files
 (recentf-open-files)
@@ -385,12 +239,6 @@
  '(custom-safe-themes (quote ("c377a5f3548df908d58364ec7a0ee401ee7235e5e475c86952dc8ed7c4345d8e" default)))
  '(httpd-port 8187)
  '(send-mail-function (quote mailclient-send-it)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
 
  ; set different linum color
 ; and cua mode for copy / paste
@@ -399,117 +247,11 @@
 (setq evil-default-cursor t)
 (set-cursor-color "#ffffff")
 
-; Setting up Multi-Cursor Mode
-; New-line in multi-cursor-mode = C-j
+; Terminal
+(require 'init-term)
 
-; https://github.com/magnars/multiple-cursors.el/issues/19
-; Now multiple-cursor-mode (entering it) will go into emacs mode
-; so that all the emacs bindings work
-(defvar my-mc-evil-previous-state nil)
-
-(defun my-mc-evil-switch-to-insert-state ()
-  (when (and (bound-and-true-p evil-mode)
-             (not (memq evil-state '(insert emacs))))
-    (setq my-mc-evil-previous-state evil-state)
-    (evil-emacs-state 1)))
-
-(defun my-mc-evil-back-to-previous-state ()
-  (when my-mc-evil-previous-state
-    (unwind-protect
-        (case my-mc-evil-previous-state
-          ((normal visual) (evil-force-normal-state))
-          (t (message "Don't know how to handle previous state: %S"
-                      my-mc-evil-previous-state)))
-      (setq my-mc-evil-previous-state nil))))
-
-(add-hook 'multiple-cursors-mode-enabled-hook
-          'my-mc-evil-switch-to-insert-state)
-(add-hook 'multiple-cursors-mode-disabled-hook
-          'my-mc-evil-back-to-previous-state)
-
-(defun my-rrm-evil-switch-state ()
-  (if rectangular-region-mode
-      (my-mc-evil-switch-to-insert-state)
-    ;; (my-mc-evil-back-to-previous-state)  ; does not work...
-    (setq my-mc-evil-previous-state nil)))
-
-(add-hook 'rectangular-region-mode-hook 'my-rrm-evil-switch-state)
-
-; http://paralambda.org/2012/07/02/using-gnu-emacs-as-a-terminal-emulator/
-; https://github.com/jstautz/.emacs.d/blob/master/config/init-multi-term.el
-(when (require 'term nil t) ; only if term can be loaded..
-  (setq term-bind-key-alist
-        (list (cons "C-c C-c" 'term-interrupt-subjob)
-              (cons "C-p" 'previous-line)
-              (cons "C-n" 'next-line)
-              (cons "M-f" 'term-send-forward-word)
-              (cons "M-b" 'term-send-backward-word)
-              (cons "C-c C-j" 'term-line-mode)
-              (cons "C-c C-k" 'term-char-mode)
-              (cons "M-DEL" 'term-send-backward-kill-word)
-              (cons "M-d" 'term-send-forward-kill-word)
-              (cons "<C-left>" 'term-send-backward-word)
-              (cons "<C-right>" 'term-send-forward-word)
-              (cons "<tab>" 'term-dynamic-complete)
-              (cons "C-r" 'term-send-reverse-search-history)
-              (cons "M-p" 'term-send-raw-meta)
-              (cons "M-y" 'term-send-raw-meta)
-              (cons "C-y" 'term-send-raw))))
-
-(when (require 'term nil t)
-  (defun term-handle-ansi-terminal-messages (message)
-    (while (string-match "\eAnSiT.+\n" message)
-      ;; Extract the command code and the argument.
-      (let* ((start (match-beginning 0))
-             (command-code (aref message (+ start 6)))
-             (argument
-              (save-match-data
-                (substring message
-                           (+ start 8)
-                           (string-match "\r?\n" message
-                                         (+ start 8))))))
-        ;; Delete this command from MESSAGE.
-        (setq message (replace-match "" t t message))
- 
-        (cond ((= command-code ?c)
-               (setq term-ansi-at-dir argument))
-              ((= command-code ?h)
-               (setq term-ansi-at-host argument))
-              ((= command-code ?u)
-               (setq term-ansi-at-user argument))
-              ((= command-code ?e)
-               (save-excursion
-                 (find-file-other-window argument)))
-              ((= command-code ?x)
-               (save-excursion
-                 (find-file argument))))))
- 
-    (when (and term-ansi-at-host term-ansi-at-dir term-ansi-at-user)
-      (setq buffer-file-name
-            (format "%s@%s:%s" term-ansi-at-user term-ansi-at-host term-ansi-at-dir))
-      (set-buffer-modified-p nil)
-        (setq default-directory (if (string= term-ansi-at-host (system-name))
-                                    (concatenate 'string term-ansi-at-dir "/")
-                                  (format "/%s@%s:%s/" term-ansi-at-user term-ansi-at-host term-ansi-at-dir))))
-    message))
-
-(when (require 'multi-term nil t)
-  (global-set-key (kbd "<f5>") 'multi-term)
-  (global-set-key (kbd "<s-next>") 'multi-term-next)
-  (global-set-key (kbd "<s-prior>") 'multi-term-prev)
-  (setq multi-term-scroll-to-bottom-on-output t)
-  (setq multi-term-buffer-name "ansi-term"
-        multi-term-program "/bin/zsh"))
-
-(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines) ; edit multicursors on all selected lines
-(global-set-key (kbd "C-S-<mouse-1>") 'mc/add-cursor-on-click) ; edit multicursors on mouse positions
-(global-set-key (kbd "C->") 'mc/mark-next-like-this) ; multiple cursors on next word like this
-(global-set-key (kbd "C-<") 'mc/mark-previous-like-this) ; on previous
-(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
-
-;(global-set-key (kbd "C-x v") 'eval-region)
-(define-key evil-normal-state-map (kbd "C-.") 'execute-extended-command)
-(define-key evil-visual-state-map (kbd "C-.") 'execute-extended-command)
+; Multicursor
+(require 'init-multicursor)
 
 ; http://stackoverflow.com/questions/683425/globally-override-key-binding-in-emacs
 (defvar my-keys-minor-mode-map (make-keymap) "my-keys-minor-mode keymap.")
@@ -540,85 +282,22 @@
 (global-set-key (kbd "s-n") 'new-frame)
 
 ; Setup mail in emacs
-
-(setq user-full-name "Benedikt Terhechte")
-(setq user-mail-address "terhechte@gmail.com")
-(setq starttls-use-gnutls t)
-(setq message-send-mail-function 'smtpmail-send-it
-      smtpmail-starttls-credentials '(("smtp.gmail.com" 587 nil nil))
-      smtpmail-auth-credentials '(("smtp.gmail.com" 587
-                   "terhechte@gmail.com" nil))
-      smtpmail-default-smtp-server "smtp.gmail.com"
-      smtpmail-smtp-server "smtp.gmail.com"
-      smtpmail-smtp-service 587
-      gnus-ignored-newsgroups "^to\\.\\|^[0-9. ]+\\( \\|$\\)\\|^[\"]\"[#'()]")
-(require 'smtpmail)
-;;; Set some sane defaults for VM's replies and forwarding
-;;;
-(setq
-vm-forwarding-subject-format "[forwarded from %F] %s"
-vm-forwarding-digest-type "rfc934"
-vm-in-reply-to-format nil
-vm-included-text-attribution-format
-"On %w, %m %d, %y at %h (%z), %F wrote:n"
-vm-reply-subject-prefix "Re: "
-vm-mail-header-from "Benedikt Terhechte <terhechte@gmail.com>"
-)
-
-;; less linum width
+(require 'init-mail)
 
 ; my task mode
 (require 'task-mode)
 ; and set up leaders for it
 (evil-leader/set-key-for-mode 'task-mode "d" 'task-mode-todo-task)
+(evil-leader/set-key-for-mode 'task-mode "a" 'task-mode-archive-done)
+(evil-leader/set-key-for-mode 'task-mode "c" 'task-mode-new-todo)
 
-
-; a simple function that generates a new random buffer,
-; so that I can easily create a scratch buffer
-(defvar new-buffer-counter 0 "the counter where the new new-buffer tracks the buf number")
-(defun new-buffer ()
-  (interactive)
-  (let ((new-buffer-name (format "new-buffer-%i" new-buffer-counter)))
-    (get-buffer-create new-buffer-name)
-    (setq new-buffer-counter (+ 1 new-buffer-counter))
-    (switch-to-buffer new-buffer-name)))
-(evil-leader/set-key "n" 'new-buffer)
-
-; this should make always abbrev everything, not working though yet
-;(defun start-auto-complete ()
-;  (interactive)
-;  (require 'auto-complete)
-;  (global-auto-complete-mode t)
-;  (define-key ac-complete-mode-map "\C-n" 'ac-next)
-;  (define-key ac-complete-mode-map "\C-p" 'ac-previous)
-;  (setq ac-auto-start 3)
-;  (define-key ac-complete-mode-map "\M-/" 'ac-stop)
-;  )
-
-
-; Docs:
-; helm-do-grep for fast grep in current diredtory and what not !
-; try to use Capslock as Control wherever possible
-; C-. is my new m-x
-; 
-; C-` is the mode where each buffer shows a number
-; C-c SPC -> ace jump mode
-; C-u C-u C-c SPC” ⇒ ace-jump-line-mode
-
-;zencoding:
-;<C-j>
-;lisp:
-;C-x C-e
-
-
-; Org-mode
 
 
 ; TODO Emacs:
 ; - das  terminal wenn am rand, wackelt so schlimm
-; - die markierte zeile verliert das syntax coloring, obwohl sich nur der bg aendert @done
 ; - org mode doku downloaden und irgendwo hinterlegen
-; - die init.el aufsplitten in einzelene dateien in custom/ die ich dann lade
 ; - den simple task mode bei github hinterlegen und dann ueber elpa laden
 ; - completion im terminal tuts noch immer nicht
-; - die status bar anders aussehen lassen, texte etwas groesser, dunklere hintergruende, focus anders machen als der rahmen @done
+; - get objective-c completion working
+; - better CSS completion
+; - better python mode, still sucks a bit
