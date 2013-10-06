@@ -132,7 +132,7 @@
        (purple-3bg       "#241F36")
        (foreground       "#F4EAD5")
        (hl-line          "#11252A")
-       (selection        "#11253A")
+       (selection        "#243339")
        (background       "#110F13")
        (background-dark  "#0F0D11")
        (alt-background   "#111013"))
@@ -174,10 +174,10 @@
 
    ;;-----------------------------------------------------------------------------------------------------------------------
    ;; Basics
-   `(default                                   ((t (:foreground ,foreground  :background ,background                    ))))
+   `(default                                   ((t (:foreground ,foreground  :background ,background :height 140                    ))))
    `(cursor                                    ((t (                         :background ,orange-1                      ))))
    `(region                                    ((t (:foreground nil          :background ,selection                     ))))
-   `(highlight                                 ((t (:foreground ,blue-3      :background ,blue-3bg                      ))))
+   `(highlight                                 ((t (:foreground nil      :background ,blue-3bg                      ))))
    `(hl-line                                   ((t (                         :background ,hl-line                       ))))
    `(minibuffer-prompt                         ((t (:foreground ,orange-1    :background ,orange-1bg                    ))))
    `(escape-glyph                              ((t (:foreground ,red-1       :background ,purple-1bg                    ))))
@@ -186,7 +186,7 @@
    ;; Font-lock stuff
    `(font-lock-builtin-face                    ((t (:foreground ,red-2       :background ,red-1bg                       ))))
    `(font-lock-constant-face                   ((t (:foreground ,purple-1    :background ,purple-1bg                    ))))
-   `(font-lock-comment-face                    ((t (:foreground ,turquoise-2 :background ,alt-background :italic t      ))))
+   `(font-lock-comment-face                    ((t (:foreground "#7796b6" :background ,alt-background :italic t      ))))
    `(font-lock-comment-delimiter-face          ((t (:foreground ,turquoise-1 :background ,alt-background :italic t      ))))
    `(font-lock-doc-face                        ((t (:foreground ,blue-3      :background ,gray-1bg                      ))))
    `(font-lock-doc-string-face                 ((t (:foreground ,blue-3      :background ,gray-1bg                      ))))
@@ -204,8 +204,8 @@
    `(link-visited                              ((t (:foreground ,blue-3      :background ,blue-4bg                      ))))
    `(fringe                                    ((t (                         :background ,gray-3bg                      ))))
    `(vertical-border                           ((t (:foreground ,gray-4      :background ,background                    ))))
-   `(mode-line                                 ((t (:foreground ,gray-2      :background ,gray-3bg  :box nil :height 85 ))))
-   `(mode-line-inactive                        ((t (:foreground ,gray-5      :background ,gray-2bg  :inherit mode-line  ))))
+   `(mode-line-inactive                                 ((t (:foreground ,gray-2      :background ,background  :box nil :height 110 ))))
+   `(mode-line                        ((t (:foreground "fff"      :background ,gray-2bg  :inherit mode-line :box nil :height 110  ))))
    `(mode-line-highlight                       ((t (:foreground ,red-1))))
    `(mode-line-buffer-id                       ((t (:foreground ,orange-1))))
    `(mode-line-emphasis                        ((t (:bold))))
@@ -391,7 +391,7 @@
    ;; `(diff-refine-removed    ((t (:foreground nil :background nil ))))
    ;;-----------------------------------------------------------------------------------------------------------------------
    ;; Linum
-   `(linum                                     ((t (:foreground ,gray-6 :background ,alt-background :height 90   ))))
+   `(linum                                     ((t (:foreground "#999" :background ,alt-background :height 110   ))))
    ;;-----------------------------------------------------------------------------------------------------------------------
    ;; show-paren-mode
    `(show-paren-match                          ((t (:foreground ,foam        :background ,orange-1                      ))))
@@ -497,13 +497,15 @@
    `(powerline-color1 ,gray-6bg)
    `(powerline-color2 ,gray-2bg)
 
-   `(Linum-format "%7i ")
    `(fringe-mode 4)
+    
+   `(add-to-list 'default-frame-alist '(font . "M+ 1mn-13"))
 
    ;; Fill Column Indicator mode
    `(fci-rule-color ,gray-6)
    `(fci-rule-character-color ,gray-6)
 
+   
    `(ansi-color-names-vector
      ;; black, red, green, yellow, blue, magenta, cyan, white
      [,background ,red-1 ,green-1 ,yellow-1 ,blue-1 ,purple-1 ,blue-3 ,foreground])

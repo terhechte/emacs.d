@@ -20,6 +20,7 @@
 ;                         "http://marmalade-repo.org/packages/"))
 ;(package-initialize)
 
+(add-to-list 'default-frame-alist '(font . "M+ 1mn-13"))
 
 ;; -- Path -----------------------------------------------------------------------------------------------
 ;; find XCode and RVM command line tools on OSX (cover the legacy and current XCode directory structures.)
@@ -227,7 +228,9 @@
     ;(set-face-font 'default "Menlo"))
     ;(set-face-font 'default "M+ 1mn light-13"))
     ;(set-face-font 'default "M+ 1mn light-13"))
-    (add-to-list 'default-frame-alist '(font . "M+ 1mn-13")))
+    ;;; the real line font font soothe
+    ;(add-to-list 'default-frame-alist '(font . "M+ 1mn-13"))
+    )
   ;; Sample Text for font viewing 
   '("ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     "abcdefghijklmnopqrstuvwxyz"
@@ -247,7 +250,7 @@
 
 ;(load-theme 'soothe t)
 
-(set-face-attribute 'default nil :height 140)
+;(set-face-attribute 'default nil :height 140)
 
 ;; -----------------------------------------------------------------------------------------------
 ;; Custom stuff from me.
@@ -263,7 +266,7 @@
 
 ;;(set-default-font "SourceCodeProVim3-Regular-15")
 ;;(set-default-font "mplus-1mn-light-13")
-;;(set-default-font (:family "M+ 1mn" :foundry "nil" :slant normal :weight light :height 141 :width normal . :height))
+;(set-default-font (:family "M+ 1mn" :foundry "nil" :slant normal :weight light :height 141 :width normal . :height))
 
 ;; Kill the welcome buffer
 (setq inhibit-startup-message t)
@@ -433,9 +436,6 @@
 ;; yes-or-no => y-or-n
 (fset 'yes-or-no-p 'y-or-n-p)
 
-;; less linum width
-(setq linum-format "%3d")
-
 ;; flycheck
 (require 'flycheck)
 
@@ -451,10 +451,10 @@
   (require 'relative-number))
 (relativenumber)
 
-;(defun yce-setup ()
-;  (interactive)
-;  (auto-complete-mode 1)
-;  (require 'youcompletemacs))
+(defun yce-setup ()
+  (interactive)
+  (auto-complete-mode 1)
+  (require 'youcompletemacs))
      
 ;; You Complete mEmacs
 (require 'youcompletemacs)
@@ -463,6 +463,16 @@
           (message "objc mode hook")
           (auto-complete-mode 1)
           (yce-config)))
+
+
+; Irony Mode trying
+;(add-to-list 'load-path (expand-file-name "~/.emacs.d/irony-mode/elisp/"))
+;(require 'auto-complete)
+;(require 'irony)
+;(irony-enable 'ac)
+;(add-hook 'c++-mode-hook 'irony-mode)
+;(add-hook 'c-mode-hook 'irony-mode)
+;(add-hook 'objc-mode-hook 'irony-mode)
 
 ;; old-school fullscreen-mode
 (defun toggle-fullscreen ()
@@ -495,8 +505,10 @@
  ; set different linum color
 ; and cua mode for copy / paste
 (cua-mode)
-(set-face-attribute 'linum nil :foreground "#999")
-(set-face-attribute 'region nil :foreground "#233a51" :background "#99b8d7")
+;(set-face-attribute 'linum nil :foreground "#999")
+;(set-face-attribute 'region nil :foreground "#233a51" :background "#99b8d7")
+
+;(set-face-attribute 'region nil :foreground nil :background "#243339")
 (setq evil-default-cursor t)
 (set-cursor-color "#ffffff")
 
@@ -698,12 +710,24 @@ vm-reply-subject-prefix "Re: "
 vm-mail-header-from "Benedikt Terhechte <terhechte@gmail.com>"
 )
 
+;; less linum width
 
 ; my task mode
 (require 'task-mode)
 ; and set up leaders for it
 (evil-leader/set-key-for-mode 'task-mode "d" 'task-mode-todo-task)
 
+
+; a simple function that generates a new random buffer,
+; so that I can easily create a scratch buffer
+(defvar new-buffer-counter 0 "the counter where the new new-buffer tracks the buf number")
+(defun new-buffer ()
+  (interactive)
+  (let ((new-buffer-name (format "new-buffer-%i" new-buffer-counter)))
+    (get-buffer-create new-buffer-name)
+    (setq new-buffer-counter (+ 1 new-buffer-counter))
+    (switch-to-buffer new-buffer-name)))
+(evil-leader/set-key "n" 'new-buffer)
 
 ; this should make always abbrev everything, not working though yet
 ;(defun start-auto-complete ()
@@ -726,4 +750,15 @@ vm-mail-header-from "Benedikt Terhechte <terhechte@gmail.com>"
 ; C-c SPC -> ace jump mode
 ; C-u C-u C-c SPC” ⇒ ace-jump-line-mode
 
+; Org-mode
 
+
+; TODO Emacs:
+; - das  terminal wenn am rand, wackelt so schlimm
+; - die markierte zeile verliert das syntax coloring, obwohl sich nur der bg aendert @done
+; - org mode doku downloaden und irgendwo hinterlegen
+; - die init.el aufsplitten in einzelene dateien in custom/ die ich dann lade
+; - den simple task mode bei github hinterlegen und dann ueber elpa laden
+; - completion im terminal tuts noch immer nicht
+; - die status bar anders aussehen lassen, texte etwas groesser, dunklere hintergruende, focus anders machen als der rahmen @done
+; - den font frueher im startup laden

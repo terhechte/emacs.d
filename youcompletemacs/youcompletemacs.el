@@ -1,6 +1,8 @@
 (require 'cl)
 (require 'auto-complete)
 (require 'epc)
+(require 'epcs)
+
 
 ; Todo:
 ; - stop the epc process when killing buffer / etc
@@ -19,6 +21,10 @@
   "the file info for the last result")
 
 (defvar yce-buffer " *yce output*")
+
+(defvar yce-epc nil)
+
+(defvar yce-epc-server nil)
 
 (defun yce-logger (errString)
   (with-current-buffer (get-buffer-create yce-buffer)
@@ -95,10 +101,10 @@
 				 (epc:define-method manager 'log 'yce-logger "args" "Log to the *yce* buffer")
 				 )))
   ;; Communicate emacs server port to python server (and hence the client)
-  (epc:call-sync clancs-epc-client 'init_client
-		 (list (epcs:server-port (cdr (assoc clancs-epc-server epcs:server-processes)))))
+  (epc:call-sync yce-epc 'init_client
+		 (list (epcs:server-port (cdr (assoc yce-epc-server epcs:server-processes)))))
 
-  (message "Clancs initialized."))
+  (message "YCE initialized."))
 
 (defun yce-kill ()
   (epc:stop-epc yce-epc)

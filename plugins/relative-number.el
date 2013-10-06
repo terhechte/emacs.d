@@ -1,4 +1,4 @@
-(defvar my-linum-format-string "%3d")
+(defvar my-linum-format-string "%5d")
 
 (add-hook 'linum-before-numbering-hook 'my-linum-get-format-string)
 
