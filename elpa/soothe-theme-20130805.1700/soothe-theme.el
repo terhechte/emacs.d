@@ -462,7 +462,7 @@
    `(iedit-read-only-occurrence                ((t (:foreground ,red-1     :background ,orange-1bg                     ))))
    ;;-----------------------------------------------------------------------------------------------------------------------
    ;; highlight-indentation-mode
-   `(highlight-indentation-face                ((t (                         :background ,background-dark               ))))
+   `(highlight-indentation-face                ((t (                         :background "#0a0a0a"               ))))
    `(highlight-indentation-current-column-face ((t (                         :background ,gray-5                        ))))
    ;;-----------------------------------------------------------------------------------------------------------------------
    ;; ECB

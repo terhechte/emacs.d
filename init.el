@@ -47,9 +47,6 @@
   (menu-bar-mode -1)
 )
 
-;(setq custom-file "~/.emacs.d/custom/custom.el") ;; Customize stuff goes in custom.el
-;(load custom-file)
-
 (setq frame-title-format '("%b %I %+%@%t%Z %m %n %e"))
 
 ;; Explicitly require libs that autoload borks
@@ -59,7 +56,6 @@
 (require 'dash)
 (require 's)
 (require 'f)
-;(require 'iedit)
 (require 'ag)
 (require 'multiple-cursors)
 (require 'js2-refactor)
@@ -67,7 +63,6 @@
           
 ;; Modes init (things that need more than just a require.) 
 (when (string-match "Emacs 24" (version))
-  (message "Running Emacs 24")
   ;; Only run elpa on E24
   (require 'init-elpa)
 )
@@ -75,9 +70,6 @@
 ;; -------------------------------------------------------------------------------------------------
 ;; Additional requires
 ;; -------------------------------------------------------------------------------------------------
-;; Emacs Mac port specific frame adjust
-;(require 'mac-frame-adjust)            ;; a few presets for sizing and moving frames (aka OS Windows)
-
 ;;; Convenience and completion
 (require 'auto-complete-config)        ;; Very nice autocomplete.
 (ac-config-default)
@@ -93,50 +85,19 @@
 (require 'dabbrev)
 (require 'ac-dabbrev)
 
-
-;; auto-load hyde mode for Jekyll
-;(require 'hyde-autoloads) ;; ./vendor/hyde
-
-;; -------------------------------------------------------------------------------------------------
-;; Explicit mode inits
-;(require 'init-dired)
-;(require 'init-hideshowvis)
-;(require 'init-multi-web-mode)
-;(require 'init-nxml)
-;(require 'init-flymake)
-;(require 'init-markdown)
-;
 ;; no scrolblars
 (scroll-bar-mode -1)
 
-;(setq mweb-default-major-mode 'html-mode)
-;(setq mweb-tags '((php-mode "<\\?php\\|<\\? \\|<\\?=" "\\?>")
-;                  (js-mode "<script +\\(type=\"text/javascript\"\\|language=\"javascript\"\\)[^>]*>" "</script>")
-;                                    (css-mode "<style +type=\"text/css\"[^>]*>" "</style>")))
-;                                    (setq mweb-filename-extensions '("php" "htm" "html" "ctp" "phtml" "php4" "php5"))
-;                                    (multi-web-global-mode 1)
-
 ;; conditional - add your own init-marmalade or just login manually
 (load-library "marmalade")
-;; modes-init/init-marmalade.el is in .gitignore
 (when (file-readable-p "modes-init/init-marmalade.el")
   (load-file "modes-init/init-marmalade.el"))
-
-;(require 'handy-functions) ;; my lab area for little defuns...
-;(require 'my_functions)
 
 ;; Turn on things that auto-load isn't doing for us...
 (yas-global-mode t)
 
 ;; Autopair alternative
 (flex-autopair-mode t)
-
-;; probably all become auto-loaded. (next time)
-(add-to-list 'auto-mode-alist '("\\.yaml$" . yaml-mode))
-
-;; AsciiDoc mode
-(autoload 'asciidoc-mode "asciidoc-mode" nil t)
-(add-to-list 'auto-mode-alist '("\\.asciidoc$" . asciidoc-mode))
 
 ;; Rainbow mode for css automatically
 (add-hook 'css-mode-hook 'rainbow-mode)
@@ -171,14 +132,6 @@
 (put 'dired-find-alternate-file 'disabled nil)
 
 
-;; Ruby mode filetype hooks ------------------------------------------------------------------------
-;; -- this will need migrating to init-ruby-mode.el or sumthin'
-
-(dolist (pattern '("\\.rb$" "^Rakefile$" "\.rake$" "\.rxml$" "\.rjs$" ".irbrc$" "\.builder$" "\.ru$" "\.rabl$" "\.gemspec$" "Gemfile$" "^.pryrc$"))
-   (add-to-list 'auto-mode-alist (cons pattern 'ruby-mode)))
-
-(add-hook 'ruby-mode-hook 'flymake-ruby-load)
-
 ;; -------------------------------------------------------------------------------------------------
 ;; Highlight TODO/FIXME/BUG/HACK/REFACTOR & THE HORROR in code - I'm hoping the last one will catch on.
 (add-hook 'prog-mode-hook
@@ -199,14 +152,6 @@
 ; javascript
 (autoload 'js2-mode "js2-mode" nil t)
 (add-to-list 'auto-mode-alist '("\\.js$" . js2-mode))
-;(require 'slime)
-;(slime-setup '(slime-js slime-repl slime-scratch))
-;(setq slime-js-swank-command "/usr/local/bin/swank-js")
-;(setq slime-js-swank-args '())
-;(global-set-key [f5] 'slime-js-reload)
-;(add-hook 'js2-mode-hook
-;          (lambda ()
-;            (slime-js-minor-mode 1)))
 
 (require 'simple-httpd)
 
@@ -214,43 +159,7 @@
 (setq server-use-tcp t)
 (server-start)
 
-; paredit-mode
-
 ;; -------------------------------------------------------------------------------------------------
-
-;; Default Font for different window systems
-(when (window-system)
- (global-linum-mode 1)
-  ;; Mac OS X 
-  (when (eq system-type 'darwin)
-    ;;(set-face-font 'default "Monaco")
-    ;;(set-face-font 'default "Source Code Pro")
-    ;(set-face-font 'default "Menlo"))
-    ;(set-face-font 'default "M+ 1mn light-13"))
-    ;(set-face-font 'default "M+ 1mn light-13"))
-    ;;; the real line font font soothe
-    ;(add-to-list 'default-frame-alist '(font . "M+ 1mn-13"))
-    )
-  ;; Sample Text for font viewing 
-  '("ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    "abcdefghijklmnopqrstuvwxyz"
-    "1234567890!@#$%^&*()-=_+[]\{}|;':<>?,./")
-  
-  ;; Windows whatever...
-  (when (eq system-type 'windows-nt)
-    (set-face-font 'default "Consolas")
-    )
-
-  ;; GNU Linux (Droid or Vera)
-  (when (eq system-type 'gnu/linux)
-    (set-face-font 'default "Droid Sans Mono") ;; for quick swapping.
-    ;; (set-face-font 'default "Bitstream Vera Sans Mono")
-    )
-)
-
-;(load-theme 'soothe t)
-
-;(set-face-attribute 'default nil :height 140)
 
 ;; -----------------------------------------------------------------------------------------------
 ;; Custom stuff from me.
@@ -264,10 +173,6 @@
 (setq-default indent-tabs-mode nil)
 (setq tab-width 4)
 
-;;(set-default-font "SourceCodeProVim3-Regular-15")
-;;(set-default-font "mplus-1mn-light-13")
-;(set-default-font (:family "M+ 1mn" :foundry "nil" :slant normal :weight light :height 141 :width normal . :height))
-
 ;; Kill the welcome buffer
 (setq inhibit-startup-message t)
 
@@ -276,6 +181,10 @@
 
 ;; Highlight current line
 (global-hl-line-mode 1)
+
+;; Highlight indent, for python
+(require 'highlight-indentation)
+(add-hook 'python-mode-hook 'highlight-indentation-mode)
 
 (setq make-backup-files nil) ; stop creating those backup~ files
 (setq auto-save-default nil) ; stop creating those #autosave# files
@@ -290,12 +199,6 @@
 ;(add-to-list 'load-path "~/.emacs.d/evil")
 (require 'evil)
 (evil-mode 1)
-
-;; Load the KeyChord library, to be able to use jj in evil
-;;(add-to-list 'load-path "~/.emacs.d/elpa/key-chord-0.5.20080915/")
-;;(require 'key-chord)
-;;(key-chord-mode 1)
-;;(key-chord-define evil-insert-state-map "jj" 'evil-normal-state)
 
 ;; New is C-g
 (define-key evil-insert-state-map "\C-g" 'evil-normal-state)
@@ -331,10 +234,7 @@
  (let (evil-mode-map-alist)
    (call-interactively (key-binding (this-command-keys)))))
  
-;(define-key evil-normal-state-map "helm" 'helm-mini)
-
 ;;; esc quits
-;;;
 (define-key evil-normal-state-map [escape] 'keyboard-quit)
 (define-key evil-visual-state-map [escape] 'keyboard-quit)
 (define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
@@ -357,7 +257,7 @@
 (defun switch-to-previous-buffer ()
       (interactive)
       (switch-to-buffer (other-buffer (current-buffer) 1)))
-(define-key evil-normal-state-map "\C-e" 'switch-to-previous-buffer)
+(evil-leader/set-key "t" 'switch-to-previous-buffer)
 
 (define-key ac-complete-mode-map "\C-n" 'ac-next)
 (define-key ac-complete-mode-map "\C-p" 'ac-previous)
@@ -418,23 +318,10 @@
 (setq exec-path
       (append exec-path (list "/usr/local/bin/"))) 
 
-;; Set backup directory location
-(setq backup-directory-alist '(("." . "~/.emacs.d/saves/")))
-
-;; Make backups by copying
-(setq backup-by-copying-when-linked t)
-
 (setq delete-old-versions t
       kept-new-versions 6
       kept-old-versions 2
       version-control t)
-
-
-;; Use spaces instead of tabs for indentation
-(setq indent-tabs-mode nil)
-
-;; yes-or-no => y-or-n
-(fset 'yes-or-no-p 'y-or-n-p)
 
 ;; flycheck
 (require 'flycheck)
@@ -445,24 +332,25 @@
 (setq jedi:complete-on-dot t)                 ; optional
 
 ;; Switching to relative number
+(global-linum-mode 1)
 (defun relativenumber
   ()
   (interactive)
   (require 'relative-number))
 (relativenumber)
 
-(defun yce-setup ()
-  (interactive)
-  (auto-complete-mode 1)
-  (require 'youcompletemacs))
-     
-;; You Complete mEmacs
-(require 'youcompletemacs)
-(add-to-list 'ac-modes 'objc-mode)
-(add-hook 'objc-mode-hook (lambda ()
-          (message "objc mode hook")
-          (auto-complete-mode 1)
-          (yce-config)))
+;(defun yce-setup ()
+;  (interactive)
+;  (auto-complete-mode 1)
+;  (require 'youcompletemacs))
+;     
+;;; You Complete mEmacs
+;(require 'youcompletemacs)
+;(add-to-list 'ac-modes 'objc-mode)
+;(add-hook 'objc-mode-hook (lambda ()
+;          (message "objc mode hook")
+;          (auto-complete-mode 1)
+;          (yce-config)))
 
 
 ; Irony Mode trying
@@ -487,6 +375,8 @@
 
 (helm-mode 1)
 
+(require 'init-hideshowvis)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -505,44 +395,9 @@
  ; set different linum color
 ; and cua mode for copy / paste
 (cua-mode)
-;(set-face-attribute 'linum nil :foreground "#999")
-;(set-face-attribute 'region nil :foreground "#233a51" :background "#99b8d7")
 
-;(set-face-attribute 'region nil :foreground nil :background "#243339")
 (setq evil-default-cursor t)
 (set-cursor-color "#ffffff")
-
-;zencoding:
-;<C-j>
-;lisp:
-;C-x C-e
-
-;(require 'face-remap)
-;(require 'color-theme-buffer-local)
-;(defvar highlight-focus:last-buffer nil)
-;(defvar highlight-focus:cookie nil)
-;(defvar highlight-focus:focus-theme 'soothe)
-;(defvar highlight-focus:unfocus-theme 'subatomic256)
-
-;(defun highlight-focus:check ()
-;  "Check if focus has changed, and if so, update remapping."
-;  (unless (eq highlight-focus:last-buffer (current-buffer))
-;    (when (and highlight-focus:last-buffer highlight-focus:cookie)
-;      (with-current-buffer highlight-focus:last-buffer
-;        (load-theme-buffer-local highlight-focus:unfocus-theme highlight-focus:last-buffer)))
-;    (setq highlight-focus:last-buffer (current-buffer)
-;          highlight-focus:cookie t)
-;    (load-theme-buffer-local highlight-focus:focus-theme (current-buffer))))
-;    
-;(defadvice other-window (after highlight-focus activate)
-;  (highlight-focus:check))
-;(defadvice select-window (after highlight-focus activate)
-;  (highlight-focus:check))
-;(defadvice select-frame (after highlight-focus activate)
-;  (highlight-focus:check))
-;(add-hook 'window-configuration-change-hook 'highlight-focus:check)
-;
-;(provide 'highlight-focus)
 
 ; Setting up Multi-Cursor Mode
 ; New-line in multi-cursor-mode = C-j
@@ -750,6 +605,12 @@ vm-mail-header-from "Benedikt Terhechte <terhechte@gmail.com>"
 ; C-c SPC -> ace jump mode
 ; C-u C-u C-c SPC” ⇒ ace-jump-line-mode
 
+;zencoding:
+;<C-j>
+;lisp:
+;C-x C-e
+
+
 ; Org-mode
 
 
@@ -761,4 +622,3 @@ vm-mail-header-from "Benedikt Terhechte <terhechte@gmail.com>"
 ; - den simple task mode bei github hinterlegen und dann ueber elpa laden
 ; - completion im terminal tuts noch immer nicht
 ; - die status bar anders aussehen lassen, texte etwas groesser, dunklere hintergruende, focus anders machen als der rahmen @done
-; - den font frueher im startup laden
