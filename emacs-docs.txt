@@ -10,6 +10,10 @@ Docs:
 ,a      Task-mode 'archive all done'
 ,a      Task-mode 'new todo'
 
+,l      List all open buffers (care, this mode is not evil-compatible!)
+
+,c      Close current Window
+
 
 
 // This brings the same total omnicompletion auto as vim!

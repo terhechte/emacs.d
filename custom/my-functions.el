@@ -184,7 +184,6 @@
 (defun switch-to-previous-buffer ()
       (interactive)
       (switch-to-buffer (other-buffer (current-buffer) 1)))
-(evil-leader/set-key "t" 'switch-to-previous-buffer)
 
 (defun relativenumber
   ()
@@ -210,6 +209,11 @@
     (get-buffer-create new-buffer-name)
     (setq new-buffer-counter (+ 1 new-buffer-counter))
     (switch-to-buffer new-buffer-name)))
-(evil-leader/set-key "n" 'new-buffer)
+
+(defun buffer-list-in-window ()
+  ; list the buffers in the current window, so switching keeps me in that window
+  (interactive)
+  (ibuffer nil "*Ibuffer*" nil))
+
 
 (provide 'my-functions)

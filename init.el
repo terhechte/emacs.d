@@ -177,8 +177,16 @@
 ;; Load evil
 (require 'init-evil)
 
+(evil-leader/set-key "n" 'new-buffer)
+
+(evil-leader/set-key "t" 'switch-to-previous-buffer)
+
 (evil-leader/set-key "re" 'recentf-open-files)
 (evil-leader/set-key "rl" 'revert-buffer)
+
+(evil-leader/set-key "l" 'buffer-list-in-window)
+
+(evil-leader/set-key "c" 'delete-window)
 
 (require 'my-functions)
 
@@ -301,3 +309,4 @@
 ; - get objective-c completion working
 ; - better CSS completion
 ; - better python mode, still sucks a bit
+; - full word autocompletion like in vim please
