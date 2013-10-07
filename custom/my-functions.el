@@ -215,5 +215,15 @@
   (interactive)
   (ibuffer nil "*Ibuffer*" nil))
 
+; Activate all words omnicompletion like in vim
+; particularly handy for text files, todo lists. However not always
+; useful since it sucks in code where it mixes up syntax with comments
+; so we have a dedicated functino that enables it
+(defun omnicompletion-like-vim ()
+  (interactive)
+  (require 'dabbrev)
+  (require 'ac-dabbrev)
+  (auto-complete-mode))
+
 
 (provide 'my-functions)

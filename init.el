@@ -309,4 +309,4 @@
 ; - get objective-c completion working
 ; - better CSS completion
 ; - better python mode, still sucks a bit
-; - full word autocompletion like in vim please
+; - full word autocompletion like in vim please @done

@@ -15,6 +15,7 @@ Docs:
 ,c      Close current Window
 
 
+mx omnicompletion-like-vim loads vim like omnicompletion for all words
 
 // This brings the same total omnicompletion auto as vim!
 (require 'dabbrev)
