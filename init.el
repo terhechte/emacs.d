@@ -164,9 +164,23 @@
 ;; Highlight current line
 (global-hl-line-mode 1)
 
-;; Highlight indent, for python
-(require 'highlight-indentation)
-(add-hook 'python-mode-hook 'highlight-indentation-mode)
+;; Highlight indent, for python, maybe more
+(defun setup-indentation-mode ()
+  (interactive)
+  (require 'highlight-indentation)
+  (require 'indent-guide)
+  (highlight-indentation-mode)
+  (indent-guide-mode)
+  )
+(add-hook 'python-mode-hook 'setup-indentation-mode)
+
+;; Shortcurt for selecting lispy ranges
+(defun evil-select-lisp-form ()
+  (interactive)
+  (evil-visual-char)
+  (evil-jump-item)
+  )
+(global-set-key (kbd "C-5") 'evil-select-lisp-form)
 
 (setq make-backup-files nil) ; stop creating those backup~ files
 (setq auto-save-default nil) ; stop creating those #autosave# files
@@ -187,6 +201,8 @@
 (evil-leader/set-key "l" 'buffer-list-in-window)
 
 (evil-leader/set-key "c" 'delete-window)
+(evil-leader/set-key "p" 'switch-to-prev-buffer)
+(evil-leader/set-key ":" 'helm-complex-command-history)
 
 (require 'my-functions)
 
@@ -236,6 +252,7 @@
 (recentf-open-files)
 
 (helm-mode 1)
+(global-set-key (kbd "s-.") 'helm-complete-file-name-at-point)
 
 (require 'init-hideshowvis)
 
@@ -299,6 +316,7 @@
 (evil-leader/set-key-for-mode 'task-mode "a" 'task-mode-archive-done)
 (evil-leader/set-key-for-mode 'task-mode "c" 'task-mode-new-todo)
 
+(setq linum-format "%4d")
 
 
 ; TODO Emacs:
@@ -309,4 +327,7 @@
 ; - get objective-c completion working
 ; - better CSS completion
 ; - better python mode, still sucks a bit
-; - full word autocompletion like in vim please @done
+; - integrate ace-jump into the vim workflow, maybe with ,f ?
+; - flex-autopair causes wrong html >< insertions
+; - fix the linum format and the relative number so that it fixes the python issue and I have more sidebar number spacing @done
+; - document and edit custom/custom-keys.el

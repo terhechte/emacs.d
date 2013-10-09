@@ -9,7 +9,7 @@
   '("---") ;how comments are defined in mode
   '("@done" "@later" "@testing" "@important" "@non-happen") ;keywords
   nil ;operators
-  '("\\.txt$", "\\.taskpaper$", "\\.todo$", "\\.tasks$") ;filenames to activate this mode for
+  '("\\.txt$" "\\.taskpaper$" "\\.todo$" "\\.tasks$") ;filenames to activate this mode for
   (list (lambda () (highlight-lines-matching-regexp "\\@done" "hi-green-b")) ;my line colors
         (lambda () (highlight-lines-matching-regexp "\\@later" "hi-blue-b"))
         (lambda () (highlight-lines-matching-regexp "\\@testing" "hi-yellow-b"))

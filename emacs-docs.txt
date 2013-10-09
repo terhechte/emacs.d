@@ -1,6 +1,11 @@
-Docs:
+General:
+try to use Capslock as Control wherever possible
+C-. is my new m-x
 
+
+Evil Leader:
 ,t      Toggle back and forth between last buffers
+,p      Go to previous buffer (i.e. back button)
 ,n      Open new empty buffer
 
 ,re     Recent open files
@@ -14,36 +19,30 @@ Docs:
 
 ,c      Close current Window
 
+,:      Command history (like vim recent commands, not perfect but close)
 
+Omnicomnpletion:
 mx omnicompletion-like-vim loads vim like omnicompletion for all words
+s-. -> helm-complete-filename-at-point: press this for filename completion in a buffer
 
-// This brings the same total omnicompletion auto as vim!
-(require 'dabbrev)
-(require 'ac-dabbrev)
-
-Fantastic javascript completion via
-(require 'js2)
-(require 'ac-js2)
-
-
-Search
+Search:
 helm-do-grep for fast grep in current diredtory and what not !
 mx ack is a better and faster search then grep or helm-do-grep
 
-
-try to use Capslock as Control wherever possible
-C-. is my new m-x
-
+Navigation:
 C-` is the mode where each buffer shows a number
 C-c SPC -> ace jump mode
 C-u C-u C-c SPC” ⇒ ace-jump-line-mode
+mx helm-bookmarks allows to set bookmarks to often-used files
 
-zencoding:
+Zencoding:
 <C-j>
-lisp:
-C-x C-e
 
-paredit docs
+lisp:
+C-x C-e OR C-' -> Eval  Expression
+C-5 (i.e. anstatt % (shift-5)) -> in evil visual selection of block form (), {}, [], ...
+
+Paredit:
 C-j => break and continue
 C-d => forward-delete
 M-d => forward-delete word
@@ -62,27 +61,18 @@ Org-mode:
 
 
 
-fiplr-20130713.2058
-fuzzy finder for files in dir
 
-flex-autopair-20120809.2118
-causes the wrong " ><
+Interesting Extensions:
 
-furl:
-friendly url retrieval
+fiplr: Fuzzy file finder like the one in vim
+            -> fiplr-find-file
+grizzl: fast fuzzy search index, used by fiplr
 
-Google This
-Google Translate
+htmlize: Convert the current buffer with syntax coloring to html. sadly, doesn't work with my color settings / scheme
 
-grizzl: fast fuzzy search index
-
-htmlize macht aus meinem syntax colored buffers html
-
-grizzl: fast fuzzy search index
-
-cx w o (oder so) macht das zahlen fuer buffer ding. found in plugins oder so
-
-http twiddle is a Fantastic package
+Fantastic javascript completion via
+(require 'js2)
+(require 'ac-js2)
 
 try indent-guide
 
@@ -107,6 +97,28 @@ svg-mode-line-themes looks like a great idea!
 
 wgrep: edit a grep buffer, and apply those changes to the files
 
-wrap-region, macht sowas wie ycsw" mit vim
+wrap-region, macht sowas wie ycsw mit vim
 
 zlc provides zsh like completion etc for all parts of emcas
+
+
+Interesting Lisp Packages:
+furl: friendly url retrieval -> furl
+      (furl-retrieve "http://www.heise.de" (lambda (x) (message x)))
+
+Twiddle-Mode
+This is a program for testing hand-written HTTP requests. You write your request in an Emacs buffer (using http-twiddle-mode) and then press `C-c C-c' each time you want to try sending it to the server. This way you can interactively debug the requests. To change port or
+destination do `C-u C-c C-c'.
+
+The mode is activated by `M-x http-twiddle-mode' or automatically
+when opening a filename ending with .http-twiddle.
+
+Example buffer
+
+POST / HTTP/1.0
+Connection: close
+Content-Length: $Content-Length
+
+<The request body goes here>
+
+

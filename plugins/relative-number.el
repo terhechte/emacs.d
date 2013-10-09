@@ -3,7 +3,8 @@
 (add-hook 'linum-before-numbering-hook 'my-linum-get-format-string)
 
 (defun my-linum-get-format-string ()
-  (let* ((width (1+ (length (number-to-string
+  ; The + 2 defines the leeway we have in the sidebar
+  (let* ((width (+ 2 (length (number-to-string
                              (count-lines (point-min) (point-max))))))
          (format (concat "%" (number-to-string width) "d")))
     (setq my-linum-format-string format)))
