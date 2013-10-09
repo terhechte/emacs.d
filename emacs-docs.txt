@@ -1,7 +1,10 @@
 General:
 try to use Capslock as Control wherever possible
 C-. is my new m-x
-
+- meta-up moves text up
+- meta-down moves text down
+- s-5 -> Delete Window
+- s-0 -> Line-Numbers on / off
 
 Evil Leader:
 ,t      Toggle back and forth between last buffers
@@ -20,10 +23,12 @@ Evil Leader:
 ,c      Close current Window
 
 ,:      Command history (like vim recent commands, not perfect but close)
+,f      Ace-Jump (i.e. Vim EasyMotion)
 
 Omnicomnpletion:
 mx omnicompletion-like-vim loads vim like omnicompletion for all words
 s-. -> helm-complete-filename-at-point: press this for filename completion in a buffer
+s-/ -> Hippie Expand, but doesn't have a menu either
 
 Search:
 helm-do-grep for fast grep in current diredtory and what not !
@@ -34,6 +39,10 @@ C-` is the mode where each buffer shows a number
 C-c SPC -> ace jump mode
 C-u C-u C-c SPC” ⇒ ace-jump-line-mode
 mx helm-bookmarks allows to set bookmarks to often-used files
+
+Narrow / Widen:
+- 'narrow-to-region
+- 'widen
 
 Zencoding:
 <C-j>

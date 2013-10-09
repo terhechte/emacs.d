@@ -204,6 +204,8 @@
 (evil-leader/set-key "p" 'switch-to-prev-buffer)
 (evil-leader/set-key ":" 'helm-complex-command-history)
 
+(evil-leader/set-key "f" 'ace-jump-mode)
+
 (require 'my-functions)
 
 (require 'custom-keys)
@@ -318,7 +320,6 @@
 
 (setq linum-format "%4d")
 
-
 ; TODO Emacs:
 ; - das  terminal wenn am rand, wackelt so schlimm
 ; - org mode doku downloaden und irgendwo hinterlegen
@@ -329,5 +330,5 @@
 ; - better python mode, still sucks a bit
 ; - integrate ace-jump into the vim workflow, maybe with ,f ?
 ; - flex-autopair causes wrong html >< insertions
-; - fix the linum format and the relative number so that it fixes the python issue and I have more sidebar number spacing @done
-; - document and edit custom/custom-keys.el
+; - in custom-keys I have (global-set-key [(control tab)] 'completion-at-point) but that opens in buffer, what opens that in menu?
+; - What does 'load-library do? What am I supposed to load there?

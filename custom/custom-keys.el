@@ -17,14 +17,14 @@
 ;; I want C-z to undo, but I keep C-x,C-c,C-v as default. If CUA mode
 ;; is set full, they clobber too many nice Emacs features.  Instead,
 ;; since I'm mac centric I bind Cmd-x,c,v to cut/copy/paste.
-(global-set-key [c-z] 'undo)
+;(global-set-key [c-z] 'undo)
 
 ;; append region to file 
-(global-set-key (kbd "C-x C-a") 'append-to-file)
+;(global-set-key (kbd "C-x C-a") 'append-to-file)
 
 ;; Resize window horizontally
-(global-set-key (kbd "C-M-,") 'shrink-window-horizontally) ;; Ctrl-Alt-<
-(global-set-key (kbd "C-M-.") 'enlarge-window-horizontally) ;; Ctrl-Alt->
+;(global-set-key (kbd "C-M-,") 'shrink-window-horizontally) ;; Ctrl-Alt-<
+;(global-set-key (kbd "C-M-.") 'enlarge-window-horizontally) ;; Ctrl-Alt->
 
 ;; Completion / Abbreviation
 
@@ -33,12 +33,6 @@
 ;; Mpve line / region
 (global-set-key [M-up] 'move-text-up)
 (global-set-key [M-down] 'move-text-down)
-
-;; line duplicate up / down -
-;; FIXME: this should be ditched in favor of something that works with region or current line
-
-(global-set-key [s-up] [?\C-a ?\C-a ?\C-k ?\C-y left ?\C-a ?\C-a return up ?\C-y ?\C-a])
-(global-set-key [s-down] [?\C-a ?\C-a ?\C-k ?\C-y return ?\C-y ?\C-a])
 
 ;; Auto fill mode toggle (tidy up text line length automatically.)
 (global-set-key (kbd "C-c q") 'auto-fill-mode)
