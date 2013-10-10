@@ -318,7 +318,7 @@
 (evil-leader/set-key-for-mode 'task-mode "a" 'task-mode-archive-done)
 (evil-leader/set-key-for-mode 'task-mode "c" 'task-mode-new-todo)
 
-(setq linum-format "%4d")
+;(setq linum-format "%4d")
 
 ; TODO Emacs:
 ; - das  terminal wenn am rand, wackelt so schlimm

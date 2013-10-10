@@ -4,7 +4,7 @@
 
 (defun my-linum-get-format-string ()
   ; The + 2 defines the leeway we have in the sidebar
-  (let* ((width (+ 2 (length (number-to-string
+  (let* ((width (+ 3 (length (number-to-string
                              (count-lines (point-min) (point-max))))))
          (format (concat "%" (number-to-string width) "d")))
     (setq my-linum-format-string format)))
