@@ -2,8 +2,8 @@
 ;; and then return us to the user home directory, for find-file etc.
 (progn (cd "~/.emacs.d/") (normal-top-level-add-subdirs-to-load-path) (cd "~"))
 
-(add-to-list 'package-archives
-  '("melpa" . "http://melpa.milkbox.net/packages/") t)
+;(add-to-list 'package-archives
+;  '("melpa" . "http://melpa.milkbox.net/packages/") t)
 
 (add-to-list 'default-frame-alist '(font . "M+ 1mn-13"))
 

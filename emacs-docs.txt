@@ -78,6 +78,11 @@ http://orgmode.org/worg/org-tutorials/orgtutorial_dto.html
 - * M-shift-RET to insert another headline on the same level
 - C-c C-t to cycle a task from Todo to Done
 - shift-tab gives overviews of documents
+http://orgmode.org/guide/Plain-lists.html#Plain-lists
+- Unordered list items start with ‘-’, ‘+’, or ‘*’ as bullets.
+- Ordered list items start with ‘1.’ or ‘1)’.
+- Description list use ‘ :: ’ to separate the term from the description.
+- C-c C-c (if there's a checkbox) check or uncheck it
 Org-Table:
 http://orgmode.org/guide/Tables.html#Tables
 - Create table: Just type the Table signature |Name|Phone|Age|More   and hit C-c RET
@@ -92,6 +97,7 @@ http://orgmode.org/worg/org-tutorials/org-spreadsheet-intro.html
 - Better Formula editing: C-' and then use S-left/S-right etc on the markers to shift the formulas
 Org-Babel:
 http://orgmode.org/worg/org-contrib/babel/intro.html
+http://www.johndcook.com/blog/2012/02/09/python-org-mode/
 #+begin_src python
 -- python code
 #+end_src
