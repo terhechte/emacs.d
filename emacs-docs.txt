@@ -24,6 +24,13 @@ Evil Leader:
 
 ,:      Command history (like vim recent commands, not perfect but close)
 ,f      Ace-Jump (i.e. Vim EasyMotion)
+,/      Toggle comments
+
+Evil-Surround:
+- You can surround in visual-state with s<textobject><trigger> or in normal-state with ys<textobject><trigger> (i.e. ysw')
+- You can change a surrounding with cs<old-trigger><new-trigger> (i.e. cs*')
+- You can delete a surrounding with cd<old-trigger><new-trigger>.
+- i.e: 'Hello world!' -> cs'<q> -> <q>Hello world!</q>
 
 Omnicomnpletion:
 mx omnicompletion-like-vim loads vim like omnicompletion for all words
@@ -66,7 +73,32 @@ C-{ => move the previous sexp away from the current one
 
 
 Org-mode:
+http://orgmode.org/worg/org-tutorials/orgtutorial_dto.html
+- all *, **, etc inserts have to have no indetation.
+- * M-shift-RET to insert another headline on the same level
+- C-c C-t to cycle a task from Todo to Done
+- shift-tab gives overviews of documents
+Org-Table:
+http://orgmode.org/guide/Tables.html#Tables
+- Create table: Just type the Table signature |Name|Phone|Age|More   and hit C-c RET
+- Insert row: Just TAB through the colums and new rows will appear
+- C-c C-c: Realign Table without moving the cursor
+- C-c -: Insert new horiontal line below cursor
+- C-c ^: Sort table (has to be in the column to be sorted)
+http://orgmode.org/worg/org-tutorials/org-spreadsheet-intro.html
+- To insert a formula, type like this :=vmean(@2$3..@4$3)
+- To see column / row lables for formula, do C-c }
+- TO update formulas, go to the TBLFM line and type C-c C-c
+- Better Formula editing: C-' and then use S-left/S-right etc on the markers to shift the formulas
+Org-Babel:
+http://orgmode.org/worg/org-contrib/babel/intro.html
+#+begin_src python
+-- python code
+#+end_src
+insert codes. if I'm in one of htese blocks, C-c ' will open it in a buffer for editing. in there C-c ' will close the buffer and save
 
+
+C-c ? Will give me the field reference
 
 
 

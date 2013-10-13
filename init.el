@@ -2,6 +2,9 @@
 ;; and then return us to the user home directory, for find-file etc.
 (progn (cd "~/.emacs.d/") (normal-top-level-add-subdirs-to-load-path) (cd "~"))
 
+(add-to-list 'package-archives
+  '("melpa" . "http://melpa.milkbox.net/packages/") t)
+
 (add-to-list 'default-frame-alist '(font . "M+ 1mn-13"))
 
 ;; -- Path -----------------------------------------------------------------------------------------------
@@ -19,6 +22,29 @@
     (setq exec-path (append '("/usr/local/share/npm/bin") exec-path))))
 
 (add-to-list 'exec-path "~/bin")
+
+(add-to-list 'load-path "~/.emacs.d/evil")
+
+; Org mode
+;(add-to-list 'load-path "~/.emacs.d/elpa/org-20130826")
+(add-to-list 'load-path "~/.emacs.d/org-mode/lisp")
+(require 'org-install)
+(add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
+(define-key global-map "\C-cl" 'org-store-link)
+(define-key global-map "\C-ca" 'org-agenda)
+(setq org-log-done t)
+; Setup org mode for dropbox sync
+;; Set to the location of your Org files on your local system
+(setq org-directory "~/Dropbox/Todo/org/")
+;; Set to the name of the file where new notes will be stored
+(setq org-mobile-inbox-for-pull "~/Dropbox/Todo/org/todos.org")
+;; Set to <your Dropbox root directory>/MobileOrg.
+(setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
+
+; we want a couple of languages in Babel
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((python . t)(ruby . t)(sh . t)(R . t)))
 
 ;; turn off toolbar.
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
@@ -76,7 +102,7 @@
   (load-file "modes-init/init-marmalade.el"))
 
 ;; Turn on things that auto-load isn't doing for us...
-(yas-global-mode t)
+;(yas-global-mode t)
 
 ;; Autopair alternative
 (flex-autopair-mode t)
@@ -206,9 +232,38 @@
 
 (evil-leader/set-key "f" 'ace-jump-mode)
 
+(evil-leader/set-key "/" 'evilnc-comment-or-uncomment-lines)
+
+; evil extension for html tag selection like matchit
+; doesn't work yet: http://blog.binchen.org/?p=775
+(require 'smartparens)
+(require 'matchit)
+;; {{ evil-matchit
+(defun my-evil-jump-item-enhanced-for-html ()
+  (interactive)
+  (if (or (eq major-mode 'html-mode)
+          (eq major-mode 'xml-mode)
+          (eq major-mode 'nxml-mode)
+          )
+      (progn
+        (if (not (my-sp-select-next-thing 1)) (exchange-point-and-mark))
+        (deactivate-mark)
+        )
+    (progn
+      (evil-jump-item)
+      )
+    )
+  )
+(define-key evil-normal-state-map "%" 'my-evil-jump-item-enhanced-for-html)
+;; }}
+
 (require 'my-functions)
 
 (require 'custom-keys)
+
+; load evil surround
+(require 'surround)
+(global-surround-mode 1)
 
 ;; Run emacs in server mode, so that we can connect from commandline
 (server-start)
@@ -265,6 +320,7 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes (quote ("c377a5f3548df908d58364ec7a0ee401ee7235e5e475c86952dc8ed7c4345d8e" default)))
  '(httpd-port 8187)
+ '(org-agenda-files (quote ("~/Dropbox/Todo/org/todos.org")))
  '(send-mail-function (quote mailclient-send-it)))
 
  ; set different linum color
@@ -308,6 +364,7 @@
 ; add s-n for opening a new window
 (global-set-key (kbd "s-n") 'new-frame)
 
+
 ; Setup mail in emacs
 (require 'init-mail)
 
@@ -332,3 +389,9 @@
 ; - flex-autopair causes wrong html >< insertions
 ; - in custom-keys I have (global-set-key [(control tab)] 'completion-at-point) but that opens in buffer, what opens that in menu?
 ; - What does 'load-library do? What am I supposed to load there?
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
