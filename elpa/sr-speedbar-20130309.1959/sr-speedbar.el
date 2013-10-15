@@ -316,7 +316,7 @@ Default is nil."
 (defconst sr-speedbar-version "0.1.4"
   "Current version.")
 
-(defconst sr-speedbar-buffer-name "*SPEEDBAR*"
+(defconst sr-speedbar-buffer-name "Speedbar 1.0"
   "The buffer name of sr-speedbar.")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; Variables ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -345,7 +345,7 @@ of a speedbar-window.  It will be created if necessary."
 (defun sr-speedbar-open ()
   "Create `sr-speedbar' window."
   (interactive)
-  (if (not (sr-speedbar-exist-p))
+  (if (not nil) ; (sr-speedbar-exist-p)
       (let ((current-window (selected-window)))
         ;; Ensure only one window is there
         ;; when `sr-speedbar-delete-windows' is non-nil
@@ -383,6 +383,7 @@ of a speedbar-window.  It will be created if necessary."
           ;; Auto refresh speedbar content
           ;; if option `sr-speedbar-auto-refresh' is non-nil
           (sr-speedbar-handle-auto-refresh sr-speedbar-auto-refresh))
+        (message sr-speedbar-buffer-name)
         (set-window-buffer sr-speedbar-window (get-buffer sr-speedbar-buffer-name))
         (set-window-dedicated-p sr-speedbar-window t) ;make `sr-speedbar-window' dedicated to speedbar-buffer.
         (select-window current-window))

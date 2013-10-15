@@ -106,6 +106,15 @@ insert codes. if I'm in one of htese blocks, C-c ' will open it in a buffer for 
 
 C-c ? Will give me the field reference
 
+DEBUGGING:
+I use debug. These are common entry points (ways to use it)
+- M-x debug-on-entry followed by a function you want to enter using the debugger.
+- M-x toggle-debug-on-error -- Enter the debugger when when an error is raised.
+- M-x toggle-debug-on-quit -- Enter the debugger when the user hits C-g.
+
+- Place explicit calls to function debug at particular places (breakpoints) in your code, to enter the debugger at those places
+    (debug)
+- You step through the debugger using d, or c to skip over the details of a particular evaluation.
 
 
 
