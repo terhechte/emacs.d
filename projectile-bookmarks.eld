@@ -1,0 +1,1 @@
+("~/Development/ProjectInstaDeskCache/lua/" "~/Development/ProjectInstaDeskCache/python/" "~/.emacs.d/" "/Users/heike/.emacs.d/elpa/jedi-20130714.1415/")

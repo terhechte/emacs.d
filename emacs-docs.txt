@@ -73,7 +73,14 @@ C-{ => move the previous sexp away from the current one
 
 
 Org-mode:
+[[http://orgmode.org/org.html][Huge Main Org Mode Doc]]
+
+Org-mode also has different begin_src blocks, like, say, begin_quote or html or latex
+http://orgmode.org/org.html#Easy-Templates
+
 http://orgmode.org/worg/org-tutorials/orgtutorial_dto.html
+- truncation: toggle-truncate-lines
+- create linke: C-c C-l -> either paste link, or be with the cursor over a link
 - all *, **, etc inserts have to have no indetation.
 - * M-shift-RET to insert another headline on the same level
 - C-c C-t to cycle a task from Todo to Done

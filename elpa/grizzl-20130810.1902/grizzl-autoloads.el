@@ -4,8 +4,8 @@
 
 
 ;;;### (autoloads (grizzl-result-strings grizzl-result-count grizzl-search
-;;;;;;  grizzl-make-index) "grizzl-core" "grizzl-core.el" (21027
-;;;;;;  8931 0 0))
+;;;;;;  grizzl-make-index) "grizzl-core" "grizzl-core.el" (21113
+;;;;;;  2314 0 0))
 ;;; Generated autoloads from grizzl-core.el
 
 (autoload 'grizzl-make-index "grizzl-core" "\
@@ -44,7 +44,7 @@ If the :END option is specified, up to :END results are returned.
 
 ;;;### (autoloads (grizzl-set-selection-1 grizzl-set-selection+1
 ;;;;;;  grizzl-selected-result grizzl-completing-read) "grizzl-read"
-;;;;;;  "grizzl-read.el" (21027 8931 0 0))
+;;;;;;  "grizzl-read.el" (21113 2314 0 0))
 ;;; Generated autoloads from grizzl-read.el
 
 (autoload 'grizzl-completing-read "grizzl-read" "\
@@ -70,8 +70,8 @@ Move the selection down one row in `grizzl-completing-read'.
 
 ;;;***
 
-;;;### (autoloads nil nil ("grizzl-pkg.el" "grizzl.el") (21027 8931
-;;;;;;  260360 0))
+;;;### (autoloads nil nil ("grizzl-pkg.el" "grizzl.el") (21113 2314
+;;;;;;  594653 0))
 
 ;;;***
 

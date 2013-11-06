@@ -477,6 +477,14 @@
    `(org-hide                                  ((t (:foreground ,gray-3      :background ,gray-1bg                      ))))
    `(org-link                                  ((t (:foreground ,blue-1      :background ,blue-1bg                      ))))
    `(org-todo                                  ((t (:foreground ,red-1       :background ,red-1bg                       ))))
+   `(outline-1                                  ((t (:bold t :height 200))))
+   `(outline-2                                  ((t (:bold t :height 190))))
+   `(outline-3                                  ((t (:bold t :height 180))))
+   `(outline-4                                  ((t (:bold t :height 170))))
+   `(outline-5                                  ((t (:bold t :height 160))))
+   `(outline-6                                  ((t (:bold t ))))
+   `(outline-7                                  ((t (:bold t ))))
+   `(outline-8                                  ((t (:bold t ))))
    ;;-----------------------------------------------------------------------------------------------------------------------
    ;; cua-mode
    `(cua-global-mark        ((t(:foreground ,foam :background ,turquoise-1                                              ))))

@@ -25,9 +25,14 @@
 
 (add-to-list 'load-path "~/.emacs.d/evil")
 
+(add-to-list 'load-path "~/.emacs.d/plugins/tabbar")
+
 ; Org mode
 ;(add-to-list 'load-path "~/.emacs.d/elpa/org-20130826")
 (add-to-list 'load-path "~/.emacs.d/org-mode/lisp")
+(add-to-list 'load-path "~/.emacs.d/org-mode/contrib/lisp")
+;(setq org-export-backends (cons 'md org-export-backends))
+(require 'ox-md)
 (require 'org-install)
 (add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
 (define-key global-map "\C-cl" 'org-store-link)
@@ -44,7 +49,7 @@
 ; we want a couple of languages in Babel
 (org-babel-do-load-languages
  'org-babel-load-languages
- '((python . t)(ruby . t)(sh . t)(R . t)))
+ '((python . t)(ruby . t)(sh . t)(R . t)(C . t)(scala . t)(clojure . t)(lisp . t) (sql . t) (js . t) (sqlite . t) (emacs-lisp . t) (css . t) (sass . t) (objc . t)))
 
 ;; turn off toolbar.
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
@@ -364,6 +369,19 @@
 ; add s-n for opening a new window
 (global-set-key (kbd "s-n") 'new-frame)
 
+; file browser (useful especially for scala stuff with the huge directory tree)
+(require 'direx)
+(require 'popwin)
+(push '(direx:direx-mode :position left :width 25 :dedicated t)
+      popwin:special-display-config)
+(global-set-key (kbd "C-x C-j") 'direx:jump-to-directory-other-window)
+
+; Also, we want to move windows around
+(require 'buffer-move)
+(global-set-key (kbd "<C-s-up>")     'buf-move-up)
+(global-set-key (kbd "<C-s-down>")   'buf-move-down)
+(global-set-key (kbd "<C-s-left>")   'buf-move-left)
+(global-set-key (kbd "<C-s-right>")  'buf-move-right)
 
 ; Setup mail in emacs
 (require 'init-mail)
@@ -376,6 +394,26 @@
 (evil-leader/set-key-for-mode 'task-mode "c" 'task-mode-new-todo)
 
 ;(setq linum-format "%4d")
+(ac-linum-workaround)
+
+(require 'tabbar)
+
+(require 'projectile)
+(projectile-global-mode)
+(setq projectile-completion-system 'grizzl)
+
+; quick hacked function for quick rest client
+; testing
+(defun testrest ()
+  (interactive)
+  (with-current-buffer (get-buffer "restrest")
+    (restclient-http-send-current-raw)
+    )
+  )
+
+(global-set-key (kbd "s-r") 'testrest)
+
+
 
 ; TODO Emacs:
 ; - das  terminal wenn am rand, wackelt so schlimm
