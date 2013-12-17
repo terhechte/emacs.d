@@ -122,11 +122,11 @@
 (add-hook 'prog-mode-hook 'git-gutter-mode)
 
 ;; Smoother scrolling (no multiline jumps.)
-(setq redisplay-dont-pause t
-  scroll-margin 1
-  scroll-step 1
-  scroll-conservatively 10000
-  scroll-preserve-screen-position 1)
+;(setq redisplay-dont-pause t
+;  scroll-margin 1
+;  scroll-step 1
+;  scroll-conservatively 10000
+;  scroll-preserve-screen-position 1)
 
 ;; show paren mode
 (show-paren-mode 1)
@@ -413,7 +413,22 @@
 
 (global-set-key (kbd "s-r") 'testrest)
 
+; Font lock mode variations to maybe speed up scrolling
+;(setq font-lock-support-mode 'fast-lock-mode ; lazy-lock-mode  / jit-lock-mode
+;(setq jit-lock-defer-time 0.05) ; http://tsengf.blogspot.de/2012/11/slow-scrolling-speed-in-emacs.html
+; http://stackoverflow.com/questions/3631220/fix-to-get-smooth-scrolling-in-emacs
+(setq redisplay-dont-pause t
+  scroll-margin 1
+  scroll-step 1
+  scroll-conservatively 10000
+  scroll-preserve-screen-position 1
+  jit-lock-defer-time 0.05
+  font-lock-support-mode 'jit-lock-mode)
+(setq-default scroll-up-aggressively 0.01 scroll-down-aggressively 0.01) 
 
+;If you never expect to have to display bidirectional scripts, like
+;Arabic, you can make that the default:
+(setq-default bidi-paragraph-direction 'left-to-right)
 
 ; TODO Emacs:
 ; - das  terminal wenn am rand, wackelt so schlimm
