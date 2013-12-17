@@ -147,11 +147,11 @@
 
 ;; -------------------------------------------------------------------------------------------------
 ;; Highlight TODO/FIXME/BUG/HACK/REFACTOR & THE HORROR in code - I'm hoping the last one will catch on.
-(add-hook 'prog-mode-hook
-               (lambda ()
-                (font-lock-add-keywords nil
-                 '(("\\<\\(NOTE\\|FIXME\\|TODO\\|BUG\\|HACK\\|REFACTOR\\|THE HORROR\\)" 1 font-lock-warning-face t)))))
-
+;(add-hook 'prog-mode-hook
+ ;              (lambda ()
+  ;              (font-lock-add-keywords nil
+   ;              '(("\\<\\(NOTE\\|FIXME\\|TODO\\|BUG\\|HACK\\|REFACTOR\\|THE HORROR\\)" 1 font-lock-warning-face t)))))
+;
 ;; -------------------------------------------------------------------------------------------------
 ;; use aspell for ispell
 (when (file-exists-p "/usr/local/bin/aspell")
@@ -249,6 +249,7 @@
   (if (or (eq major-mode 'html-mode)
           (eq major-mode 'xml-mode)
           (eq major-mode 'nxml-mode)
+          (eq major-mode 'web-mode)
           )
       (progn
         (if (not (my-sp-select-next-thing 1)) (exchange-point-and-mark))
@@ -341,6 +342,10 @@
 ; Multicursor
 (require 'init-multicursor)
 
+;(require 'multi-web-mode)
+
+
+
 ; http://stackoverflow.com/questions/683425/globally-override-key-binding-in-emacs
 (defvar my-keys-minor-mode-map (make-keymap) "my-keys-minor-mode keymap.")
 
@@ -387,11 +392,11 @@
 (require 'init-mail)
 
 ; my task mode
-(require 'task-mode)
+;(require 'task-mode)
 ; and set up leaders for it
-(evil-leader/set-key-for-mode 'task-mode "d" 'task-mode-todo-task)
-(evil-leader/set-key-for-mode 'task-mode "a" 'task-mode-archive-done)
-(evil-leader/set-key-for-mode 'task-mode "c" 'task-mode-new-todo)
+;(evil-leader/set-key-for-mode 'task-mode "d" 'task-mode-todo-task)
+;(evil-leader/set-key-for-mode 'task-mode "a" 'task-mode-archive-done)
+;(evil-leader/set-key-for-mode 'task-mode "c" 'task-mode-new-todo)
 
 ;(setq linum-format "%4d")
 (ac-linum-workaround)
@@ -433,3 +438,37 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+
+(require 'web-mode)
+
+(add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.blade\\.php\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.jsp\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+(add-to-list 'auto-mode-alist
+'("/\\(views\\|html\\|theme\\|templates\\)/.*\\.php\\'" . web-mode))
+
+
+
+(eval-after-load 'web-mode
+  '(progn
+     (defun prelude-web-mode-defaults ()
+       ;; Disable whitespace-mode when using web-mode
+       (whitespace-mode -1)
+       ;; Customizations
+       (setq web-mode-markup-indent-offset 4)
+       (setq web-mode-css-indent-offset 2)
+       (setq web-mode-code-indent-offset 4)
+       (setq web-mode-disable-autocompletion t)
+       (local-set-key (kbd "RET") 'newline-and-indent))
+     (setq prelude-web-mode-hook 'prelude-web-mode-defaults)
+
+     (add-hook 'web-mode-hook (lambda ()
+                                 (run-hooks 'prelude-web-mode-hook)))))
+
+
+(provide 'init-multi-web-mode)
