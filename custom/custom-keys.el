@@ -128,7 +128,7 @@
   (defun my-fast-eval ()
     (interactive)
     (if (eq major-mode 'clojure-mode)
-        (nrepl-eval-expression-at-point)
+        (cider-eval-last-sexp)
       (eval-region-or-left-sexp))
     )
   (global-set-key (kbd "C-'") 'my-fast-eval)

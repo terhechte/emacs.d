@@ -4,6 +4,10 @@
 
 ;(add-to-list 'package-archives
 ;  '("melpa" . "http://melpa.milkbox.net/packages/") t)
+(setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
+("marmalade" . "http://marmalade-repo.org/packages/")
+;; ("melpa" . "http://melpa.milkbox.net/packages/")
+))
 
 (add-to-list 'default-frame-alist '(font . "M+ 1mn-13"))
 
@@ -466,6 +470,20 @@
 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 (add-to-list 'auto-mode-alist
 '("/\\(views\\|html\\|theme\\|templates\\)/.*\\.php\\'" . web-mode))
+
+; Clojure..
+; docs: https://github.com/clojure-emacs/cider
+; C-c C-m : invoke macro-expand at point
+; repl M-p M-n back forth history
+; repl C-j new line-indent
+(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+(setq nrepl-hide-special-buffers t)
+(setq cider-repl-pop-to-buffer-on-connect t)
+(setq cider-auto-select-error-buffer t)
+(add-hook 'cider-repl-mode-hook 'paredit-mode)
+(add-hook 'cider-repl-mode-hook 'rainbow-delimiters-mode)
+
+
 
 
 
