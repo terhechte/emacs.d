@@ -14,10 +14,6 @@ Evil Leader:
 ,re     Recent open files
 ,rl     Revert current buffer (reload)
 
-,d      Task-mode 'done'
-,a      Task-mode 'archive all done'
-,a      Task-mode 'new todo'
-
 ,l      List all open buffers (care, this mode is not evil-compatible!)
 
 ,c      Close current Window
