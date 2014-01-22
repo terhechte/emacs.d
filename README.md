@@ -40,6 +40,7 @@ Here's a list of some keyboard shortcuts that make this configuration pleasant t
 - ,t      Toggle back and forth between last buffers
 - ,p      Go to previous buffer (i.e. back button)
 - ,n      Open new empty buffer
+- ,i      iMenu -> List all functions in this buffer and jump around
 - ,re     Recent open files
 - ,rl     Revert current buffer (reload)
 - ,l      List all open buffers (care, this mode is not evil-compatible!)

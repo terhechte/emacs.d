@@ -10,6 +10,7 @@ Evil Leader:
 ,t      Toggle back and forth between last buffers
 ,p      Go to previous buffer (i.e. back button)
 ,n      Open new empty buffer
+,i      iMenu -> List all functions in this buffer and jump around
 
 ,re     Recent open files
 ,rl     Revert current buffer (reload)

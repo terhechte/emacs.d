@@ -235,6 +235,8 @@
 
 (evil-leader/set-key "l" 'buffer-list-in-window)
 
+(evil-leader/set-key "i" 'imenu)
+
 (evil-leader/set-key "c" 'delete-window)
 (evil-leader/set-key "p" 'switch-to-prev-buffer)
 (evil-leader/set-key ":" 'helm-complex-command-history)
