@@ -507,3 +507,5 @@
 
 
 (provide 'init-multi-web-mode)
+
+(require 'code-wrap)

@@ -107,6 +107,12 @@ http://www.johndcook.com/blog/2012/02/09/python-org-mode/
 #+end_src
 insert codes. if I'm in one of htese blocks, C-c ' will open it in a buffer for editing. in there C-c ' will close the buffer and save
 
+s    #+begin_src ... #+end_src 
+e    #+begin_example ... #+end_example
+q    #+begin_quote ... #+end_quote 
+v    #+begin_verse ... #+end_verse 
+c    #+begin_center ... #+end_center 
+
 
 C-c ? Will give me the field reference
 
