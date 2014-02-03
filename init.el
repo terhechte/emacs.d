@@ -49,6 +49,8 @@
 (setq org-mobile-inbox-for-pull "~/Dropbox/Todo/org/todos.org")
 ;; Set to <your Dropbox root directory>/MobileOrg.
 (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
+; Turn on org mode line truncation by default
+'(org-startup-truncated nil)
 
 ; we want a couple of languages in Babel
 (org-babel-do-load-languages
@@ -77,6 +79,10 @@
 (require 'multiple-cursors)
 (require 'js2-refactor)
 (require 'helm)
+
+
+(require 'smartparens)
+(require 'smartparens-config)
 
 ;; Modes init (things that need more than just a require.) 
 (when (string-match "Emacs 24" (version))
@@ -245,29 +251,10 @@
 
 (evil-leader/set-key "/" 'evilnc-comment-or-uncomment-lines)
 
+
 ; evil extension for html tag selection like matchit
-; doesn't work yet: http://blog.binchen.org/?p=775
-(require 'smartparens)
-(require 'matchit)
-;; {{ evil-matchit
-(defun my-evil-jump-item-enhanced-for-html ()
-  (interactive)
-  (if (or (eq major-mode 'html-mode)
-          (eq major-mode 'xml-mode)
-          (eq major-mode 'nxml-mode)
-          (eq major-mode 'web-mode)
-          )
-      (progn
-        (if (not (my-sp-select-next-thing 1)) (exchange-point-and-mark))
-        (deactivate-mark)
-        )
-    (progn
-      (evil-jump-item)
-      )
-    )
-  )
-(define-key evil-normal-state-map "%" 'my-evil-jump-item-enhanced-for-html)
-;; }}
+(require 'evil-matchit)
+(global-evil-matchit-mode 1)
 
 (require 'my-functions)
 
