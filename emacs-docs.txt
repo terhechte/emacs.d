@@ -198,4 +198,19 @@ Content-Length: $Content-Length
 
 <The request body goes here>
 
+---
+GET:
+
+GET /user/bob/ HTTP/1.1
+Host: example.com
+[blank line here]
+POST:
+
+POST /user/create/ HTTP/1.1
+Host: example.com
+Content-Type: text/xml
+Connection: close
+
+<user><name>Bob</name><email>bob@example.com</email></user>
+
 
