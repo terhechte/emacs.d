@@ -190,7 +190,9 @@
 (require 'powerline)
 (powerline-default-theme)
 (require 'visual-progress-mode)
-(load-theme 'soothe t)
+;(load-theme 'soothe t)
+;(load-theme 'mccarthy t)
+(load-theme 'cyberpunk)
 
 ;; No tabs, only 4 spaces, as default
 (setq-default indent-tabs-mode nil)
@@ -330,7 +332,7 @@
 (set-cursor-color "#ffffff")
 
 ; Terminal
-(require 'init-term)
+;(require 'init-term)
 
 ; Multicursor
 (require 'init-multicursor)
@@ -496,3 +498,5 @@
 (provide 'init-multi-web-mode)
 
 (require 'code-wrap)
+
+(setq shell-file-name "bash")
