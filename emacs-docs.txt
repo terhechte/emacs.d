@@ -6,6 +6,27 @@ C-. is my new m-x
 - s-5 -> Delete Window
 - s-0 -> Line-Numbers on / off
 
+Insert Umlaut
+C-x 8 " a (or o u, etc)
+Even better, do m-x accents and then
+a" will enter the ä
+
+
+Get more Help
+ C-h ?
+Here are my favorites:
+If you want to see a specific keybinding, like checking what C-w is bound to:
+    C-h k C-w
+If you want to see the documentation for a function:
+    C-h f function-name
+If you want to see details about your current mode:
+    C-h m
+This is incredibly useful because it lists all the mode-specific keybindings. That's how I learn how to use new modes!
+If you want to see or interact with a variable:
+    C-h v
+If you want to see something where you remember just part of the name:
+    C-h a *regexp*
+
 Evil Leader:
 ,t      Toggle back and forth between last buffers
 ,p      Go to previous buffer (i.e. back button)

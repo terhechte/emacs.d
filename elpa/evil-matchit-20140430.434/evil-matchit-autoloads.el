@@ -6,7 +6,7 @@
 ;;;### (autoloads (global-evil-matchit-mode turn-off-evil-matchit-mode
 ;;;;;;  turn-on-evil-matchit-mode evil-matchit-mode evilmi-delete-items
 ;;;;;;  evilmi-select-items evilmi-jump-items) "evil-matchit" "evil-matchit.el"
-;;;;;;  (21377 421 0 0))
+;;;;;;  (21377 9112 0 0))
 ;;; Generated autoloads from evil-matchit.el
 
 (autoload 'evilmi-jump-items "evil-matchit" "\
@@ -63,7 +63,7 @@ See `evil-matchit-mode' for more information on Evil-Matchit mode.
 ;;;***
 
 ;;;### (autoloads (evilmi-c-jump evilmi-c-get-tag) "evil-matchit-c"
-;;;;;;  "evil-matchit-c.el" (21377 421 0 0))
+;;;;;;  "evil-matchit-c.el" (21377 9112 0 0))
 ;;; Generated autoloads from evil-matchit-c.el
 
 (autoload 'evilmi-c-get-tag "evil-matchit-c" "\
@@ -79,7 +79,7 @@ See `evil-matchit-mode' for more information on Evil-Matchit mode.
 ;;;***
 
 ;;;### (autoloads (evilmi-cmake-jump evilmi-cmake-get-tag) "evil-matchit-cmake"
-;;;;;;  "evil-matchit-cmake.el" (21377 421 0 0))
+;;;;;;  "evil-matchit-cmake.el" (21377 9112 0 0))
 ;;; Generated autoloads from evil-matchit-cmake.el
 
 (autoload 'evilmi-cmake-get-tag "evil-matchit-cmake" "\
@@ -95,7 +95,7 @@ See `evil-matchit-mode' for more information on Evil-Matchit mode.
 ;;;***
 
 ;;;### (autoloads (evilmi-html-jump evilmi-html-get-tag) "evil-matchit-html"
-;;;;;;  "evil-matchit-html.el" (21377 421 0 0))
+;;;;;;  "evil-matchit-html.el" (21377 9112 0 0))
 ;;; Generated autoloads from evil-matchit-html.el
 
 (autoload 'evilmi-html-get-tag "evil-matchit-html" "\
@@ -111,7 +111,7 @@ See `evil-matchit-mode' for more information on Evil-Matchit mode.
 ;;;***
 
 ;;;### (autoloads (evilmi-latex-jump evilmi-latex-get-tag) "evil-matchit-latex"
-;;;;;;  "evil-matchit-latex.el" (21377 421 0 0))
+;;;;;;  "evil-matchit-latex.el" (21377 9112 0 0))
 ;;; Generated autoloads from evil-matchit-latex.el
 
 (autoload 'evilmi-latex-get-tag "evil-matchit-latex" "\
@@ -127,7 +127,7 @@ See `evil-matchit-mode' for more information on Evil-Matchit mode.
 ;;;***
 
 ;;;### (autoloads (evilmi-org-jump evilmi-org-get-tag) "evil-matchit-org"
-;;;;;;  "evil-matchit-org.el" (21377 421 0 0))
+;;;;;;  "evil-matchit-org.el" (21377 9112 0 0))
 ;;; Generated autoloads from evil-matchit-org.el
 
 (autoload 'evilmi-org-get-tag "evil-matchit-org" "\
@@ -143,7 +143,7 @@ See `evil-matchit-mode' for more information on Evil-Matchit mode.
 ;;;***
 
 ;;;### (autoloads (evilmi-python-jump evilmi-python-get-tag) "evil-matchit-python"
-;;;;;;  "evil-matchit-python.el" (21377 421 0 0))
+;;;;;;  "evil-matchit-python.el" (21377 9112 0 0))
 ;;; Generated autoloads from evil-matchit-python.el
 
 (autoload 'evilmi-python-get-tag "evil-matchit-python" "\
@@ -159,7 +159,7 @@ See `evil-matchit-mode' for more information on Evil-Matchit mode.
 ;;;***
 
 ;;;### (autoloads (evilmi-script-jump evilmi-script-get-tag) "evil-matchit-script"
-;;;;;;  "evil-matchit-script.el" (21377 421 0 0))
+;;;;;;  "evil-matchit-script.el" (21377 9112 0 0))
 ;;; Generated autoloads from evil-matchit-script.el
 
 (autoload 'evilmi-script-get-tag "evil-matchit-script" "\
@@ -176,7 +176,7 @@ See `evil-matchit-mode' for more information on Evil-Matchit mode.
 
 ;;;### (autoloads (evilmi-sdk-jump evilmi-sdk-get-tag evilmi-sdk-get-tag-info
 ;;;;;;  evilmi-sdk-member) "evil-matchit-sdk" "evil-matchit-sdk.el"
-;;;;;;  (21377 421 0 0))
+;;;;;;  (21377 9112 0 0))
 ;;; Generated autoloads from evil-matchit-sdk.el
 
 (autoload 'evilmi-sdk-member "evil-matchit-sdk" "\
@@ -204,7 +204,7 @@ return '(start-point tag-info)
 ;;;***
 
 ;;;### (autoloads (evilmi-sh-jump evilmi-sh-get-tag) "evil-matchit-sh"
-;;;;;;  "evil-matchit-sh.el" (21377 421 0 0))
+;;;;;;  "evil-matchit-sh.el" (21377 9112 0 0))
 ;;; Generated autoloads from evil-matchit-sh.el
 
 (autoload 'evilmi-sh-get-tag "evil-matchit-sh" "\
@@ -220,7 +220,7 @@ return '(start-point tag-info)
 ;;;***
 
 ;;;### (autoloads (evilmi-simple-jump evilmi-simple-get-tag) "evil-matchit-simple"
-;;;;;;  "evil-matchit-simple.el" (21377 421 0 0))
+;;;;;;  "evil-matchit-simple.el" (21377 9112 0 0))
 ;;; Generated autoloads from evil-matchit-simple.el
 
 (autoload 'evilmi-simple-get-tag "evil-matchit-simple" "\
@@ -235,7 +235,7 @@ return '(start-point tag-info)
 
 ;;;***
 
-;;;### (autoloads nil nil ("evil-matchit-pkg.el") (21377 421 170214
+;;;### (autoloads nil nil ("evil-matchit-pkg.el") (21377 9112 338387
 ;;;;;;  0))
 
 ;;;***

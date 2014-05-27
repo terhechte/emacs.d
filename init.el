@@ -81,8 +81,8 @@
 (require 'helm)
 
 
-(require 'smartparens)
-(require 'smartparens-config)
+;(require 'smartparens)
+;(require 'smartparens-config)
 
 ;; Modes init (things that need more than just a require.) 
 (when (string-match "Emacs 24" (version))
@@ -500,3 +500,16 @@
 (require 'code-wrap)
 
 (setq shell-file-name "bash")
+
+(require 'evil-matchit)
+(global-evil-matchit-mode 1)
+
+
+(defun accents ()
+  (interactive)
+  (set-language-environment "UTF-8")
+  (activate-input-method "latin-1-alt-postfix"))
+
+(defun current-lang ()
+  (interactive)
+  (eval-expression current-language-environment))
