@@ -1,6 +1,6 @@
 ;;; ox-confluence --- Confluence Wiki Back-End for Org Export Engine
 
-;; Copyright (C) 2012 Sébastien Delafond
+;; Copyright (C) 2012, 2014 Sébastien Delafond
 
 ;; Author: Sébastien Delafond <sdelafond at gmx dot net>
 ;; Keywords: outlines, confluence, wiki
@@ -46,7 +46,6 @@
 		     (headline . org-confluence-headline)
 		     (italic . org-confluence-italic)
 		     (link . org-confluence-link)
-		     (property-drawer . org-confluence-property-drawer)
 		     (section . org-confluence-section)
 		     (src-block . org-confluence-src-block)
 		     (strike-through . org-confluence-strike-through)
@@ -94,11 +93,6 @@
              (t
               raw-link))
             "]")))
-
-(defun org-confluence-property-drawer (property-drawer contents info)
-  (and (org-string-nw-p contents)
-       (format "\{\{%s\}\}" contents)))
-
 (defun org-confluence-section (section contents info)
   contents)
 

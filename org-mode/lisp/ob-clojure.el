@@ -1,9 +1,9 @@
 ;;; ob-clojure.el --- org-babel functions for clojure evaluation
 
-;; Copyright (C) 2009-2013 Free Software Foundation, Inc.
+;; Copyright (C) 2009-2014 Free Software Foundation, Inc.
 
-;; Author: Joel Boehland, Eric Schulte, Oleh Krehel
-;;
+;; Author: Joel Boehland
+;;	Eric Schulte
 ;; Keywords: literate programming, reproducible research
 ;; Homepage: http://orgmode.org
 
@@ -24,40 +24,28 @@
 
 ;;; Commentary:
 
-;;; support for evaluating clojure code, relies either on slime or
-;;; on nrepl for all eval
+;; Support for evaluating clojure code, relies on slime for all eval.
 
 ;;; Requirements:
 
-;;; - clojure (at least 1.2.0)
-;;; - clojure-mode
-;;; - either slime or nrepl
+;; - clojure (at least 1.2.0)
+;; - clojure-mode
+;; - slime
 
-;;; For SLIME-way, the best way to install these components is by
-;;; following the directions as set out by Phil Hagelberg (Technomancy)
-;;; on the web page: http://technomancy.us/126
-
-;;; For nREPL-way:
-;;; get clojure is with https://github.com/technomancy/leiningen
-;;; get nrepl from MELPA (clojure-mode is a dependency).
+;; By far, the best way to install these components is by following
+;; the directions as set out by Phil Hagelberg (Technomancy) on the
+;; web page: http://technomancy.us/126
 
 ;;; Code:
 (require 'ob)
 
 (declare-function slime-eval "ext:slime" (sexp &optional package))
-(declare-function nrepl-current-connection-buffer "ext:nrepl" ())
-(declare-function nrepl-eval "ext:nrepl" (body))
 
 (defvar org-babel-tangle-lang-exts)
 (add-to-list 'org-babel-tangle-lang-exts '("clojure" . "clj"))
 
 (defvar org-babel-default-header-args:clojure '())
 (defvar org-babel-header-args:clojure '((package . :any)))
-
-(defcustom org-babel-clojure-backend 'nrepl
-  "Backend used to evaluate Clojure code blocks."
-  :group 'org-babel
-  :type 'symbol)
 
 (defun org-babel-expand-body:clojure (body params)
   "Expand BODY according to PARAMS, return the expanded body."
@@ -86,30 +74,19 @@
 
 (defun org-babel-execute:clojure (body params)
   "Execute a block of Clojure code with Babel."
-  (let ((expanded (org-babel-expand-body:clojure body params)))
-    (case org-babel-clojure-backend
-      (slime
-       (require 'slime)
-       (with-temp-buffer
-	 (insert expanded)
-	 ((lambda (result)
-	    (let ((result-params (cdr (assoc :result-params params))))
-	      (org-babel-result-cond result-params
-		result
-		(condition-case nil (org-babel-script-escape result)
-		  (error result)))))
-	  (slime-eval
-	   `(swank:eval-and-grab-output
-	     ,(buffer-substring-no-properties (point-min) (point-max)))
-	   (cdr (assoc :package params))))))
-      (nrepl
-       (require 'nrepl)
-       (if (nrepl-current-connection-buffer)
-	   (let* ((result (nrepl-eval expanded))
-		  (s (plist-get result :stdout))
-		  (r (plist-get result :value)))
-	     (if s (concat s "\n" r) r))
-	 (error "nREPL not connected! Use M-x nrepl-jack-in."))))))
+  (require 'slime)
+  (with-temp-buffer
+    (insert (org-babel-expand-body:clojure body params))
+    (let ((result
+           (slime-eval
+            `(swank:eval-and-grab-output
+              ,(buffer-substring-no-properties (point-min) (point-max)))
+            (cdr (assoc :package params)))))
+      (let ((result-params (cdr (assoc :result-params params))))
+        (org-babel-result-cond result-params
+          result
+          (condition-case nil (org-babel-script-escape result)
+            (error result)))))))
 
 (provide 'ob-clojure)
 

@@ -1,6 +1,6 @@
 ;;; org-table.el --- The table editor for Org-mode
 
-;; Copyright (C) 2004-2013 Free Software Foundation, Inc.
+;; Copyright (C) 2004-2014 Free Software Foundation, Inc.
 
 ;; Author: Carsten Dominik <carsten at orgmode dot org>
 ;; Keywords: outlines, hypermedia, calendar, wp
@@ -97,11 +97,11 @@ this variable requires a restart of Emacs to become effective."
 Each template must define lines that will be treated as a comment and that
 must contain the \"BEGIN RECEIVE ORGTBL %n\" and \"END RECEIVE ORGTBL\"
 lines where \"%n\" will be replaced with the name of the table during
-insertion of the tempate.  The transformed table will later be inserted
+insertion of the template.  The transformed table will later be inserted
 between these lines.
 
 The template should also contain a minimal table in a multiline comment.
-If multiline comments are not possible in the buffer language, 
+If multiline comments are not possible in the buffer language,
 you can pack it into a string that will not be used when the code
 is compiled or executed.  Above the table will you need a line with
 the fixed string \"#+ORGTBL: SEND\", followed by instruction on how to
@@ -547,9 +547,7 @@ following values:
 
 '(4)     Use the comma as a field separator
 '(16)    Use a TAB as field separator
-'(64)    Prompt for a regular expression as field separator
 integer  When a number, use that many spaces as field separator
-regexp   When a regular expression, use it to match the separator
 nil      When nil, the command tries to be smart and figure out the
          separator in the following way:
          - when each line contains a TAB, assume TAB-separated material
@@ -559,8 +557,6 @@ nil      When nil, the command tries to be smart and figure out the
   (let* ((beg (min beg0 end0))
 	 (end (max beg0 end0))
 	 re)
-    (if (equal separator '(64))
-	(setq separator (read-regexp "Regexp for field separator")))
     (goto-char beg)
     (beginning-of-line 1)
     (setq beg (point-marker))
@@ -595,8 +591,6 @@ nil      When nil, the command tries to be smart and figure out the
 		 (if (< separator 1)
 		     (user-error "Number of spaces in separator must be >= 1")
 		   (format "^ *\\| *\t *\\| \\{%d,\\}" separator)))
-		((stringp separator)
-		 (format "^ *\\|%s" separator))
 		(t (error "This should not happen"))))
       (while (re-search-forward re end t)
 	(replace-match "| " t t)))
@@ -921,6 +915,7 @@ When nil, simply write \"#ERROR\" in corrupted fields.")
     (setq org-table-may-need-update nil)
     ))
 
+;;;###autoload
 (defun org-table-begin (&optional table-type)
   "Find the beginning of the table and return its position.
 With argument TABLE-TYPE, go to the beginning of a table.el-type table."
@@ -934,6 +929,7 @@ With argument TABLE-TYPE, go to the beginning of a table.el-type table."
       (beginning-of-line 2)
       (point))))
 
+;;;###autoload
 (defun org-table-end (&optional table-type)
   "Find the end of the table and return its position.
 With argument TABLE-TYPE, go to the end of a table.el-type table."
@@ -1205,6 +1201,7 @@ Return t when the line exists, nil if it does not exist."
 		(< (setq cnt (1+ cnt)) N)))
     (= cnt N)))
 
+;;;###autoload
 (defun org-table-blank-field ()
   "Blank the current table field or active region."
   (interactive)
@@ -1244,6 +1241,7 @@ is always the old value."
 (defun org-table-field-info (arg)
   "Show info about the current field, and highlight any reference at point."
   (interactive "P")
+  (unless (org-at-table-p) (user-error "Not at a table"))
   (org-table-get-specials)
   (save-excursion
     (let* ((pos (point))
@@ -2277,7 +2275,7 @@ KEY is \"@\" or \"$\".  REPLACE is an alist of numbers to replace.
 For all numbers larger than LIMIT, shift them by DELTA."
   (save-excursion
     (goto-char (org-table-end))
-    (when (let ((case-fold-search t)) (looking-at "[ \t]*#\\+tblfm:"))
+    (while (let ((case-fold-search t)) (looking-at "[ \t]*#\\+tblfm:"))
       (let ((msg "The formulas in #+TBLFM have been updated")
 	    (re (concat key "\\([0-9]+\\)"))
 	    (re2
@@ -2291,8 +2289,9 @@ For all numbers larger than LIMIT, shift them by DELTA."
 	  (while (re-search-forward re2 (point-at-eol) t)
 	    (unless (save-match-data (org-in-regexp "remote([^)]+?)"))
 	      (if (equal (char-before (match-beginning 0)) ?.)
-		  (user-error "Change makes TBLFM term %s invalid, use undo to recover"
-			 (match-string 0))
+		  (user-error
+		   "Change makes TBLFM term %s invalid, use undo to recover"
+		   (match-string 0))
 		(replace-match "")))))
 	(while (re-search-forward re (point-at-eol) t)
 	  (unless (save-match-data (org-in-regexp "remote([^)]+?)"))
@@ -2303,7 +2302,8 @@ For all numbers larger than LIMIT, shift them by DELTA."
 	      (message msg))
 	     ((and limit (> n limit))
 	      (replace-match (concat key (int-to-string (+ n delta))) t t)
-	      (message msg)))))))))
+	      (message msg))))))
+      (forward-line))))
 
 (defun org-table-get-specials ()
   "Get the column names and local parameters for this table."
@@ -4127,7 +4127,7 @@ to execute outside of tables."
 	 '(arg)
 	 (concat "In tables, run `" (symbol-name fun) "'.\n"
 		 "Outside of tables, run the binding of `"
-		 (mapconcat (lambda (x) (format "%s" x)) keys "' or `")
+		 (mapconcat #'key-description keys "' or `")
 		 "'.")
 	 '(interactive "p")
 	 (list 'if

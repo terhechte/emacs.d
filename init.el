@@ -9,7 +9,7 @@
 ;; ("melpa" . "http://melpa.milkbox.net/packages/")
 ))
 
-(add-to-list 'default-frame-alist '(font . "M+ 1mn-13"))
+;(add-to-list 'default-frame-alist '(font . "M+ 1mn-13"))
 
 ;; -- Path -----------------------------------------------------------------------------------------------
 ;; find XCode and RVM command line tools on OSX (cover the legacy and current XCode directory structures.)
@@ -55,16 +55,17 @@
 ; we want a couple of languages in Babel
 (org-babel-do-load-languages
  'org-babel-load-languages
- '((python . t)(ruby . t)(sh . t)(R . t)(C . t)(scala . t)(clojure . t)(lisp . t) (sql . t) (js . t) (sqlite . t) (emacs-lisp . t) (css . t) (sass . t) (objc . t)))
+ '((python . t)(ruby . t)(sh . t)(R . t)(C . t)(clojure . t)(lisp . t) (sql . t) (js . t)  (emacs-lisp . t) (css . t)  ))
 
-;; turn off toolbar.
-(if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+
 ;; menu bar mode only on OS X, just because it's pretty much out of
 ;; the way, as opposed to sitting right there in the frame.
-(if  (and (window-system) (eq system-type 'darwin))
-    (menu-bar-mode 1)
-  (menu-bar-mode -1)
-)
+(if (display-graphic-p)
+  (progn
+;; turn off toolbar.
+    (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+     (menu-bar-mode 1)) 
+     (menu-bar-mode -1))
 
 (setq frame-title-format '("%b %I %+%@%t%Z %m %n %e"))
 
@@ -78,7 +79,9 @@
 (require 'ag)
 (require 'multiple-cursors)
 (require 'js2-refactor)
-(require 'helm)
+
+(when (display-graphic-p)(require 'helm))
+
 
 
 ;(require 'smartparens)
@@ -109,7 +112,8 @@
 (require 'ac-dabbrev)
 
 ;; no scrolblars
-(scroll-bar-mode -1)
+(when (display-graphic-p)
+(scroll-bar-mode -1))
 
 ;; conditional - add your own init-marmalade or just login manually
 (load-library "marmalade")
@@ -120,7 +124,8 @@
 ;(yas-global-mode t)
 
 ;; Autopair alternative
-(flex-autopair-mode t)
+(when (display-graphic-p)
+(flex-autopair-mode t))
 
 ;; Rainbow mode for css automatically
 (add-hook 'css-mode-hook 'rainbow-mode)
@@ -187,12 +192,12 @@
 ;; -----------------------------------------------------------------------------------------------
 ;; Custom stuff from me.
 ;; -----------------------------------------------------------------------------------------------
-(require 'powerline)
-(powerline-default-theme)
+;(require 'powerline)
+;(powerline-default-theme)
 (require 'visual-progress-mode)
 ;(load-theme 'soothe t)
 ;(load-theme 'mccarthy t)
-(load-theme 'cyberpunk)
+;(load-theme 'cyberpunk)
 
 ;; No tabs, only 4 spaces, as default
 (setq-default indent-tabs-mode nil)
@@ -250,6 +255,7 @@
 (evil-leader/set-key ":" 'helm-complex-command-history)
 
 (evil-leader/set-key "f" 'ace-jump-mode)
+(evil-leader/set-key "e" 'projectile-find-file)
 
 (evil-leader/set-key "/" 'evilnc-comment-or-uncomment-lines)
 
@@ -309,8 +315,9 @@
 ;; After startup, show the recent open files
 (recentf-open-files)
 
+(when (display-graphic-p)
 (helm-mode 1)
-(global-set-key (kbd "s-.") 'helm-complete-file-name-at-point)
+(global-set-key (kbd "s-.") 'helm-complete-file-name-at-point))
 
 (require 'init-hideshowvis)
 
@@ -513,3 +520,6 @@
 (defun current-lang ()
   (interactive)
   (eval-expression current-language-environment))
+
+; Dash integration
+(global-set-key "\C-cd" 'dash-at-point)

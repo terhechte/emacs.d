@@ -1,6 +1,6 @@
 ;; ox-man.el --- Man Back-End for Org Export Engine
 
-;; Copyright (C) 2011-2013  Free Software Foundation, Inc.
+;; Copyright (C) 2011-2014 Free Software Foundation, Inc.
 
 ;; Author: Nicolas Goaziou <n.goaziou at gmail dot com>
 ;;      Luis R Anaya <papoanaya aroba hot mail punto com>
@@ -76,12 +76,11 @@
     (keyword . org-man-keyword)
     (line-break . org-man-line-break)
     (link . org-man-link)
-    (node-property . org-man-node-property)
     (paragraph . org-man-paragraph)
     (plain-list . org-man-plain-list)
     (plain-text . org-man-plain-text)
     (planning . org-man-planning)
-    (property-drawer . org-man-property-drawer)
+    (property-drawer . (lambda (&rest args) ""))
     (quote-block . org-man-quote-block)
     (quote-section . org-man-quote-section)
     (radio-target . org-man-radio-target)
@@ -639,21 +638,15 @@ CONTENTS is nil.  INFO is a plist holding contextual information."
 DESC is the description part of the link, or the empty string.
 INFO is a plist holding contextual information.  See
 `org-export-data'."
-
   (let* ((type (org-element-property :type link))
          (raw-path (org-element-property :path link))
          ;; Ensure DESC really exists, or set it to nil.
          (desc (and (not (string= desc "")) desc))
-
          (path (cond
                 ((member type '("http" "https" "ftp" "mailto"))
                  (concat type ":" raw-path))
-                ((string= type "file")
-                 (when (string-match "\\(.+\\)::.+" raw-path)
-                   (setq raw-path (match-string 1 raw-path)))
-                 (if (file-name-absolute-p raw-path)
-                     (concat "file://" (expand-file-name raw-path))
-                   (concat "file://" raw-path)))
+                ((and (string= type "file") (file-name-absolute-p raw-path))
+                 (concat "file:" raw-path))
                 (t raw-path)))
          protocol)
     (cond
@@ -664,16 +657,6 @@ INFO is a plist holding contextual information.  See
      ;; No path, only description.  Try to do something useful.
      (t (format "\\fI%s\\fP" desc)))))
 
-;;;; Node Property
-
-(defun org-man-node-property (node-property contents info)
-  "Transcode a NODE-PROPERTY element from Org to Man.
-CONTENTS is nil.  INFO is a plist holding contextual
-information."
-  (format "%s:%s"
-          (org-element-property :key node-property)
-          (let ((value (org-element-property :value node-property)))
-            (if value (concat " " value) ""))))
 
 ;;; Paragraph
 
@@ -733,12 +716,6 @@ contextual information."
 
 ;;; Property Drawer
 
-(defun org-man-property-drawer (property-drawer contents info)
-  "Transcode a PROPERTY-DRAWER element from Org to Man.
-CONTENTS holds the contents of the drawer.  INFO is a plist
-holding contextual information."
-  (and (org-string-nw-p contents)
-       (format ".RS\n.nf\n%s\n.fi\n.RE" contents)))
 
 ;;; Quote Block
 

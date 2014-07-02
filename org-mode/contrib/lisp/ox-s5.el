@@ -1,6 +1,6 @@
 ;;; ox-s5.el --- S5 Presentation Back-End for Org Export Engine
 
-;; Copyright (C) 2011-2013  Rick Frankel
+;; Copyright (C) 2011-2014  Rick Frankel
 
 ;; Author: Rick Frankel <emacs at rickster dot com>
 ;; Keywords: outlines, hypermedia, S5, wp
@@ -174,8 +174,8 @@ or an empty string."
 (defcustom org-s5-title-slide-template
   "<h1>%t</h1>
 <h2>%a</h2>
-<h2>%e</h2>
-<h2>%d</h2>"
+<h3>%e</h3>
+<h4>%d</h4>"
   "Format template to specify title page section.
 See `org-html-postamble-format' for the valid elements which
 can be included.

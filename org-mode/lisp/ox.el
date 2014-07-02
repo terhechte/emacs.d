@@ -1,9 +1,11 @@
 ;;; ox.el --- Generic Export Engine for Org Mode
 
-;; Copyright (C) 2012, 2013  Free Software Foundation, Inc.
+;; Copyright (C) 2012-2014 Free Software Foundation, Inc.
 
 ;; Author: Nicolas Goaziou <n.goaziou at gmail dot com>
 ;; Keywords: outlines, hypermedia, calendar, wp
+
+;; This file is part of GNU Emacs.
 
 ;; GNU Emacs is free software: you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -128,7 +130,6 @@
     (:with-latex nil "tex" org-export-with-latex)
     (:with-planning nil "p" org-export-with-planning)
     (:with-priority nil "pri" org-export-with-priority)
-    (:with-properties nil "prop" org-export-with-properties)
     (:with-smart-quotes nil "'" org-export-with-smart-quotes)
     (:with-special-strings nil "-" org-export-with-special-strings)
     (:with-statistics-cookies nil "stat" org-export-with-statistics-cookies)
@@ -142,7 +143,7 @@
   "Alist between export properties and ways to set them.
 
 The CAR of the alist is the property name, and the CDR is a list
-like (KEYWORD OPTION DEFAULT BEHAVIOUR) where:
+like (KEYWORD OPTION DEFAULT BEHAVIOR) where:
 
 KEYWORD is a string representing a buffer keyword, or nil.  Each
   property defined this way can also be set, during subtree
@@ -151,7 +152,7 @@ KEYWORD is a string representing a buffer keyword, or nil.  Each
   property).
 OPTION is a string that could be found in an #+OPTIONS: line.
 DEFAULT is the default value for the property.
-BEHAVIOUR determines how Org should handle multiple keywords for
+BEHAVIOR determines how Org should handle multiple keywords for
   the same property.  It is a symbol among:
   nil       Keep old value and discard the new one.
   t         Replace old value with the new one.
@@ -361,7 +362,7 @@ If the value is `comment' insert it as a comment."
   :group 'org-export-general
   :type '(choice
 	  (const :tag "No creator sentence" nil)
-	  (const :tag "Sentence as a comment" 'comment)
+	  (const :tag "Sentence as a comment" comment)
 	  (const :tag "Insert the sentence" t)))
 
 (defcustom org-export-with-date t
@@ -397,11 +398,10 @@ This option can also be set on with the CREATOR keyword."
   "Non-nil means export contents of standard drawers.
 
 When t, all drawers are exported.  This may also be a list of
-drawer names to export, as strings.  If that list starts with
-`not', only drawers with such names will be ignored.
+drawer names to export.  If that list starts with `not', only
+drawers with such names will be ignored.
 
-This variable doesn't apply to properties drawers.  See
-`org-export-with-properties' instead.
+This variable doesn't apply to properties drawers.
 
 This option can also be set with the OPTIONS keyword,
 e.g. \"d:nil\"."
@@ -559,23 +559,6 @@ e.g. \"pri:t\"."
   :group 'org-export-general
   :type 'boolean)
 
-(defcustom org-export-with-properties nil
-  "Non-nil means export contents of properties drawers.
-
-When t, all properties are exported.  This may also be a list of
-properties to export, as strings.
-
-This option can also be set with the OPTIONS keyword,
-e.g. \"prop:t\"."
-  :group 'org-export-general
-  :version "24.4"
-  :package-version '(Org . "8.3")
-  :type '(choice
-	  (const :tag "All properties" t)
-	  (const :tag "None" nil)
-	  (repeat :tag "Selected properties"
-		  (string :tag "Property name"))))
-
 (defcustom org-export-with-section-numbers t
   "Non-nil means add section numbers to headlines when exporting.
 
@@ -643,11 +626,20 @@ e.g. \"stat:nil\""
 (defcustom org-export-with-sub-superscripts t
   "Non-nil means interpret \"_\" and \"^\" for export.
 
+If you want to control how Org displays those characters, see
+`org-use-sub-superscripts'.  `org-export-with-sub-superscripts'
+used to be an alias for `org-use-sub-superscripts' in Org <8.0,
+it is not anymore.
+
 When this option is turned on, you can use TeX-like syntax for
-sub- and superscripts.  Several characters after \"_\" or \"^\"
-will be considered as a single item - so grouping with {} is
-normally not needed.  For example, the following things will be
-parsed as single sub- or superscripts.
+sub- and superscripts and see them exported correctly.
+
+You can also set the option with #+OPTIONS: ^:t
+
+Several characters after \"_\" or \"^\" will be considered as a
+single item - so grouping with {} is normally not needed.  For
+example, the following things will be parsed as single sub- or
+superscripts:
 
  10^24   or   10^tau     several digits will be considered 1 item.
  10^-12  or   10^-tau    a leading sign with digits or a word
@@ -655,15 +647,14 @@ parsed as single sub- or superscripts.
 			 terminated by almost any nonword/nondigit char.
  x_{i^2} or   x^(2-i)    braces or parenthesis do grouping.
 
-Still, ambiguity is possible - so when in doubt use {} to enclose
-the sub/superscript.  If you set this variable to the symbol
-`{}', the braces are *required* in order to trigger
-interpretations as sub/superscript.  This can be helpful in
-documents that need \"_\" frequently in plain text.
-
-This option can also be set with the OPTIONS keyword,
-e.g. \"^:nil\"."
+Still, ambiguity is possible.  So when in doubt, use {} to enclose
+the sub/superscript.  If you set this variable to the symbol `{}',
+the braces are *required* in order to trigger interpretations as
+sub/superscript.  This can be helpful in documents that need \"_\"
+frequently in plain text."
   :group 'org-export-general
+  :version "24.4"
+  :package-version '(Org . "8.0")
   :type '(choice
 	  (const :tag "Interpret them" t)
 	  (const :tag "Curly brackets only" {})
@@ -804,7 +795,8 @@ HTML code while every other back-end will ignore it."
   :type 'coding-system)
 
 (defcustom org-export-copy-to-kill-ring 'if-interactive
-  "Should we push exported content to the kill ring?"
+  "Non-nil means pushing export output to the kill ring.
+This variable is ignored during asynchronous export."
   :group 'org-export-general
   :version "24.3"
   :type '(choice
@@ -1622,10 +1614,11 @@ for export.  Return options as a plist."
      ;; Make sure point is at a heading.
      (if (org-at-heading-p) (org-up-heading-safe) (org-back-to-heading t))
      ;; Take care of EXPORT_TITLE. If it isn't defined, use headline's
-     ;; title as its fallback value.
+     ;; title (with no todo keyword, priority cookie or tag) as its
+     ;; fallback value.
      (when (setq prop (or (org-entry-get (point) "EXPORT_TITLE")
-			  (progn (looking-at org-todo-line-regexp)
-				 (org-match-string-no-properties 3))))
+			  (progn (looking-at org-complex-heading-regexp)
+				 (org-match-string-no-properties 4))))
        (setq plist
 	     (plist-put
 	      plist :title
@@ -1658,7 +1651,7 @@ for export.  Return options as a plist."
 			  ((member keyword org-element-document-properties)
 			   (org-element-parse-secondary-string
 			    value (org-element-restriction 'keyword)))
-			  ;; If BEHAVIOUR is `split' expected value is
+			  ;; If BEHAVIOR is `split' expected value is
 			  ;; a list of strings, not a string.
 			  ((eq (nth 4 option) 'split) (org-split-string value))
 			  (t value)))))))))
@@ -1740,7 +1733,7 @@ Assume buffer is in Org mode.  Narrowing, if any, is ignored."
 				 (plist-put
 				  plist property
 				  ;; Handle value depending on specified
-				  ;; BEHAVIOUR.
+				  ;; BEHAVIOR.
 				  (case behaviour
 				    (space
 				     (if (not (plist-get plist property))
@@ -1974,15 +1967,10 @@ for a footnotes section."
   "Return list of elements and objects to ignore during export.
 DATA is the parse tree to traverse.  OPTIONS is the plist holding
 export options."
-  (let* (walk-data
+  (let* (ignore
+	 walk-data
 	 ;; First find trees containing a select tag, if any.
 	 (selected (org-export--selected-trees data options))
-	 ;; If a select tag is active, also ignore the section before
-	 ;; the first headline, if any.
-	 (ignore (and selected
-		      (let ((first-element (car (org-element-contents data))))
-			(and (eq (org-element-type first-element) 'section)
-			     first-element))))
 	 (walk-data
 	  (lambda (data)
 	    ;; Collect ignored elements or objects into IGNORE-LIST.
@@ -1993,8 +1981,8 @@ export options."
 			 (org-element-property :archivedp data))
 		    ;; If headline is archived but tree below has
 		    ;; to be skipped, add it to ignore list.
-		    (dolist (element (org-element-contents data))
-		      (push element ignore))
+		    (mapc (lambda (e) (push e ignore))
+			  (org-element-contents data))
 		  ;; Move into secondary string, if any.
 		  (let ((sec-prop
 			 (cdr (assq type org-element-secondary-value-alist))))
@@ -2091,14 +2079,7 @@ a tree with a select tag."
 		      (not (eq todo-type with-tasks)))
 		 (and (consp with-tasks) (not (member todo with-tasks))))))))
     ((latex-environment latex-fragment) (not (plist-get options :with-latex)))
-    (node-property
-     (let ((properties-set (plist-get options :with-properties)))
-       (cond ((null properties-set) t)
-	     ((consp properties-set)
-	      (not (member-ignore-case (org-element-property :key blob)
-				       properties-set))))))
     (planning (not (plist-get options :with-planning)))
-    (property-drawer (not (plist-get options :with-properties)))
     (statistics-cookie (not (plist-get options :with-statistics-cookies)))
     (table-cell
      (and (org-export-table-has-special-column-p
@@ -2891,7 +2872,7 @@ The copy will preserve local variables, visibility, contents and
 narrowing of the original buffer.  If a region was active in
 BUFFER, contents will be narrowed to that region instead.
 
-The resulting function can be evaled at a later time, from
+The resulting function can be evaluated at a later time, from
 another buffer, effectively cloning the original buffer there.
 
 The function assumes BUFFER's major mode is `org-mode'."
@@ -3145,8 +3126,8 @@ locally for the subtree through node properties."
     ;; Populate OPTIONS and KEYWORDS.
     (dolist (entry (cond ((eq backend 'default) org-export-options-alist)
 			 ((org-export-backend-p backend)
-			  (org-export-get-all-options backend))
-			 (t (org-export-get-all-options
+			  (org-export-backend-options backend))
+			 (t (org-export-backend-options
 			     (org-export-get-backend backend)))))
       (let ((keyword (nth 1 entry))
             (option (nth 2 entry)))
@@ -3194,8 +3175,7 @@ locally for the subtree through node properties."
     (when options
       (let ((items
 	     (mapcar
-	      (lambda (opt)
-		(format "%s:%s" (car opt) (format "%s" (cdr opt))))
+	      #'(lambda (opt) (format "%s:%S" (car opt) (cdr opt)))
 	      (sort options (lambda (k1 k2) (string< (car k1) (car k2)))))))
 	(if subtreep
 	    (org-entry-put
@@ -4704,7 +4684,7 @@ INFO is a plist used as a communication channel."
   "Return TABLE-ROW number.
 INFO is a plist used as a communication channel.  Return value is
 zero-based and ignores separators.  The function returns nil for
-special colums and separators."
+special columns and separators."
   (when (and (eq (org-element-property :type table-row) 'standard)
 	     (not (org-export-table-row-is-special-p table-row info)))
     (let ((number 0))
@@ -4977,7 +4957,7 @@ If no translation is found, the quote character is left as-is.")
 (defconst org-export-smart-quotes-regexps
   (list
    ;; Possible opening quote at beginning of string.
-   "\\`\\([\"']\\)\\(\\w\\|\\s.\\|\\s_\\)"
+   "\\`\\([\"']\\)\\(\\w\\|\\s.\\|\\s_\\|\\s(\\)"
    ;; Possible closing quote at beginning of string.
    "\\`\\([\"']\\)\\(\\s-\\|\\s)\\|\\s.\\)"
    ;; Possible apostrophe at beginning of string.
@@ -5115,7 +5095,7 @@ Return the new string."
 ;;;; Topology
 ;;
 ;; Here are various functions to retrieve information about the
-;; neighbourhood of a given element or object.  Neighbours of interest
+;; neighborhood of a given element or object.  Neighbors of interest
 ;; are direct parent (`org-export-get-parent'), parent headline
 ;; (`org-export-get-parent-headline'), first element containing an
 ;; object, (`org-export-get-parent-element'), parent table
@@ -5183,14 +5163,11 @@ all of them."
 	 ;; to a secondary string.  We check the latter option
 	 ;; first.
 	 (let ((parent (org-export-get-parent blob)))
-	   (or (and (not (memq (org-element-type blob)
-			       org-element-all-elements))
-		    (let ((sec-value
-			   (org-element-property
-			    (cdr (assq (org-element-type parent)
-				       org-element-secondary-value-alist))
-			    parent)))
-		      (and (memq blob sec-value) sec-value)))
+	   (or (let ((sec-value (org-element-property
+				 (cdr (assq (org-element-type parent)
+					    org-element-secondary-value-alist))
+				 parent)))
+		 (and (memq blob sec-value) sec-value))
 	       (org-element-contents parent))))
 	prev)
     (catch 'exit
@@ -5218,14 +5195,11 @@ them."
 	 ;; An object can belong to the contents of its parent or to
 	 ;; a secondary string.  We check the latter option first.
 	 (let ((parent (org-export-get-parent blob)))
-	   (or (and (not (memq (org-element-type blob)
-			       org-element-all-objects))
-		    (let ((sec-value
-			   (org-element-property
-			    (cdr (assq (org-element-type parent)
-				       org-element-secondary-value-alist))
-			    parent)))
-		      (cdr (memq blob sec-value))))
+	   (or (let ((sec-value (org-element-property
+				 (cdr (assq (org-element-type parent)
+					    org-element-secondary-value-alist))
+				 parent)))
+		 (cdr (memq blob sec-value)))
 	       (cdr (memq blob (org-element-contents parent))))))
 	next)
     (catch 'exit
@@ -5255,7 +5229,6 @@ them."
      ("de" :default "Autor")
      ("eo" :html "A&#365;toro")
      ("es" :default "Autor")
-     ("et" :default "Autor")
      ("fi" :html "Tekij&auml;")
      ("fr" :default "Auteur")
      ("hu" :default "Szerz&otilde;")
@@ -5279,7 +5252,6 @@ them."
      ("de" :default "Datum")
      ("eo" :default "Dato")
      ("es" :default "Fecha")
-     ("et" :html "Kuup&#228;ev" :utf-8 "Kuupäev")
      ("fi" :html "P&auml;iv&auml;m&auml;&auml;r&auml;")
      ("hu" :html "D&aacute;tum")
      ("is" :default "Dagsetning")
@@ -5299,7 +5271,6 @@ them."
      ("da" :default "Ligning")
      ("de" :default "Gleichung")
      ("es" :html "Ecuaci&oacute;n" :default "Ecuación")
-     ("et" :html "V&#245;rrand" :utf-8 "Võrrand")
      ("fr" :ascii "Equation" :default "Équation")
      ("no" :default "Ligning")
      ("nb" :default "Ligning")
@@ -5310,7 +5281,6 @@ them."
      ("da" :default "Figur")
      ("de" :default "Abbildung")
      ("es" :default "Figura")
-     ("et" :default "Joonis")
      ("ja" :html "&#22259;" :utf-8 "図")
      ("no" :default "Illustrasjon")
      ("nb" :default "Illustrasjon")
@@ -5321,7 +5291,6 @@ them."
      ("da" :default "Figur %d")
      ("de" :default "Abbildung %d:")
      ("es" :default "Figura %d:")
-     ("et" :default "Joonis %d:")
      ("fr" :default "Figure %d :" :html "Figure&nbsp;%d&nbsp;:")
      ("ja" :html "&#22259;%d: " :utf-8 "図%d: ")
      ("no" :default "Illustrasjon %d")
@@ -5336,7 +5305,6 @@ them."
      ("de" :html "Fu&szlig;noten" :default "Fußnoten")
      ("eo" :default "Piednotoj")
      ("es" :html "Nota al pie de p&aacute;gina" :default "Nota al pie de página")
-     ("et" :html "Allm&#228;rkused" :utf-8 "Allmärkused")
      ("fi" :default "Alaviitteet")
      ("fr" :default "Notes de bas de page")
      ("hu" :html "L&aacute;bjegyzet")
@@ -5358,7 +5326,6 @@ them."
      ("da" :default "Programmer")
      ("de" :default "Programmauflistungsverzeichnis")
      ("es" :default "Indice de Listados de programas")
-     ("et" :default "Loendite nimekiri")
      ("fr" :default "Liste des programmes")
      ("no" :default "Dataprogrammer")
      ("nb" :default "Dataprogrammer")
@@ -5367,7 +5334,6 @@ them."
      ("da" :default "Tabeller")
      ("de" :default "Tabellenverzeichnis")
      ("es" :default "Indice de tablas")
-     ("et" :default "Tabelite nimekiri")
      ("fr" :default "Liste des tableaux")
      ("no" :default "Tabeller")
      ("nb" :default "Tabeller")
@@ -5378,7 +5344,6 @@ them."
      ("da" :default "Program %d")
      ("de" :default "Programmlisting %d")
      ("es" :default "Listado de programa %d")
-     ("et" :default "Loend %d")
      ("fr" :default "Programme %d :" :html "Programme&nbsp;%d&nbsp;:")
      ("no" :default "Dataprogram")
      ("nb" :default "Dataprogram")
@@ -5387,13 +5352,11 @@ them."
      ("da" :default "jævnfør afsnit %s")
      ("de" :default "siehe Abschnitt %s")
      ("es" :default "vea seccion %s")
-     ("et" :html "Vaata peat&#252;kki %s" :utf-8 "Vaata peatükki %s")
      ("fr" :default "cf. section %s")
      ("zh-CN" :html "&#21442;&#35265;&#31532;%d&#33410;" :utf-8 "参见第%s节"))
     ("Table"
      ("de" :default "Tabelle")
      ("es" :default "Tabla")
-     ("et" :default "Tabel")
      ("fr" :default "Tableau")
      ("ja" :html "&#34920;" :utf-8 "表")
      ("zh-CN" :html "&#34920;" :utf-8 "表"))
@@ -5401,7 +5364,6 @@ them."
      ("da" :default "Tabel %d")
      ("de" :default "Tabelle %d")
      ("es" :default "Tabla %d")
-     ("et" :default "Tabel %d")
      ("fr" :default "Tableau %d :")
      ("ja" :html "&#34920;%d:" :utf-8 "表%d:")
      ("no" :default "Tabell %d")
@@ -5416,7 +5378,6 @@ them."
      ("de" :default "Inhaltsverzeichnis")
      ("eo" :default "Enhavo")
      ("es" :html "&Iacute;ndice")
-     ("et" :default "Sisukord")
      ("fi" :html "Sis&auml;llysluettelo")
      ("fr" :ascii "Sommaire" :default "Table des matières")
      ("hu" :html "Tartalomjegyz&eacute;k")
@@ -5438,7 +5399,6 @@ them."
      ("da" :default "ukendt reference")
      ("de" :default "Unbekannter Verweis")
      ("es" :default "referencia desconocida")
-     ("et" :default "Tundmatu viide")
      ("fr" :ascii "Destination inconnue" :default "Référence inconnue")
      ("zh-CN" :html "&#26410;&#30693;&#24341;&#29992;" :utf-8 "未知引用")))
   "Dictionary for export engine.
@@ -5654,7 +5614,7 @@ a registered back-end.  FILE is the name of the output file, as
 a string.
 
 A non-nil optional argument ASYNC means the process should happen
-asynchronously.  The resulting buffer file then be accessible
+asynchronously.  The resulting buffer will then be accessible
 through the `org-export-stack' interface.
 
 Optional arguments SUBTREEP, VISIBLE-ONLY, BODY-ONLY and
@@ -5916,7 +5876,7 @@ files or buffers, only the display.
   "Export dispatcher for Org mode.
 
 It provides an access to common export related tasks in a buffer.
-Its interface comes in two flavours: standard and expert.
+Its interface comes in two flavors: standard and expert.
 
 While both share the same set of bindings, only the former
 displays the valid keys associations in a dedicated buffer.
@@ -5924,7 +5884,7 @@ Scrolling (resp. line-wise motion) in this buffer is done with
 SPC and DEL (resp. C-n and C-p) keys.
 
 Set variable `org-export-dispatch-use-expert-ui' to switch to one
-flavour or the other.
+flavor or the other.
 
 When ARG is \\[universal-argument], repeat the last export action, with the same set
 of options used back then, on the current buffer.

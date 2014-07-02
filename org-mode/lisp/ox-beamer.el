@@ -1,10 +1,12 @@
 ;;; ox-beamer.el --- Beamer Back-End for Org Export Engine
 
-;; Copyright (C) 2007-2013  Free Software Foundation, Inc.
+;; Copyright (C) 2007-2014 Free Software Foundation, Inc.
 
 ;; Author: Carsten Dominik <carsten.dominik AT gmail DOT com>
 ;;         Nicolas Goaziou <n.goaziou AT gmail DOT com>
 ;; Keywords: org, wp, tex
+
+;; This file is part of GNU Emacs.
 
 ;; GNU Emacs is free software: you can redistribute it and/or modify
 ;; it under the terms of the GNU General Public License as published by
@@ -23,93 +25,7 @@
 ;;
 ;; This library implements both a Beamer back-end, derived from the
 ;; LaTeX one and a minor mode easing structure edition of the
-;; document.
-;;
-;; Depending on the desired output format, three commands are provided
-;; for export: `org-beamer-export-as-latex' (temporary buffer),
-;; `org-beamer-export-to-latex' ("tex" file) and
-;; `org-beamer-export-to-pdf' ("pdf" file).
-;;
-;; This back-end supports every buffer keyword, attribute and options
-;; items (see `org-latex-options-alist') already supported by `latex'
-;; back-end.  As such, it is suggested to add an entry in
-;; `org-latex-classes' variable which is appropriate for Beamer
-;; export.
-;;
-;; On top of this, the `beamer' back-end also introduces the following
-;; keywords: "BEAMER_THEME", "BEAMER_COLOR_THEME",
-;; "BEAMER_FONT_THEME", "BEAMER_INNER_THEME", "BEAMER_OUTER_THEME" and
-;; "BEAMER_HEADER".  All but the latter accept options in square
-;; brackets.
-;;
-;; Moreover, headlines now fall into three categories: sectioning
-;; elements, frames and blocks.
-;;
-;; - Headlines become frames when their level is equal to
-;;   `org-beamer-frame-level' (or "H" value in the OPTIONS line).
-;;   Though, if a headline in the current tree has a "BEAMER_env"
-;;   (see below) property set to either "frame" or "fullframe", its
-;;   level overrides the variable.  A "fullframe" is a frame with an
-;;   empty (ignored) title.
-;;
-;; - All frames' children become block environments.  Special block
-;;   types can be enforced by setting headline's "BEAMER_env" property
-;;   to an appropriate value (see `org-beamer-environments-default'
-;;   for supported value and `org-beamer-environments-extra' for
-;;   adding more).
-;;
-;; - As a special case, if the "BEAMER_env" property is set to either
-;;   "appendix", "note", "noteNH" or "againframe", the headline will
-;;   become, respectively, an appendix, a note (within frame or
-;;   between frame, depending on its level), a note with its title
-;;   ignored or an againframe command.  In the latter case,
-;;   a "BEAMER_ref" property is mandatory in order to refer to the
-;;   frame being resumed, and contents are ignored.
-;;
-;;   Also, a headline with an "ignoreheading" environment will have
-;;   its contents only inserted in the output.  This special value is
-;;   useful to have data between frames, or to properly close
-;;   a "column" environment.
-;;
-;; Along with "BEAMER_env", headlines also support the "BEAMER_act"
-;; and "BEAMER_opt" properties.  The former is translated as an
-;; overlay/action specification (or a default overlay specification
-;; when enclosed within square brackets) whereas the latter specifies
-;; options for the current frame ("fragile" option is added
-;; automatically, though).
-;;
-;; Moreover, headlines handle the "BEAMER_col" property.  Its value
-;; should be a decimal number representing the width of the column as
-;; a fraction of the total text width.  If the headline has no
-;; specific environment, its title will be ignored and its contents
-;; will fill the column created.  Otherwise, the block will fill the
-;; whole column and the title will be preserved.  Two contiguous
-;; headlines with a non-nil "BEAMER_col" value share the same
-;; "columns" LaTeX environment.  It will end before the next headline
-;; without such a property.  This environment is generated
-;; automatically.  Although, it can also be explicitly created, with
-;; a special "columns" value for "BEAMER_env" property (if it needs to
-;; be set up with some specific options, for example).
-;;
-;; Every plain list has support for `:environment', `:overlay' and
-;; `:options' attributes (through ATTR_BEAMER affiliated keyword).
-;; The first one allows to use a different environment, the second
-;; sets overlay specifications and the last one inserts optional
-;; arguments in current list environment.
-;;
-;; Table of contents generated from "toc:t" option item are wrapped
-;; within a "frame" environment.  Those generated from a TOC keyword
-;; aren't.  TOC keywords accept options enclosed within square
-;; brackets (e.g. #+TOC: headlines [currentsection]).
-;;
-;; Eventually, an export snippet with a value enclosed within angular
-;; brackets put at the beginning of an element or object whose type is
-;; among `bold', `item', `link', `radio-target' and `target' will
-;; control its overlay specifications.
-;;
-;; On the minor mode side, `org-beamer-select-environment' (bound by
-;; default to "C-c C-b") and `org-beamer-insert-options-template' are
-;; the two entry points.
+;; document.  See Org manual for more information.
 
 ;;; Code:
 
@@ -120,10 +36,7 @@
 (unless (assoc "beamer" org-latex-classes)
   (add-to-list 'org-latex-classes
 	       '("beamer"
-		 "\\documentclass[presentation]{beamer}
-\[DEFAULT-PACKAGES]
-\[PACKAGES]
-\[EXTRA]"
+		 "\\documentclass[presentation]{beamer}"
 		 ("\\section{%s}" . "\\section*{%s}")
 		 ("\\subsection{%s}" . "\\subsection*{%s}")
 		 ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))))
@@ -731,11 +644,11 @@ contextual information."
 		  (and (eq (org-element-type first-element) 'paragraph)
 		       (org-beamer--element-has-overlay-p first-element))))
 	(output (org-export-with-backend 'latex item contents info)))
-    (if (not action) output
+    (if (or (not action) (not (string-match "\\\\item" output))) output
       ;; If the item starts with a paragraph and that paragraph starts
       ;; with an export snippet specifying an overlay, insert it after
       ;; \item command.
-      (replace-regexp-in-string "\\\\item" (concat "\\\\item" action) output))))
+      (replace-match (concat "\\\\item" action) nil nil output))))
 
 
 ;;;; Keyword
@@ -777,8 +690,9 @@ used as a communication channel."
 	(when destination
 	  (format "\\hyperlink%s{%s}{%s}"
 		  (or (org-beamer--element-has-overlay-p link) "")
-		  (org-export-solidify-link-text path)
-		  (org-export-data (org-element-contents destination) info)))))
+		  (org-export-solidify-link-text
+		   (org-element-property :value destination))
+		  contents))))
      ((and (member type '("custom-id" "fuzzy" "id"))
 	   (let ((destination (if (string= type "fuzzy")
 				  (org-export-resolve-fuzzy-link link info)
@@ -1178,6 +1092,7 @@ aid, but the tag does not have any semantic meaning."
 			  envs)
 		  '((:endgroup))
 		  '(("BMCOL" . ?|))))
+	 (org-use-fast-tag-selection t)
 	 (org-fast-tag-selection-single-key t))
     (org-set-tags)
     (let ((tags (or (ignore-errors (org-get-tags-string)) "")))
@@ -1252,7 +1167,9 @@ Return output file name."
   ;; working directory and then moved to publishing directory.
   (org-publish-attachment
    plist
-   (org-latex-compile (org-publish-org-to 'beamer filename ".tex" plist))
+   (org-latex-compile
+    (org-publish-org-to
+     'beamer filename ".tex" plist (file-name-directory filename)))
    pub-dir))
 
 

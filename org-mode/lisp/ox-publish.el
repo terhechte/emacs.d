@@ -1,5 +1,5 @@
 ;;; ox-publish.el --- Publish Related Org Mode Files as a Website
-;; Copyright (C) 2006-2013 Free Software Foundation, Inc.
+;; Copyright (C) 2006-2014 Free Software Foundation, Inc.
 
 ;; Author: David O'Toole <dto@gnu.org>
 ;; Maintainer: Carsten Dominik <carsten DOT dominik AT gmail DOT com>
@@ -170,7 +170,6 @@ included.  See the back-end documentation for more information.
   :with-inlinetasks         `org-export-with-inlinetasks'
   :with-latex               `org-export-with-latex'
   :with-priority            `org-export-with-priority'
-  :with-properties          `org-export-with-properties'
   :with-smart-quotes        `org-export-with-smart-quotes'
   :with-special-strings     `org-export-with-special-strings'
   :with-statistics-cookies' `org-export-with-statistics-cookies'
@@ -809,7 +808,8 @@ Default for SITEMAP-FILENAME is 'sitemap.org'."
        (org-mode)
        (let ((title
 	      (let ((property (plist-get (org-export-get-environment) :title)))
-		(if property (org-element-interpret-data property)
+		(if property
+		    (org-no-properties (org-element-interpret-data property))
 		  (file-name-nondirectory (file-name-sans-extension file))))))
 	 (unless visiting (kill-buffer buffer))
 	 (org-publish-cache-set-file-property file :title title)
@@ -893,10 +893,11 @@ in another process."
   (interactive "P")
   (if async
       (org-export-async-start 'ignore
-	`(when ',force (org-publish-remove-all-timestamps))
-	`(let ((org-publish-use-timestamps-flag
-		(if ',force nil ,org-publish-use-timestamps-flag)))
-	   (org-publish-projects ',org-publish-project-alist)))
+	`(progn
+	   (when ',force (org-publish-remove-all-timestamps))
+	   (let ((org-publish-use-timestamps-flag
+		  (if ',force nil ,org-publish-use-timestamps-flag)))
+	     (org-publish-projects ',org-publish-project-alist))))
     (when force (org-publish-remove-all-timestamps))
     (save-window-excursion
       (let ((org-publish-use-timestamps-flag
@@ -1072,7 +1073,7 @@ publishing directory."
 Return value is a list of numbers, or nil.  This function allows
 to resolve external fuzzy links like:
 
-  [[file.org::*fuzzy][description]"
+  [[file.org::*fuzzy][description]]"
   (when org-publish-cache
     (cdr (assoc (org-split-string
 		 (if (eq (aref fuzzy 0) ?*) (substring fuzzy 1) fuzzy))
@@ -1225,8 +1226,9 @@ Returns value on success, else nil."
   (let ((attr (file-attributes
 	       (expand-file-name (or (file-symlink-p file) file)
 				 (file-name-directory file)))))
-    (+ (lsh (car (nth 5 attr)) 16)
-       (cadr (nth 5 attr)))))
+    (if (not attr) (error "No such file: \"%s\"" file)
+      (+ (lsh (car (nth 5 attr)) 16)
+	 (cadr (nth 5 attr))))))
 
 
 (provide 'ox-publish)
