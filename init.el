@@ -134,7 +134,7 @@
 (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
 
 ;; Git gutter global mode
-(add-hook 'prog-mode-hook 'git-gutter-mode)
+;(add-hook 'prog-mode-hook 'git-gutter-mode)
 
 ;; Smoother scrolling (no multiline jumps.)
 ;(setq redisplay-dont-pause t
@@ -235,6 +235,7 @@
 
 (recentf-mode 1) ; keep a list of recently opened files
 
+(global-set-key (kbd "C-9") 'zencoding-expand-line)
 
 ;; Load evil
 (require 'init-evil)
@@ -328,8 +329,9 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes (quote ("c377a5f3548df908d58364ec7a0ee401ee7235e5e475c86952dc8ed7c4345d8e" default)))
  '(httpd-port 8187)
- '(org-agenda-files (quote ("~/Dropbox/Todo/org/todos.org")))
- '(send-mail-function (quote mailclient-send-it)))
+ '(org-agenda-files (quote ("~/Dropbox/Todo/org/grand-todo.org")))
+ '(send-mail-function (quote mailclient-send-it))
+ '(sql-postgres-options (quote ("-p 35432"))))
 
  ; set different linum color
 ; and cua mode for copy / paste

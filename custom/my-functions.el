@@ -162,13 +162,15 @@
   (interactive)
   (if (and transient-mark-mode mark-active)
       (progn ; there is a text selection
-        (eval-region (region-beginning) (region-end))
-        )
+        (eval-region (region-beginning) (region-end)))
     (progn ; user did not have text selection feature on
-      (eval-last-sexp-1 nil) ; (point) nil
-      )
-    )
-  )
+      (eval-last-sexp-1 nil))))
+
+(defun sql-eval-region ()
+  (interactive)
+  (when (and transient-mark-mode mark-active)
+      (progn ; there is a text selection
+        (sql-send-region (region-beginning) (region-end)))))
 
   ; store a file in a seperate buffer and save it (for pixate monitored css editing)
 (defun store-cache ()

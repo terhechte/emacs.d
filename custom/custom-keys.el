@@ -127,10 +127,9 @@
   ; fast eval with <C-'>
   (defun my-fast-eval ()
     (interactive)
-    (if (eq major-mode 'clojure-mode)
-        (cider-eval-last-sexp)
-      (eval-region-or-left-sexp))
-    )
+    (cond ((eq major-mode 'clojure-mode) (cider-eval-last-sexp))
+          ((eq major-mode 'sql-mode) (sql-eval-region))
+          ((eval-region-or-left-sexp))))
   (global-set-key (kbd "C-'") 'my-fast-eval)
     
   )
