@@ -1,0 +1,77 @@
+What I learned about emacs:
+
+control-tab -> completion
+
+apple-1 apple2 apple3 > split windows:
+  (global-set-key (kbd "s-1") 'delete-other-windows)
+  (global-set-key (kbd "s-2") 'split-window-horizontally)
+  (global-set-key (kbd "s-3") 'split-window-vertically)
+  (global-set-key (kbd "s-4") 'delete-other-windows-vertically)
+
+  (global-set-key (kbd "s-0") 'linum-mode)
+
+  ;; highly inclusive expand
+  (global-set-key (kbd "s-/" ) 'hippie-expand)
+
+  (global-set-key (kbd "<s-return>" ) 'completion-at-point)
+
+
+
+// This brings the same total omnicompletion auto as vim!
+(require 'dabbrev)
+(require 'ac-dabbrev)
+
+Fantastic javascript completion via
+(require 'js2)
+(require 'ac-js2)
+
+// mx ack is a better and faster search then grep or helm-do-grep
+
+fiplr-20130713.2058
+fuzzy finder for files in dir
+
+flex-autopair-20120809.2118
+causes the wrong " ><
+
+furl:
+friendly url retrieval
+
+Google This
+Google Translate
+
+grizzl: fast fuzzy search index
+
+htmlize macht aus meinem syntax colored buffers html
+
+grizzl: fast fuzzy search index
+
+cx w o (oder so) macht das zahlen fuer buffer ding. found in plugins oder so
+
+http twiddle is a Fantastic package
+
+try indent-guide
+
+try litable: https://github.com/Fuco1/litable
+
+move-text
+
+pos-tip: show tooltip at point
+
+restclient: an interactive http clien
+
+simple-httpd: pure emacs webserver (wtf?)
+
+skewer-mode: live browser javascript interaction
+
+splitter: manage window splits
+
+EMACS SPEEDBAR!
+sr-speedbar
+
+svg-mode-line-themes looks like a great idea!
+
+wgrep: edit a grep buffer, and apply those changes to the files
+
+wrap-region, macht sowas wie ycsw" mit vim
+
+zlc provides zsh like completion etc for all parts of emcas
