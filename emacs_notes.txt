@@ -1,0 +1,70 @@
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+General Stuff:
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+Leave Minibuffer: c-g
+
+closing buffer, just like vim: bd  (closes file descriptor, removes buffer)
+or, emacsy: c-x k, 
+
+c-h b : will list all key combinations
+
+M-x recent-open-files : to list and open recently opened file.
+
+M-x highlight-lines-matching-regex \@done (!)
+M-x list-command-history 
+
+If you want to get an overview of your file, try "M-x occur". Given a regex, it will create a new buffer with each match in the current buffer.  
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+Getting Help:
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+You can get help for a command by typing
+C-h f function-name
+This will usually tell you if it has a standard key binding. Conversely, given a key sequence, you can type
+C-h k key-sequence
+To get the command that would run. For more help on getting help, you can type
+
+C-h ?
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+Terminal
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+M-x term
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+Lisp:
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+; http://www.masteringemacs.org/articles/2010/11/29/evaluating-elisp-emacs/
+Eval a buffer's lisp
+M-x eval-buffer
+Eval a lisp region
+M-x eval-region
+
+Eval the current s-expression (which I am at the end of)
+C-x C-e
+(message "Hello world")|
+
+(print (font-family-list))
+M-x ielm  <-- interactive repl
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+File management. Open directory like in vim and then
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+【Ctrl+x Ctrl+q】 (emacs 23.1)	wdired-change-to-wdired-mode	Start rename by editing
+【Ctrl+c Ctrl+c】	wdired-finish-edit	Commit changes
+【Ctrl+c Esc】	wdired-abort-changes	Abort changes
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+Flycheck etc
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+Get into flycheck mode: MX flycheck-mode
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+Python
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+- open a repl: C-c C-p
+- send the current code to the repl: C-c C-c
+- send the current region to the repl: C-c C-r
+- switch to shell: C-c C-z

@@ -525,3 +525,6 @@
 
 ; Dash integration
 (global-set-key "\C-cd" 'dash-at-point)
+
+; Share symmetric keys when opening encrypted fiels
+(setq epa-file-cache-passphrase-for-symmetric-encryption t)
