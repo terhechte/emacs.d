@@ -31,6 +31,12 @@
 
 (add-to-list 'load-path "~/.emacs.d/plugins/tabbar")
 
+(package-initialize)
+
+(when (memq window-system '(mac ns))
+  (exec-path-from-shell-initialize)
+  (exec-path-from-shell-copy-env "GOPATH"))
+
 ; Org mode
 ;(add-to-list 'load-path "~/.emacs.d/elpa/org-20130826")
 (add-to-list 'load-path "~/.emacs.d/org-mode/lisp")
@@ -237,6 +243,20 @@
 
 (global-set-key (kbd "C-9") 'zencoding-expand-line)
 
+
+;; Simple Functions to Control Spotify
+(defun spotify-next-track ()
+  ;; Go to next track
+  (interactive)
+  (shell-command "osascript -e 'tell application \"Spotify\" to next track'"))
+
+(defun spotify-info-track ()
+  ;; Print Track info as message in mini buffer
+  (interactive)
+  (message (format "%s - %s"
+                   (string-trim (shell-command-to-string "osascript -e 'tell application \"Spotify\" to artist of current track'"))
+                   (string-trim (shell-command-to-string "osascript -e 'tell application \"Spotify\" to name of current track'")))))
+
 ;; Load evil
 (require 'init-evil)
 
@@ -259,6 +279,32 @@
 (evil-leader/set-key "e" 'projectile-find-file)
 
 (evil-leader/set-key "/" 'evilnc-comment-or-uncomment-lines)
+
+(evil-leader/set-key "son" 'spotify-next-track)
+(evil-leader/set-key "soi" 'spotify-info-track)
+
+;; Evil leader docs
+(defun evil-leader-docs ()
+  (interactive)
+  (message "Evil Leader Docs (,h):
+  n: new buffer
+  t: switch to previous buffer
+  re: recent open files
+  rl: revert buffer
+  l: list all open buffers
+  i: open imenu
+  c: delete the current window
+  p: switch to previous buffer
+  ':': show command history
+  f: ace jump
+  e: projectile find file
+  /: comment or uncomment line/s
+  son: spotify next track
+  soi: spotify current track info
+  h: this help
+"))
+(evil-leader/set-key "h" 'evil-leader-docs)
+
 
 
 ; evil extension for html tag selection like matchit
@@ -485,6 +531,26 @@
 
 
 
+(eval-after-load 'go-mode
+  '(progn
+     (require 'go-autocomplete)
+     (require 'auto-complete-config)
+     (setq exec-path (cons "/usr/local/go/bin" exec-path))
+     (add-to-list 'exec-path "/Users/tleyden/Development/gocode/bin")
+     (add-hook 'before-save-hook 'gofmt-before-save)
+     )
+  )
+
+(defun my-go-mode-hook ()
+  ; Call Gofmt before saving
+  (add-hook 'before-save-hook 'gofmt-before-save)
+  ; Customize compile command to run go build
+  (if (not (string-match "go" compile-command))
+      (set (make-local-variable 'compile-command)
+           "go build -v && go test -v && go vet"))
+  ; Godef jump key binding
+  (local-set-key (kbd "M-.") 'godef-jump))
+(add-hook 'go-mode-hook 'my-go-mode-hook)
 
 
 (eval-after-load 'web-mode
@@ -513,6 +579,14 @@
 (require 'evil-matchit)
 (global-evil-matchit-mode 1)
 
+;; Winner-mode:
+;; undo / redo for window configurations (opening, closing, splitting, etc)
+;; C-c left goes back
+;; C-c right goes forward
+;; i.e. the arrow keys left / right
+(when (fboundp 'winner-mode)
+      (winner-mode 1))
+
 
 (defun accents ()
   (interactive)
@@ -528,3 +602,7 @@
 
 ; Share symmetric keys when opening encrypted fiels
 (setq epa-file-cache-passphrase-for-symmetric-encryption t)
+
+;; Browsing html docs from within emacs
+(require 'w3m)
+
