@@ -257,6 +257,18 @@
                    (string-trim (shell-command-to-string "osascript -e 'tell application \"Spotify\" to artist of current track'"))
                    (string-trim (shell-command-to-string "osascript -e 'tell application \"Spotify\" to name of current track'")))))
 
+(defun display-mode ()
+  ;; show the current mode name as string
+  (interactive)
+  (message "%s" major-mode))
+
+;; Reload either the current buffer, or reload the current w3m
+(defun total-reload ()
+  (interactive)
+  (cond
+   ((string= "w3m-mode" (format "%s" major-mode)) (w3m-reload-this-page))
+   (t (revert-buffer))))
+
 ;; Load evil
 (require 'init-evil)
 
@@ -265,7 +277,7 @@
 (evil-leader/set-key "t" 'switch-to-previous-buffer)
 
 (evil-leader/set-key "re" 'recentf-open-files)
-(evil-leader/set-key "rl" 'revert-buffer)
+(evil-leader/set-key "rl" 'total-reload)
 
 (evil-leader/set-key "l" 'buffer-list-in-window)
 
@@ -373,11 +385,21 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-safe-themes (quote ("c377a5f3548df908d58364ec7a0ee401ee7235e5e475c86952dc8ed7c4345d8e" default)))
+ '(add-to-list (quote default-frame-alist))
+ '(custom-safe-themes
+   (quote
+    ("c377a5f3548df908d58364ec7a0ee401ee7235e5e475c86952dc8ed7c4345d8e" default)))
+ '(fci-rule-character-color "#C9C9C9")
+ '(fringe-mode 4 nil (fringe))
  '(httpd-port 8187)
+ '(main-line-color1 "#A5A5A5")
+ '(main-line-color2 "#B9B9B9")
+ '(main-line-separator-style (quote chamfer))
  '(org-agenda-files (quote ("~/Dropbox/Todo/org/grand-todo.org")))
+ '(powerline-color1 "#A5A5A5")
+ '(powerline-color2 "#B9B9B9")
  '(send-mail-function (quote mailclient-send-it))
- '(sql-postgres-options (quote ("-p 35432"))))
+ '(sql-postgres-options nil))
 
  ; set different linum color
 ; and cua mode for copy / paste
@@ -529,6 +551,30 @@
 (add-hook 'cider-repl-mode-hook 'paredit-mode)
 (add-hook 'cider-repl-mode-hook 'rainbow-delimiters-mode)
 
+(require 'ac-cider)
+(add-hook 'cider-mode-hook 'ac-flyspell-workaround)
+(add-hook 'cider-mode-hook 'ac-cider-setup)
+(add-hook 'cider-repl-mode-hook 'ac-cider-setup)
+(eval-after-load "auto-complete"
+  '(progn
+     (add-to-list 'ac-modes 'cider-mode)
+     (add-to-list 'ac-modes 'cider-repl-mode)))
+
+;; show fn docs on tab
+(defun set-auto-complete-as-completion-at-point-function ()
+  (setq completion-at-point-functions '(auto-complete)))
+
+(add-hook 'auto-complete-mode-hook 'set-auto-complete-as-completion-at-point-function)
+(add-hook 'cider-mode-hook 'set-auto-complete-as-completion-at-point-function)
+
+;; Show quick help faster
+(setq ac-quick-help-delay 0.2)
+
+;; Clojure Grimoire (better docs)
+; on symbol: mx clojure-grimoire
+; or: C-c C-d g
+;; when working offline, can install grimoire offline:
+;; https://github.com/clojure-grimoire/grimoire/
 
 
 (eval-after-load 'go-mode
@@ -605,4 +651,122 @@
 
 ;; Browsing html docs from within emacs
 (require 'w3m)
+;; evil in w3m
+(define-key w3m-mode-map (kbd "ESC") 'evil-normal-state)
+(define-key w3m-mode-map (kbd "C-g") 'evil-normal-state)
+(setq w3m-home-page "about:blank")
+(setq w3m-use-cookies t)
+
+;; Postgres browsing in emacs
+;; Local dev server data
+(setq sql-postgres-login-params
+      '((user :default "terhechte")
+        (database :default "pdengage")
+        (server :default "192.168.2.138")
+        (password :default)
+        (port :default 5432)))
+(add-hook 'sql-interactive-mode-hook
+          (lambda ()
+            (toggle-truncate-lines t)))
+
+;; Add tab bar mode settings
+;; https://gist.github.com/3demax/1264635
+;; Tabbar
+(require 'tabbar)
+;; Tabbar settings
+(set-face-attribute
+ 'tabbar-default nil
+ :background "gray20"
+ :foreground "gray20"
+ :box '(:line-width 1 :color "gray20" :style nil))
+(set-face-attribute
+ 'tabbar-unselected nil
+ :background "gray30"
+ :foreground "white"
+ :box '(:line-width 5 :color "gray30" :style nil))
+(set-face-attribute
+ 'tabbar-selected nil
+ :background "gray75"
+ :foreground "black"
+ :box '(:line-width 5 :color "gray75" :style nil))
+(set-face-attribute
+ 'tabbar-highlight nil
+ :background "white"
+ :foreground "black"
+ :underline nil
+ :box '(:line-width 5 :color "white" :style nil))
+(set-face-attribute
+ 'tabbar-button nil
+ :box '(:line-width 1 :color "gray20" :style nil))
+(set-face-attribute
+ 'tabbar-separator nil
+ :background "gray20"
+ :height 0.6)
+ 
+;; Change padding of the tabs
+;; we also need to set separator to avoid overlapping tabs by highlighted tabs
+(custom-set-variables
+ '(tabbar-separator (quote (0.5))))
+;; adding spaces
+(defun tabbar-buffer-tab-label (tab)
+  "Return a label for TAB.
+That is, a string used to represent it on the tab bar."
+  (let ((label  (if tabbar--buffer-show-groups
+                    (format "[%s]  " (tabbar-tab-tabset tab))
+                  (format "%s  " (tabbar-tab-value tab)))))
+    ;; Unless the tab bar auto scrolls to keep the selected tab
+    ;; visible, shorten the tab label to keep as many tabs as possible
+    ;; in the visible area of the tab bar.
+    (if tabbar-auto-scroll-flag
+        label
+      (tabbar-shorten
+       label (max 1 (/ (window-width)
+                       (length (tabbar-view
+                                (tabbar-current-tabset)))))))))
+
+;; http://emacswiki.org/emacs/TabBarMode
+
+;; Add a buffer modification state indicator in the tab label, and place a
+ ;; space around the label to make it looks less crowd.
+ (defadvice tabbar-buffer-tab-label (after fixup_tab_label_space_and_flag activate)
+   (setq ad-return-value
+         (if (and (buffer-modified-p (tabbar-tab-value tab))
+                  (buffer-file-name (tabbar-tab-value tab)))
+             (concat " * " (concat ad-return-value " "))
+           (concat " " (concat ad-return-value " ")))))
+
+;; Called each time the modification state of the buffer changed.
+ (defun ztl-modification-state-change ()
+   (tabbar-set-template tabbar-current-tabset nil)
+   (tabbar-display-update))
+
+;; First-change-hook is called BEFORE the change is made.
+ (defun ztl-on-buffer-modification ()
+   (set-buffer-modified-p t)
+   (ztl-modification-state-change))
+ (add-hook 'after-save-hook 'ztl-modification-state-change)
+(add-hook 'first-change-hook 'ztl-on-buffer-modification)
+
+;; Create tab groups by buffers in the same directory. sounds sane
+(setq tabbar-cycle-scope 'tabs)
+(setq tabbar-buffer-groups-function
+      (lambda ()
+        (let ((dir (expand-file-name default-directory)))
+          (cond ((member (buffer-name) '("*Completions*"
+                                         "*scratch*"
+                                         "*Messages*"
+                                         "*Ediff Registry*"))
+                 (list "#misc"))
+                ((string-match-p "/.emacs.d/" dir)
+                 (list ".emacs.d"))
+                (t (list dir))))))
+
+(setq tabbar-use-images nil)
+
+;; use apple-[ and apple-] to switch tabs
+(global-set-key (kbd "s-[") 'tabbar-backward-tab)
+(global-set-key (kbd "s-]") 'tabbar-forward-tab)
+ 
+(tabbar-mode 1)
+(setq tabbar-use-images nil)
 
