@@ -770,3 +770,7 @@ That is, a string used to represent it on the tab bar."
 (tabbar-mode 1)
 (setq tabbar-use-images nil)
 
+;; Auto complete only on tab. might want to do this only for clojure mode?
+;; where auto complete is rather slow
+(setq ac-auto-start nil)
+(define-key ac-mode-map [(tab)] 'auto-complete)
