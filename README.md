@@ -3,11 +3,10 @@ This configuration is out of date. I've switched over to Spacemacs which already
 
 https://github.com/terhechte/SpacemacsConfig
 
+
 # Emacs-Evil Configuration
 
 This is my in-progress Emacs configuration which tries to be something in between Vim and Emacs. Emacs strong configuration facilities make it possible that I am very, very comfortable in this editor while I can barely manage to exit a regular Emacs on the command line. Meaning, this configuration is so specific that there's little resemblance to classic Emacs anymore. However, if you're coming from Vim, this Emacs configuration could be a good fit - even though it also differs quite a lot from Vim, but maybe not as strong as it differs from Emacs. Of course, all the classic Emacs shortcuts still work, I just don't know about them because I'm using my own facilities or am using the Evil-Vim ones.
-
-![image](https://raw2.github.com/terhechte/emacs.d/master/screenshot.png)
 
 # Features
 - This configuration is optimized (kinda) for HTML, Javascript, CSS, Python, Clojure, Scala, Emacs Lisp, and Org Mode. Some set ups are better than others, and not everything may be the latest and greatest. I'm not trying to create the most up to date Emacs configuration, I'm trying to have a pleasant working environment
