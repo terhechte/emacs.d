@@ -1,3 +1,8 @@
+# Note
+This configuration is out of date. I've switched over to Spacemacs which already contains a lot of what I was trying to achieve here. Only, in a much better & cleaner manner. I've ported the most important things from this config over to a new spacemacs config (i.e. the things not yet in Spacemacs). This new configuration can be found here:
+
+https://github.com/terhechte/SpacemacsConfig
+
 # Emacs-Evil Configuration
 
 This is my in-progress Emacs configuration which tries to be something in between Vim and Emacs. Emacs strong configuration facilities make it possible that I am very, very comfortable in this editor while I can barely manage to exit a regular Emacs on the command line. Meaning, this configuration is so specific that there's little resemblance to classic Emacs anymore. However, if you're coming from Vim, this Emacs configuration could be a good fit - even though it also differs quite a lot from Vim, but maybe not as strong as it differs from Emacs. Of course, all the classic Emacs shortcuts still work, I just don't know about them because I'm using my own facilities or am using the Evil-Vim ones.
